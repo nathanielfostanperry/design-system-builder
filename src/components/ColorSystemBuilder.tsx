@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import GlobalCurveEditor from './GlobalCurveEditor';
 import ColorScaleDisplay from './ColorScaleDisplay';
 import { HexColorPicker } from 'react-colorful';
@@ -17,17 +17,51 @@ const ColorPicker: React.FC<{
   onChange: (color: string) => void;
   label: string;
 }> = ({ value, onChange, label }) => {
+  const [inputValue, setInputValue] = useState(value);
+
+  // Update local state when prop value changes
+  useEffect(() => {
+    setInputValue(value);
+  }, [value]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setInputValue(newValue);
+
+    // Only update the actual color if it's a valid hex code
+    if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(newValue)) {
+      onChange(newValue);
+    }
+  };
+
+  const handleBlur = () => {
+    // If the user leaves with an invalid hex, reset to the current valid value
+    if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(inputValue)) {
+      setInputValue(value);
+    } else if (inputValue !== value) {
+      onChange(inputValue);
+    }
+  };
+
   return (
     <div className="mb-4">
       <label className="block text-sm font-medium mb-2">{label}</label>
-      <div className="flex items-center">
+      <div className="flex items-start">
         <HexColorPicker color={value} onChange={onChange} />
         <div className="ml-4">
           <div
-            className="w-12 h-12 rounded border border-gray-300"
+            className="w-12 h-12 rounded border border-gray-300 mb-2"
             style={{ backgroundColor: value }}
           />
-          <div className="mt-2 text-sm font-mono text-center">{value}</div>
+          <input
+            className="w-full px-2 py-1 text-sm font-mono border border-gray-300 rounded"
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            placeholder="#RRGGBB"
+            maxLength={7}
+          />
         </div>
       </div>
     </div>
