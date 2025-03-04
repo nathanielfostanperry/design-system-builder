@@ -13,13 +13,16 @@
   "license": "ISC",
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.9",
+    "@types/chroma-js": "^3.1.1",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "chroma-js": "^3.1.2",
     "eslint": "latest",
     "eslint-config-next": "latest",
     "next": "latest",
     "react": "latest",
+    "react-colorful": "^5.6.1",
     "react-dom": "latest",
     "typescript": "latest"
   },
