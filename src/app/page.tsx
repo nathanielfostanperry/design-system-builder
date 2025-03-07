@@ -8,7 +8,8 @@ import DemoCard from '@/components/demo/DemoCard';
 import DemoToast from '@/components/demo/DemoToast';
 import DemoDropdown from '@/components/demo/DemoDropdown';
 import DemoTabs from '@/components/demo/DemoTabs';
-import Corners from '@/components/Corners/index';
+import Corners from '@/components/Corners';
+import Spacing from '@/components/Spacing';
 
 export default function Home() {
   const { primaryColorScale, accentColorScale, neutralColorScale } =
@@ -19,6 +20,7 @@ export default function Home() {
       <div className="grid md:grid-cols-2 gap-2 p-2">
         <div className="bg-red-50 rounded-lg p-8">
           <Corners />
+          <Spacing />
           <ColorSystemBuilder />
         </div>
         <div className="p-8">
