@@ -20,6 +20,8 @@ import DemoSlider from '@/components/demo/DemoSlider';
 import Corners from '@/components/Corners';
 import Spacing from '@/components/Spacing';
 import Shadows from '@/components/Shadows';
+import Fonts from '@/components/Fonts';
+import FontPreview from '@/components/FontPreview';
 
 export default function Home() {
   const {
@@ -35,6 +37,7 @@ export default function Home() {
       <div className="grid md:grid-cols-2 gap-2 p-2">
         {/* Control panel */}
         <div className={`bg-red-50 p-8 ${radius.name}`}>
+          <Fonts />
           <Corners />
           <Spacing />
           <Shadows />
@@ -58,6 +61,9 @@ export default function Home() {
               <ColorScaleDisplay colorScale={neutralColorScale} />
             </div>
           </div>
+
+          {/* Font Preview */}
+          <FontPreview />
 
           {/* Demo Components Section */}
           <div className="mt-12">

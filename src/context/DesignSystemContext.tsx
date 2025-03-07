@@ -7,6 +7,7 @@ import {
   CurveControlPoint,
   generateNeutrals,
 } from '../utils/colorUtils';
+import type { FontOption } from '@/types/designSystem';
 
 type SpacingOption = {
   name: string;
@@ -22,6 +23,13 @@ type ShadowOption = {
   name: string;
   label: string;
 };
+
+type FontCategory =
+  | 'serif'
+  | 'sans-serif'
+  | 'display'
+  | 'handwriting'
+  | 'monospace';
 
 // Define the shape of our design system
 interface DesignSystemContextType {
@@ -62,6 +70,12 @@ interface DesignSystemContextType {
   // Shadow control
   shadow: ShadowOption;
   setShadow: (shadow: ShadowOption) => void;
+
+  // Font control
+  headingFont: FontOption;
+  setHeadingFont: (font: FontOption) => void;
+  bodyFont: FontOption;
+  setBodyFont: (font: FontOption) => void;
 }
 
 // Create context with default values
@@ -114,6 +128,10 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 
   // Shadow control
   const [shadow, setShadow] = useState<ShadowOption>(SHADOW_OPTIONS[0]);
+
+  // Font control
+  const [headingFont, setHeadingFont] = useState<FontOption>(FONT_OPTIONS[0]);
+  const [bodyFont, setBodyFont] = useState<FontOption>(FONT_OPTIONS[0]);
 
   // Method to set a base color and update its scale
   const setBaseColor = (
@@ -196,6 +214,11 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 
     shadow,
     setShadow,
+
+    headingFont,
+    setHeadingFont,
+    bodyFont,
+    setBodyFont,
   };
 
   return (
@@ -243,4 +266,58 @@ export const SHADOW_OPTIONS = [
   { name: 'shadow-lg', label: 'Extra Large' },
   { name: 'shadow-xl', label: '2X Large' },
   { name: 'shadow-2xl', label: '3X Large' },
+] as const;
+
+// A subset of Google Fonts for demonstration
+export const FONT_OPTIONS: FontOption[] = [
+  {
+    family: 'Inter',
+    category: 'sans-serif',
+    variants: ['400', '500', '600', '700'],
+  },
+  {
+    family: 'Roboto',
+    category: 'sans-serif',
+    variants: ['400', '500', '700'],
+  },
+  {
+    family: 'Playfair Display',
+    category: 'serif',
+    variants: ['400', '500', '600', '700'],
+  },
+  {
+    family: 'Merriweather',
+    category: 'serif',
+    variants: ['400', '700'],
+  },
+  {
+    family: 'Fira Code',
+    category: 'monospace',
+    variants: ['400', '500', '700'],
+  },
+  {
+    family: 'Dancing Script',
+    category: 'handwriting',
+    variants: ['400', '700'],
+  },
+  {
+    family: 'Oswald',
+    category: 'display',
+    variants: ['400', '500', '600', '700'],
+  },
+  {
+    family: 'Lato',
+    category: 'sans-serif',
+    variants: ['400', '700'],
+  },
+  {
+    family: 'Source Code Pro',
+    category: 'monospace',
+    variants: ['400', '500', '600', '700'],
+  },
+  {
+    family: 'Montserrat',
+    category: 'sans-serif',
+    variants: ['400', '500', '600', '700'],
+  },
 ] as const;
