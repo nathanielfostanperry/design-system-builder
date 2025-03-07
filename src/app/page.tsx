@@ -11,6 +11,7 @@ import DemoTabs from '@/components/demo/DemoTabs';
 import DemoButtons from '@/components/demo/DemoButtons';
 import DemoCards from '@/components/demo/DemoCards';
 import DemoChips from '@/components/demo/DemoChips';
+import DemoInteractive from '@/components/demo/DemoInteractive';
 import Corners from '@/components/Corners';
 import Spacing from '@/components/Spacing';
 
@@ -65,6 +66,13 @@ export default function Home() {
                 <div>
                   <h3 className="text-lg font-medium mb-4">Form Elements</h3>
                   <DemoInput />
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium mb-4">
+                    Interactive Controls
+                  </h3>
+                  <DemoInteractive />
                 </div>
 
                 <div>
