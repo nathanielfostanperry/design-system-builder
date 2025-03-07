@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 
 export default function DemoSlider() {
-  const { radius } = useDesignSystem();
+  const { radius, spacing } = useDesignSystem();
   const [sliderValue, setSliderValue] = useState(50);
 
   return (
     <div className={`bg-white p-4 ${radius.name} border border-gray-200`}>
-      <div className="space-y-2">
+      <div className={`${spacing.name}`}>
         <div className="flex justify-between">
           <label className="text-sm font-medium text-gray-700">
             Slider Value: {sliderValue}

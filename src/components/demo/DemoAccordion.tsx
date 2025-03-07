@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 
 export default function DemoAccordion() {
-  const { radius } = useDesignSystem();
+  const { radius, spacing } = useDesignSystem();
   const [activeAccordion, setActiveAccordion] = useState<number | null>(0);
 
   const accordionItems = [
@@ -24,7 +24,7 @@ export default function DemoAccordion() {
   ];
 
   return (
-    <div className="space-y-2">
+    <div className={`${spacing.name}`}>
       {accordionItems.map((item, index) => (
         <div
           key={index}

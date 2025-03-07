@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 
 export default function DemoRadioGroup() {
-  const { radius } = useDesignSystem();
+  const { radius, spacing } = useDesignSystem();
   const [selectedRadio, setSelectedRadio] = useState('option1');
 
   const radioOptions = [
@@ -13,7 +13,7 @@ export default function DemoRadioGroup() {
 
   return (
     <div className={`bg-white p-4 ${radius.name} border border-gray-200`}>
-      <div className="space-y-2">
+      <div className={`${spacing.name}`}>
         {radioOptions.map((option) => (
           <label
             key={option.id}

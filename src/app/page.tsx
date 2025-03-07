@@ -4,14 +4,19 @@ import ColorSystemBuilder from '@/components/ColorSystemBuilder';
 import ColorScaleDisplay from '@/components/ColorScaleDisplay';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 import DemoInput from '@/components/demo/DemoInput';
-import DemoCard from '@/components/demo/DemoCard';
 import DemoToast from '@/components/demo/DemoToast';
 import DemoDropdown from '@/components/demo/DemoDropdown';
 import DemoTabs from '@/components/demo/DemoTabs';
-import DemoButtons from '@/components/demo/DemoButtons';
-import DemoCards from '@/components/demo/DemoCards';
+import DemoPrimaryButton from '@/components/demo/DemoPrimaryButton';
+import DemoSecondaryButton from '@/components/demo/DemoSecondaryButton';
+import DemoIconButtonPrimary from '@/components/demo/DemoIconButtonPrimary';
+import DemoIconButtonSecondary from '@/components/demo/DemoIconButtonSecondary';
+import DemoTeamCard from '@/components/demo/DemoTeamCard';
+import DemoProductCard from '@/components/demo/DemoProductCard';
 import DemoChips from '@/components/demo/DemoChips';
-import DemoInteractive from '@/components/demo/DemoInteractive';
+import DemoAccordion from '@/components/demo/DemoAccordion';
+import DemoRadioGroup from '@/components/demo/DemoRadioGroup';
+import DemoSlider from '@/components/demo/DemoSlider';
 import Corners from '@/components/Corners';
 import Spacing from '@/components/Spacing';
 
@@ -33,9 +38,11 @@ export default function Home() {
           <Spacing />
           <ColorSystemBuilder />
         </div>
+
         {/* Result Panel */}
         <div className={`p-8 ${radius.name}`}>
-          <div className={`space-y-8 ${spacing.name}`}>
+          {/* Color Scales */}
+          <div className={`${spacing.name}`}>
             <div>
               <h3 className="text-xl font-semibold mb-4">Primary Colors</h3>
               <ColorScaleDisplay colorScale={primaryColorScale} />
@@ -48,53 +55,28 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-4">Gray Colors</h3>
               <ColorScaleDisplay colorScale={neutralColorScale} />
             </div>
+          </div>
 
-            {/* Demo Components Section */}
-            <div className="mt-12">
-              <h2 className="text-2xl font-bold mb-8">Demo Components</h2>
-              <div className={`space-y-8 ${spacing.name}`}>
-                <div>
-                  <h3 className="text-lg font-medium mb-4">Buttons</h3>
-                  <DemoButtons />
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-medium mb-4">Cards</h3>
-                  <DemoCards />
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-medium mb-4">Form Elements</h3>
-                  <DemoInput />
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-medium mb-4">
-                    Interactive Controls
-                  </h3>
-                  <DemoInteractive />
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-medium mb-4">
-                    Notifications & Menus
-                  </h3>
-                  <div className={`grid grid-cols-2 ${spacing.name}`}>
-                    <DemoToast />
-                    <DemoDropdown />
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-medium mb-4">Navigation</h3>
-                  <DemoTabs />
-                </div>
-
-                <div>
-                  <h3 className="text-lg font-medium mb-4">Theme & Tags</h3>
-                  <DemoChips />
-                </div>
-              </div>
+          {/* Demo Components Section */}
+          <div className="mt-12">
+            <h2 className="text-2xl font-bold mb-8">Demo Components</h2>
+            <div
+              className={`grid md:grid-cols-2 xl:grid-cols-3 ${spacing.name}`}
+            >
+              <DemoPrimaryButton />
+              <DemoSecondaryButton />
+              <DemoIconButtonPrimary />
+              <DemoIconButtonSecondary />
+              <DemoTeamCard />
+              <DemoProductCard />
+              <DemoInput />
+              <DemoAccordion />
+              <DemoRadioGroup />
+              <DemoSlider />
+              <DemoToast />
+              <DemoDropdown />
+              <DemoTabs />
+              <DemoChips />
             </div>
           </div>
         </div>

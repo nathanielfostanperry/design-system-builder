@@ -5,10 +5,10 @@ import Image from 'next/image';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 
 export default function DemoCards() {
-  const { radius } = useDesignSystem();
+  const { radius, spacing } = useDesignSystem();
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className={`${spacing.name}`}>
       {/* Team Card */}
       <div
         className={`bg-white shadow-md overflow-hidden border border-gray-200 ${radius.name}`}
@@ -51,7 +51,7 @@ export default function DemoCards() {
       <div
         className={`bg-white shadow-md overflow-hidden border border-gray-200 ${radius.name}`}
       >
-        <div className="relative h-40 w-full">
+        <div className="relative h-32 w-full">
           <Image
             src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
             alt="Product"
