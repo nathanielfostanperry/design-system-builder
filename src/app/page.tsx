@@ -3,6 +3,11 @@
 import ColorSystemBuilder from '@/components/ColorSystemBuilder';
 import ColorScaleDisplay from '@/components/ColorScaleDisplay';
 import { useDesignSystem } from '@/context/DesignSystemContext';
+import DemoInput from '@/components/demo/DemoInput';
+import DemoCard from '@/components/demo/DemoCard';
+import DemoToast from '@/components/demo/DemoToast';
+import DemoDropdown from '@/components/demo/DemoDropdown';
+import DemoTabs from '@/components/demo/DemoTabs';
 
 export default function Home() {
   const { primaryColorScale, accentColorScale, neutralColorScale } =
@@ -27,6 +32,19 @@ export default function Home() {
             <div>
               <h3 className="text-xl font-semibold mb-4">Gray Colors</h3>
               <ColorScaleDisplay colorScale={neutralColorScale} />
+            </div>
+
+            {/* Demo Components Section */}
+            <div className="mt-12">
+              <div className="space-y-8">
+                <DemoInput />
+                <DemoCard />
+                <div className="grid grid-cols-2 gap-4">
+                  <DemoToast />
+                  <DemoDropdown />
+                </div>
+                <DemoTabs />
+              </div>
             </div>
           </div>
         </div>
