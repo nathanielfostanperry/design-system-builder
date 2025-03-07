@@ -123,37 +123,6 @@ const ColorSystemBuilder: React.FC<ColorSystemBuilderProps> = ({
       <div className="mb-12">
         <GlobalCurveEditor />
       </div>
-
-      {/* Color Scales Display */}
-      <div className="grid grid-cols-1 gap-8">
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Color Scales</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Primary Scale */}
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Primary Scale</h3>
-              <ColorScaleDisplay colorScale={primaryColorScale} />
-            </div>
-
-            {/* Accent Scale */}
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Accent Scale</h3>
-              <ColorScaleDisplay colorScale={accentColorScale} />
-            </div>
-
-            {/* Neutral Scale */}
-            <div>
-              <h3 className="text-xl font-semibold mb-4">Neutral Scale</h3>
-              <ColorScaleDisplay colorScale={neutralColorScale} />
-              <p className="text-sm text-gray-500 mt-2">
-                Neutral colors are derived from the primary hue with very low
-                saturation for a sophisticated color-theory approach
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
