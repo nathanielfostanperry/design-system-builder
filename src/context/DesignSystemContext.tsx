@@ -13,6 +13,11 @@ type SpacingOption = {
   label: string;
 };
 
+type RadiusOption = {
+  name: string;
+  label: string;
+};
+
 // Define the shape of our design system
 interface DesignSystemContextType {
   // Base colors
@@ -44,6 +49,10 @@ interface DesignSystemContextType {
   // Spacing control
   spacing: SpacingOption;
   setSpacing: (spacing: SpacingOption) => void;
+
+  // Corner radius control
+  radius: RadiusOption;
+  setRadius: (radius: RadiusOption) => void;
 }
 
 // Create context with default values
@@ -89,10 +98,10 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
   >([]);
 
   // Spacing control
-  const [spacing, setSpacing] = useState<SpacingOption>({
-    name: 'gap-0',
-    label: 'None',
-  });
+  const [spacing, setSpacing] = useState<SpacingOption>(SPACING_OPTIONS[0]);
+
+  // Corner radius control
+  const [radius, setRadius] = useState<RadiusOption>(RADIUS_OPTIONS[0]);
 
   // Method to set a base color and update its scale
   const setBaseColor = (
@@ -169,6 +178,9 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 
     spacing,
     setSpacing,
+
+    radius,
+    setRadius,
   };
 
   return (
@@ -197,4 +209,13 @@ export const SPACING_OPTIONS = [
   { name: 'gap-4', label: 'Medium' },
   { name: 'gap-8', label: 'Large' },
   { name: 'gap-16', label: 'Extra Large' },
+] as const;
+
+export const RADIUS_OPTIONS = [
+  { name: 'rounded-none', label: 'None' },
+  { name: 'rounded-sm', label: 'Small' },
+  { name: 'rounded-lg', label: 'Large' },
+  { name: 'rounded-xl', label: 'Extra Large' },
+  { name: 'rounded-2xl', label: '2X Large' },
+  { name: 'rounded-full', label: 'Full' },
 ] as const;

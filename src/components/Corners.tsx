@@ -1,24 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
-
-const RADIUS_CLASSES = [
-  { name: 'rounded-none', label: 'None' },
-  { name: 'rounded-sm', label: 'Small' },
-  { name: 'rounded-lg', label: 'Large' },
-  { name: 'rounded-xl', label: 'Extra Large' },
-  { name: 'rounded-2xl', label: '2X Large' },
-  { name: 'rounded-full', label: 'Full' },
-];
+import React from 'react';
+import { useDesignSystem, RADIUS_OPTIONS } from '@/context/DesignSystemContext';
 
 export default function Corners() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const { radius, setRadius } = useDesignSystem();
 
   const handleClick = () => {
-    setCurrentIndex((prev) => (prev + 1) % RADIUS_CLASSES.length);
+    const currentIndex = RADIUS_OPTIONS.findIndex(
+      (option) => option.name === radius.name
+    );
+    const nextIndex = (currentIndex + 1) % RADIUS_OPTIONS.length;
+    setRadius(RADIUS_OPTIONS[nextIndex]);
   };
-
-  const currentClass = RADIUS_CLASSES[currentIndex];
 
   return (
     <div className="mb-8">
@@ -26,9 +20,9 @@ export default function Corners() {
       <div className="flex items-center gap-4">
         <button
           onClick={handleClick}
-          className={`w-16 h-16 bg-red-600 hover:bg-red-700 transition-all ${currentClass.name}`}
+          className={`w-16 h-16 bg-primary-600 hover:bg-primary-700 transition-all ${radius.name}`}
         />
-        <span className="text-sm text-gray-600">{currentClass.label}</span>
+        <span className="text-sm text-gray-600">{radius.label}</span>
       </div>
     </div>
   );

@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useDesignSystem } from '@/context/DesignSystemContext';
 
 export default function DemoDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { radius } = useDesignSystem();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -28,7 +30,7 @@ export default function DemoDropdown() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
-        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+        className={`inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${radius.name}`}
       >
         Options
         <svg
@@ -48,7 +50,9 @@ export default function DemoDropdown() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+        <div
+          className={`absolute right-0 mt-2 w-56 shadow-lg bg-white ring-1 ring-black ring-opacity-5 ${radius.name}`}
+        >
           <div className="py-1" role="menu">
             <a
               href="#"
