@@ -8,6 +8,9 @@ import DemoCard from '@/components/demo/DemoCard';
 import DemoToast from '@/components/demo/DemoToast';
 import DemoDropdown from '@/components/demo/DemoDropdown';
 import DemoTabs from '@/components/demo/DemoTabs';
+import DemoButtons from '@/components/demo/DemoButtons';
+import DemoCards from '@/components/demo/DemoCards';
+import DemoChips from '@/components/demo/DemoChips';
 import Corners from '@/components/Corners';
 import Spacing from '@/components/Spacing';
 
@@ -47,14 +50,42 @@ export default function Home() {
 
             {/* Demo Components Section */}
             <div className="mt-12">
+              <h2 className="text-2xl font-bold mb-8">Demo Components</h2>
               <div className={`space-y-8 ${spacing.name}`}>
-                <DemoInput />
-                <DemoCard />
-                <div className={`grid grid-cols-2 ${spacing.name}`}>
-                  <DemoToast />
-                  <DemoDropdown />
+                <div>
+                  <h3 className="text-lg font-medium mb-4">Buttons</h3>
+                  <DemoButtons />
                 </div>
-                <DemoTabs />
+
+                <div>
+                  <h3 className="text-lg font-medium mb-4">Cards</h3>
+                  <DemoCards />
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium mb-4">Form Elements</h3>
+                  <DemoInput />
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium mb-4">
+                    Notifications & Menus
+                  </h3>
+                  <div className={`grid grid-cols-2 ${spacing.name}`}>
+                    <DemoToast />
+                    <DemoDropdown />
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium mb-4">Navigation</h3>
+                  <DemoTabs />
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium mb-4">Theme & Tags</h3>
+                  <DemoChips />
+                </div>
               </div>
             </div>
           </div>
