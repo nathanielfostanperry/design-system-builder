@@ -5,11 +5,11 @@ import Image from 'next/image';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 
 export default function DemoTeamCard() {
-  const { radius } = useDesignSystem();
+  const { radius, shadow } = useDesignSystem();
 
   return (
     <div
-      className={`bg-white shadow-md overflow-hidden border border-gray-200 ${radius.name}`}
+      className={`bg-white overflow-hidden border border-gray-200 ${radius.name} ${shadow.name}`}
     >
       <div className="p-4">
         <div className="flex items-center space-x-4">

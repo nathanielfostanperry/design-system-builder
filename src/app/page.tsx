@@ -19,6 +19,7 @@ import DemoRadioGroup from '@/components/demo/DemoRadioGroup';
 import DemoSlider from '@/components/demo/DemoSlider';
 import Corners from '@/components/Corners';
 import Spacing from '@/components/Spacing';
+import Shadows from '@/components/Shadows';
 
 export default function Home() {
   const {
@@ -36,6 +37,7 @@ export default function Home() {
         <div className={`bg-red-50 p-8 ${radius.name}`}>
           <Corners />
           <Spacing />
+          <Shadows />
           <ColorSystemBuilder />
         </div>
 

@@ -18,6 +18,11 @@ type RadiusOption = {
   label: string;
 };
 
+type ShadowOption = {
+  name: string;
+  label: string;
+};
+
 // Define the shape of our design system
 interface DesignSystemContextType {
   // Base colors
@@ -53,6 +58,10 @@ interface DesignSystemContextType {
   // Corner radius control
   radius: RadiusOption;
   setRadius: (radius: RadiusOption) => void;
+
+  // Shadow control
+  shadow: ShadowOption;
+  setShadow: (shadow: ShadowOption) => void;
 }
 
 // Create context with default values
@@ -102,6 +111,9 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 
   // Corner radius control
   const [radius, setRadius] = useState<RadiusOption>(RADIUS_OPTIONS[0]);
+
+  // Shadow control
+  const [shadow, setShadow] = useState<ShadowOption>(SHADOW_OPTIONS[0]);
 
   // Method to set a base color and update its scale
   const setBaseColor = (
@@ -181,6 +193,9 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 
     radius,
     setRadius,
+
+    shadow,
+    setShadow,
   };
 
   return (
@@ -218,4 +233,14 @@ export const RADIUS_OPTIONS = [
   { name: 'rounded-xl', label: 'Extra Large' },
   { name: 'rounded-2xl', label: '2X Large' },
   { name: 'rounded-full', label: 'Full' },
+] as const;
+
+export const SHADOW_OPTIONS = [
+  { name: 'shadow-none', label: 'None' },
+  { name: 'shadow-sm', label: 'Small' },
+  { name: 'shadow', label: 'Medium' },
+  { name: 'shadow-md', label: 'Large' },
+  { name: 'shadow-lg', label: 'Extra Large' },
+  { name: 'shadow-xl', label: '2X Large' },
+  { name: 'shadow-2xl', label: '3X Large' },
 ] as const;
