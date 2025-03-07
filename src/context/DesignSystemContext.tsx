@@ -8,6 +8,11 @@ import {
   generateNeutrals,
 } from '../utils/colorUtils';
 
+type SpacingOption = {
+  name: string;
+  label: string;
+};
+
 // Define the shape of our design system
 interface DesignSystemContextType {
   // Base colors
@@ -35,6 +40,10 @@ interface DesignSystemContextType {
 
   chromaControlPoints: CurveControlPoint[];
   setChromaControlPoints: (points: CurveControlPoint[]) => void;
+
+  // Spacing control
+  spacing: SpacingOption;
+  setSpacing: (spacing: SpacingOption) => void;
 }
 
 // Create context with default values
@@ -78,6 +87,12 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
   const [chromaControlPoints, setChromaControlPoints] = useState<
     CurveControlPoint[]
   >([]);
+
+  // Spacing control
+  const [spacing, setSpacing] = useState<SpacingOption>({
+    name: 'gap-0',
+    label: 'None',
+  });
 
   // Method to set a base color and update its scale
   const setBaseColor = (
@@ -151,6 +166,9 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 
     chromaControlPoints,
     setChromaControlPoints,
+
+    spacing,
+    setSpacing,
   };
 
   return (
@@ -172,3 +190,11 @@ export const useDesignSystem = () => {
 };
 
 export default DesignSystemContext;
+
+export const SPACING_OPTIONS = [
+  { name: 'gap-0', label: 'None' },
+  { name: 'gap-2', label: 'Small' },
+  { name: 'gap-4', label: 'Medium' },
+  { name: 'gap-8', label: 'Large' },
+  { name: 'gap-16', label: 'Extra Large' },
+] as const;

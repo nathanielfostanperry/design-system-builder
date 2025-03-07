@@ -12,19 +12,21 @@ import Corners from '@/components/Corners';
 import Spacing from '@/components/Spacing';
 
 export default function Home() {
-  const { primaryColorScale, accentColorScale, neutralColorScale } =
+  const { primaryColorScale, accentColorScale, neutralColorScale, spacing } =
     useDesignSystem();
 
   return (
     <main className="min-h-screen">
       <div className="grid md:grid-cols-2 gap-2 p-2">
+        {/* Control panel */}
         <div className="bg-red-50 rounded-lg p-8">
           <Corners />
           <Spacing />
           <ColorSystemBuilder />
         </div>
+        {/* Result Panel */}
         <div className="p-8">
-          <div className="space-y-8">
+          <div className={`space-y-8 ${spacing.name}`}>
             <div>
               <h3 className="text-xl font-semibold mb-4">Primary Colors</h3>
               <ColorScaleDisplay colorScale={primaryColorScale} />
@@ -40,10 +42,10 @@ export default function Home() {
 
             {/* Demo Components Section */}
             <div className="mt-12">
-              <div className="space-y-8">
+              <div className={`space-y-8 ${spacing.name}`}>
                 <DemoInput />
                 <DemoCard />
-                <div className="grid grid-cols-2 gap-4">
+                <div className={`grid grid-cols-2 ${spacing.name}`}>
                   <DemoToast />
                   <DemoDropdown />
                 </div>
