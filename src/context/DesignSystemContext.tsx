@@ -76,6 +76,10 @@ interface DesignSystemContextType {
   setHeadingFont: (font: FontOption) => void;
   bodyFont: FontOption;
   setBodyFont: (font: FontOption) => void;
+
+  // Dark mode control
+  isDarkMode: boolean;
+  setIsDarkMode: (isDark: boolean) => void;
 }
 
 // Create context with default values
@@ -132,6 +136,9 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
   // Font control
   const [headingFont, setHeadingFont] = useState<FontOption>(FONT_OPTIONS[0]);
   const [bodyFont, setBodyFont] = useState<FontOption>(FONT_OPTIONS[0]);
+
+  // Dark mode control
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   // Method to set a base color and update its scale
   const setBaseColor = (
@@ -219,6 +226,9 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     setHeadingFont,
     bodyFont,
     setBodyFont,
+
+    isDarkMode,
+    setIsDarkMode,
   };
 
   return (

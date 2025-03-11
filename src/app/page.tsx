@@ -30,10 +30,13 @@ export default function Home() {
     neutralColorScale,
     spacing,
     radius,
+    isDarkMode,
   } = useDesignSystem();
 
   return (
-    <main className="min-h-screen">
+    <main
+      className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}
+    >
       <div className="grid md:grid-cols-2 gap-2 p-2">
         {/* Control panel */}
         <div className={`bg-red-50 p-8 ${radius.name}`}>
@@ -45,19 +48,41 @@ export default function Home() {
         </div>
 
         {/* Result Panel */}
-        <div className={`p-8 ${radius.name}`}>
+        <div
+          className={`p-8 ${radius.name} ${
+            isDarkMode ? 'bg-gray-800 text-white' : 'bg-white'
+          }`}
+        >
           {/* Color Scales */}
           <div className={`${spacing.name}`}>
             <div>
-              <h3 className="text-xl font-semibold mb-4">Primary Colors</h3>
+              <h3
+                className={`text-xl font-semibold mb-4 ${
+                  isDarkMode ? 'text-gray-100' : 'text-gray-900'
+                }`}
+              >
+                Primary Colors
+              </h3>
               <ColorScaleDisplay colorScale={primaryColorScale} />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-4">Secondary Colors</h3>
+              <h3
+                className={`text-xl font-semibold mb-4 ${
+                  isDarkMode ? 'text-gray-100' : 'text-gray-900'
+                }`}
+              >
+                Secondary Colors
+              </h3>
               <ColorScaleDisplay colorScale={accentColorScale} />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-4">Gray Colors</h3>
+              <h3
+                className={`text-xl font-semibold mb-4 ${
+                  isDarkMode ? 'text-gray-100' : 'text-gray-900'
+                }`}
+              >
+                Gray Colors
+              </h3>
               <ColorScaleDisplay colorScale={neutralColorScale} />
             </div>
           </div>
@@ -67,7 +92,13 @@ export default function Home() {
 
           {/* Demo Components Section */}
           <div className="mt-12">
-            <h2 className="text-2xl font-bold mb-8">Demo Components</h2>
+            <h2
+              className={`text-2xl font-bold mb-8 ${
+                isDarkMode ? 'text-gray-100' : 'text-gray-900'
+              }`}
+            >
+              Demo Components
+            </h2>
             <div
               className={`grid md:grid-cols-2 xl:grid-cols-3 ${spacing.name}`}
             >

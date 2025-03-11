@@ -1,40 +1,45 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 
 export default function DemoChips() {
-  const { radius } = useDesignSystem();
-  const [isDark, setIsDark] = useState(false);
+  const { radius, isDarkMode, setIsDarkMode } = useDesignSystem();
 
   return (
     <div className="space-y-6">
       {/* Theme Toggle */}
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-700">Theme</span>
+        <span
+          className={`text-sm font-medium ${
+            isDarkMode ? 'text-gray-300' : 'text-gray-700'
+          }`}
+        >
+          Theme
+        </span>
         <button
-          onClick={() => setIsDark(!isDark)}
+          onClick={() => setIsDarkMode(!isDarkMode)}
           className={`${
-            isDark ? 'bg-primary-600' : 'bg-gray-200'
+            isDarkMode ? 'bg-primary-600' : 'bg-gray-200'
           } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
             radius.name
           }`}
         >
           <span
             className={`${
-              isDark ? 'translate-x-5' : 'translate-x-0'
+              isDarkMode ? 'translate-x-5' : 'translate-x-0'
             } pointer-events-none relative inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`}
           >
             <span
               className={`${
-                isDark ? 'opacity-0' : 'opacity-100'
+                isDarkMode ? 'opacity-0' : 'opacity-100'
               } absolute inset-0 flex h-full w-full items-center justify-center transition-opacity`}
             >
               🌞
             </span>
             <span
               className={`${
-                isDark ? 'opacity-100' : 'opacity-0'
+                isDarkMode ? 'opacity-100' : 'opacity-0'
               } absolute inset-0 flex h-full w-full items-center justify-center transition-opacity`}
             >
               🌙
@@ -46,7 +51,11 @@ export default function DemoChips() {
       {/* Normal Chips */}
       <div className="flex flex-wrap gap-2">
         <span
-          className={`inline-flex items-center px-3 py-1 bg-gray-100 text-gray-800 text-sm font-medium ${radius.name}`}
+          className={`inline-flex items-center px-3 py-1 ${
+            isDarkMode
+              ? 'bg-gray-700 text-gray-200'
+              : 'bg-gray-100 text-gray-800'
+          } text-sm font-medium ${radius.name}`}
         >
           Default
         </span>
