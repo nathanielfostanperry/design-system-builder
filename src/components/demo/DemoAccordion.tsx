@@ -2,7 +2,15 @@ import React, { useState } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 
 export default function DemoAccordion() {
-  const { radius, spacing } = useDesignSystem();
+  const {
+    radius,
+    spacing,
+    isDarkMode,
+    headingFont,
+    bodyFont,
+    primaryColorScale,
+    accentColorScale,
+  } = useDesignSystem();
   const [activeAccordion, setActiveAccordion] = useState<number | null>(0);
 
   const accordionItems = [
@@ -28,19 +36,43 @@ export default function DemoAccordion() {
       {accordionItems.map((item, index) => (
         <div
           key={index}
-          className={`border border-gray-200 ${radius.name} overflow-hidden`}
+          className={`border ${radius.name} overflow-hidden`}
+          style={{
+            borderColor: isDarkMode
+              ? primaryColorScale[700]
+              : primaryColorScale[200],
+            backgroundColor: isDarkMode ? 'rgb(31, 41, 55)' : 'white',
+          }}
         >
           <button
             onClick={() =>
               setActiveAccordion(activeAccordion === index ? null : index)
             }
-            className="w-full px-4 py-3 flex justify-between items-center bg-white hover:bg-gray-50"
+            className={`w-full px-4 py-3 flex justify-between items-center transition-colors`}
+            style={{
+              fontFamily: headingFont.family,
+              backgroundColor: isDarkMode
+                ? activeAccordion === index
+                  ? primaryColorScale[800]
+                  : 'rgb(31, 41, 55)'
+                : activeAccordion === index
+                ? primaryColorScale[50]
+                : 'white',
+              color: isDarkMode
+                ? primaryColorScale[100]
+                : primaryColorScale[900],
+            }}
           >
-            <span className="font-medium text-gray-900">{item.title}</span>
+            <span className="font-medium">{item.title}</span>
             <svg
-              className={`w-5 h-5 text-gray-500 transform transition-transform ${
+              className={`w-5 h-5 transform transition-transform ${
                 activeAccordion === index ? 'rotate-180' : ''
               }`}
+              style={{
+                color: isDarkMode
+                  ? primaryColorScale[400]
+                  : primaryColorScale[500],
+              }}
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -54,11 +86,25 @@ export default function DemoAccordion() {
             </svg>
           </button>
           <div
-            className={`px-4 py-3 bg-gray-50 transition-[max-height] duration-200 ease-in-out ${
+            className={`px-4 py-3 transition-[max-height] duration-200 ease-in-out ${
               activeAccordion === index ? 'max-h-40' : 'max-h-0 overflow-hidden'
             }`}
+            style={{
+              backgroundColor: isDarkMode
+                ? primaryColorScale[900]
+                : primaryColorScale[50],
+            }}
           >
-            <p className="text-gray-600">{item.content}</p>
+            <p
+              style={{
+                fontFamily: bodyFont.family,
+                color: isDarkMode
+                  ? primaryColorScale[300]
+                  : primaryColorScale[700],
+              }}
+            >
+              {item.content}
+            </p>
           </div>
         </div>
       ))}
