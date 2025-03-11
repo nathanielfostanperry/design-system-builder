@@ -20,7 +20,7 @@ export default function Corners() {
       <div className="flex items-center gap-4">
         <button
           onClick={handleClick}
-          className={`w-16 h-16 bg-primary-600 hover:bg-primary-700 transition-all ${radius.name}`}
+          className={`w-16 h-16 bg-red-600 hover:bg-primary-700 transition-all ${radius.name}`}
         />
         <span className="text-sm text-gray-600">{radius.label}</span>
       </div>

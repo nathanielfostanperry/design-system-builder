@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useDesignSystem, FONT_OPTIONS } from '@/context/DesignSystemContext';
-import type { FontOption } from '@/types/designSystem';
+import type { FontOption, FontWeight, FontSize } from '@/types/designSystem';
 
 type FontSelectProps = {
   label: string;
@@ -29,6 +29,9 @@ export default function FontSelect({
     'handwriting',
     'monospace',
   ];
+
+  const weights: FontWeight[] = ['thin', 'regular', 'bold', 'extrabold'];
+  const sizes: FontSize[] = ['xxs', 'xs', 'sm', 'regular', 'lg', 'xl', 'xxl'];
 
   // Filter fonts based on search and categories
   const filteredFonts = FONT_OPTIONS.filter((font) => {
@@ -64,83 +67,117 @@ export default function FontSelect({
     setSelectedCategories(newCategories);
   };
 
+  const handleFontChange = (newFont: FontOption) => {
+    onChange({
+      ...newFont,
+      weight: value.weight,
+      size: value.size,
+    });
+  };
+
+  const handleWeightChange = (weight: FontWeight) => {
+    onChange({
+      ...value,
+      weight,
+    });
+  };
+
+  const handleSizeChange = (size: FontSize) => {
+    onChange({
+      ...value,
+      size,
+    });
+  };
+
   return (
     <div className="relative w-full">
-      <label className="block text-sm font-medium text-gray-700 mb-1">
-        {label}
-      </label>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className={`w-full px-4 py-2 bg-white border border-gray-300 flex justify-between items-center ${radius.name}`}
-      >
-        <span style={{ fontFamily: value.family }}>{value.family}</span>
-        <svg
-          className={`w-5 h-5 transform transition-transform ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </button>
+      <label className="block text-sm font-medium mb-2">{label}</label>
+      <div className="flex flex-col gap-2">
+        {/* Font Family Select */}
+        <div className="relative">
+          <button
+            className={`w-full flex items-center justify-between px-3 py-2 border rounded-md shadow-sm ${
+              radius.name
+            } ${
+              isOpen ? 'border-blue-500' : 'border-gray-300'
+            } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <span style={{ fontFamily: value.family }}>{value.family}</span>
+            <span className="ml-2">▼</span>
+          </button>
 
-      {isOpen && (
-        <div
-          className={`absolute z-10 w-full mt-1 bg-white border border-gray-300 ${radius.name}`}
-        >
-          <div className="p-2 border-b border-gray-200">
-            <input
-              type="text"
-              placeholder="Search fonts..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className={`w-full px-3 py-2 border border-gray-300 ${radius.name}`}
-            />
-          </div>
-
-          <div className="p-2 border-b border-gray-200 flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <label key={category} className="flex items-center space-x-2">
+          {isOpen && (
+            <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+              <div className="p-2">
                 <input
-                  type="checkbox"
-                  checked={selectedCategories.has(category)}
-                  onChange={() => toggleCategory(category)}
-                  className="rounded text-primary-600 focus:ring-primary-500"
+                  type="text"
+                  placeholder="Search fonts..."
+                  className="w-full px-2 py-1 border rounded"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-                <span className="text-sm">{category}</span>
-              </label>
-            ))}
-          </div>
-
-          <div className="max-h-60 overflow-y-auto">
-            {filteredFonts.map((font) => (
-              <button
-                key={font.family}
-                onClick={() => {
-                  onChange(font);
-                  setIsOpen(false);
-                }}
-                className={`w-full px-4 py-2 text-left hover:bg-gray-100 ${
-                  value.family === font.family ? 'bg-primary-50' : ''
-                }`}
-                style={{ fontFamily: font.family }}
-              >
-                <span className="text-lg">{font.family}</span>
-                <span className="text-sm text-gray-500 ml-2">
-                  {font.category}
-                </span>
-              </button>
-            ))}
-          </div>
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {categories.map((category) => (
+                    <button
+                      key={category}
+                      className={`px-2 py-1 text-sm rounded ${
+                        selectedCategories.has(category)
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-200'
+                      }`}
+                      onClick={() => toggleCategory(category)}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="max-h-48 overflow-y-auto">
+                {filteredFonts.map((font) => (
+                  <button
+                    key={font.family}
+                    className="w-full px-4 py-2 text-left hover:bg-gray-100"
+                    style={{ fontFamily: font.family }}
+                    onClick={() => {
+                      handleFontChange(font);
+                      setIsOpen(false);
+                    }}
+                  >
+                    {font.family}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-      )}
+
+        {/* Font Weight Select */}
+        <select
+          value={value.weight}
+          onChange={(e) => handleWeightChange(e.target.value as FontWeight)}
+          className={`px-3 py-2 border rounded-md shadow-sm ${radius.name} focus:outline-none focus:ring-2 focus:ring-blue-500`}
+        >
+          {weights.map((weight) => (
+            <option key={weight} value={weight}>
+              {weight.charAt(0).toUpperCase() + weight.slice(1)}
+            </option>
+          ))}
+        </select>
+
+        {/* Font Size Select */}
+        <select
+          value={value.size}
+          onChange={(e) => handleSizeChange(e.target.value as FontSize)}
+          className={`px-3 py-2 border rounded-md shadow-sm ${radius.name} focus:outline-none focus:ring-2 focus:ring-blue-500`}
+        >
+          {sizes.map((size) => (
+            <option key={size} value={size}>
+              {size.charAt(0).toUpperCase() + size.slice(1)}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   );
 }
