@@ -35,11 +35,19 @@ export default function Home() {
 
   return (
     <main
-      className={`min-h-screen ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}
+      className="min-h-screen"
+      style={{
+        backgroundColor: isDarkMode
+          ? neutralColorScale['900']
+          : neutralColorScale['50'],
+      }}
     >
       <div className="grid md:grid-cols-2 gap-2 p-2">
         {/* Control panel */}
-        <div className={`bg-red-50 p-8 ${radius.name}`}>
+        <div
+          className={`p-8 ${radius.name}`}
+          style={{ backgroundColor: neutralColorScale['50'] }}
+        >
           <Fonts />
           <div className="flex justify-between gap-4">
             <Corners />
@@ -52,7 +60,7 @@ export default function Home() {
         {/* Result Panel */}
         <div
           className={`p-8 ${radius.name} ${
-            isDarkMode ? 'bg-gray-800 text-white' : 'bg-white'
+            isDarkMode ? ' text-white' : 'bg-white'
           }`}
         >
           {/* Color Scales */}
