@@ -11,7 +11,7 @@ export default function Fonts() {
   return (
     <div className="mb-8">
       <h3 className="text-xl font-semibold mb-4">Typography</h3>
-      <div className="space-y-4">
+      <div className="flex gap-4">
         <FontSelect
           label="Heading Font"
           value={headingFont}

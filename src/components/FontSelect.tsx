@@ -65,7 +65,7 @@ export default function FontSelect({
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <label className="block text-sm font-medium text-gray-700 mb-1">
         {label}
       </label>

@@ -41,9 +41,11 @@ export default function Home() {
         {/* Control panel */}
         <div className={`bg-red-50 p-8 ${radius.name}`}>
           <Fonts />
-          <Corners />
-          <Spacing />
-          <Shadows />
+          <div className="flex justify-between gap-4">
+            <Corners />
+            <Spacing />
+            <Shadows />
+          </div>
           <ColorSystemBuilder />
         </div>
 
