@@ -95,8 +95,6 @@ const ColorSystemBuilder: React.FC<ColorSystemBuilderProps> = ({
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <h1 className="text-3xl font-bold mb-8">Design System Color Builder</h1>
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
         {/* Primary Color Picker */}
         <div className="bg-white p-6 rounded-xl shadow-sm border">

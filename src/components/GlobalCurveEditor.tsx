@@ -103,7 +103,7 @@ const GlobalCurveEditor: React.FC = () => {
 
   return (
     <div className="p-4 bg-white rounded-lg shadow">
-      <h2 className="text-xl font-bold mb-4">Global Color Curves</h2>
+      {/* <h2 className="text-xl font-bold mb-4">Global Color Curves</h2> */}
 
       <div className="space-y-8 grid grid-cols-2">
         {/* Lightness Curve Editor */}
@@ -150,8 +150,7 @@ const GlobalCurveEditor: React.FC = () => {
       </div>
 
       {/* Color Chip Previews */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-        {/* Primary color chips */}
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
         <div className="rounded-lg border p-4">
           <h3 className="text-lg font-medium mb-4">Primary</h3>
           {renderColorChips(
@@ -168,7 +167,6 @@ const GlobalCurveEditor: React.FC = () => {
           </div>
         </div>
 
-        {/* Accent color chips */}
         <div className="rounded-lg border p-4">
           <h3 className="text-lg font-medium mb-4">Accent</h3>
           {renderColorChips(
@@ -185,7 +183,6 @@ const GlobalCurveEditor: React.FC = () => {
           </div>
         </div>
 
-        {/* Neutral color chips */}
         <div className="rounded-lg border p-4">
           <h3 className="text-lg font-medium mb-4">Neutral</h3>
           {renderColorChips(
@@ -201,7 +198,7 @@ const GlobalCurveEditor: React.FC = () => {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

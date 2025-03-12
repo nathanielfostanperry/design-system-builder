@@ -117,10 +117,6 @@ module.exports = {
 
   return (
     <div className="mt-16 border rounded-lg p-8">
-      <h2 className="text-2xl font-bold mb-8 text-center">
-        Export Your Color System
-      </h2>
-
       <div className="flex justify-center mb-6">
         <div className="inline-flex rounded-md shadow-sm" role="group">
           <button

@@ -61,14 +61,15 @@ export default function FontPreview() {
 
   return (
     <div className="mt-12 mb-12">
-      <h2 className={`text-2xl font-bold mb-8 ${textColor}`}>
+      {/* <h2 className={`text-2xl font-bold mb-8 ${textColor}`}>
         Typography Preview
-      </h2>
+      </h2> */}
       <div className="space-y-8">
         <div>
-          <h3 className={`text-lg font-medium mb-4 ${textColor}`}>Headings</h3>
-          <div className="space-y-4">
-            {[1, 2, 3, 4, 5, 6].map((level) => (
+          {/* <h3 className={`text-lg font-medium mb-4 ${textColor}`}>Headings</h3> */}
+          <div className="space-y-0">
+            {/* {[1, 2, 3, 4, 5, 6].map((level) => ( */}
+            {[4].map((level) => (
               <div
                 key={level}
                 style={{
@@ -78,14 +79,14 @@ export default function FontPreview() {
                 }}
                 className={textColor}
               >
-                Heading {level}
+                Some crazy title text :: heading {level}
               </div>
             ))}
           </div>
         </div>
 
         <div>
-          <h3 className={`text-lg font-medium mb-4 ${textColor}`}>Body Text</h3>
+          {/* <h3 className={`text-lg font-medium mb-4 ${textColor}`}>Body Text</h3> */}
           <div
             style={{
               fontFamily: bodyFont.family,
@@ -103,7 +104,7 @@ export default function FontPreview() {
               brown fox jumps over the lazy dog. Lorem ipsum dolor sit amet,
               consectetur adipiscing elit.
             </p>
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4">
               <div>
                 <h4 className={`text-sm font-medium mb-2 ${textColor}`}>
                   List Example
@@ -128,7 +129,7 @@ export default function FontPreview() {
                   </a>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

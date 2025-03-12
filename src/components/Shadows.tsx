@@ -22,7 +22,7 @@ export default function Shadows() {
           onClick={handleClick}
           className={`w-16 h-16 bg-red-500 transition-all ${radius.name} ${shadow.name}`}
         />
-        <span className="text-sm text-gray-600">{shadow.label}</span>
+        {/* <span className="text-sm text-gray-600">{shadow.label}</span> */}
       </div>
     </div>
   );

@@ -27,7 +27,7 @@ export default function Spacing() {
         <div className="w-16 h-16 bg-red-600" />
         <div className="w-16 h-16 bg-red-600" />
       </div>
-      <span className="text-sm text-gray-600 mt-2 block">{spacing.label}</span>
+      {/* <span className="text-sm text-gray-600 mt-2 block">{spacing.label}</span> */}
     </div>
   );
 }

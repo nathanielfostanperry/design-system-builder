@@ -22,7 +22,7 @@ export default function Corners() {
           onClick={handleClick}
           className={`w-16 h-16 bg-red-600 hover:bg-primary-700 transition-all ${radius.name}`}
         />
-        <span className="text-sm text-gray-600">{radius.label}</span>
+        {/* <span className="text-sm text-gray-600">{radius.label}</span> */}
       </div>
     </div>
   );
