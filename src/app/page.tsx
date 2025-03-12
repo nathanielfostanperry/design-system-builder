@@ -20,6 +20,7 @@ import DemoSlider from '@/components/demo/DemoSlider';
 import Corners from '@/components/Corners';
 import Spacing from '@/components/Spacing';
 import Shadows from '@/components/Shadows';
+import Borders from '@/components/Borders';
 import Fonts from '@/components/Fonts';
 import FontPreview from '@/components/FontPreview';
 import CodeExport from '@/components/CodeExport';
@@ -54,7 +55,7 @@ export default function Home() {
             <Corners />
             <Spacing />
             <Shadows />
-            {/* Add style options here */}
+            <Borders />
           </div>
           <ColorSystemBuilder />
           <CodeExport

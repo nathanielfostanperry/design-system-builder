@@ -11,18 +11,22 @@ export default function DemoProductCard() {
     isDarkMode,
     headingFont,
     bodyFont,
+    borderWidth,
+    borderOpacity,
     primaryColorScale,
     accentColorScale,
   } = useDesignSystem();
 
+  const borderColorWithOpacity = `${
+    isDarkMode ? primaryColorScale[700] : primaryColorScale[200]
+  }${borderOpacity.name === '100' ? '' : borderOpacity.name}`;
+
   return (
     <div
-      className={`overflow-hidden border ${radius.name} ${shadow.name}`}
+      className={`overflow-hidden ${radius.name} ${shadow.name} ${borderWidth.name}`}
       style={{
         backgroundColor: isDarkMode ? 'rgb(31, 41, 55)' : 'white',
-        borderColor: isDarkMode
-          ? primaryColorScale[700]
-          : primaryColorScale[200],
+        borderColor: borderColorWithOpacity,
       }}
     >
       <div className="relative h-32 w-full">
@@ -49,38 +53,35 @@ export default function DemoProductCard() {
       </div>
       <div className="p-4">
         <h4
-          className="text-lg font-semibold"
-          style={{
-            fontFamily: headingFont.family,
-            color: isDarkMode ? primaryColorScale[100] : primaryColorScale[900],
-          }}
+          className={`text-lg font-semibold ${
+            isDarkMode ? 'text-gray-100' : 'text-gray-900'
+          }`}
+          style={{ fontFamily: headingFont.family }}
         >
           Wireless Headphones
         </h4>
         <p
-          className="text-sm mt-1"
-          style={{
-            fontFamily: bodyFont.family,
-            color: isDarkMode ? primaryColorScale[300] : primaryColorScale[600],
-          }}
+          className={`text-sm ${
+            isDarkMode ? 'text-gray-400' : 'text-gray-500'
+          }`}
+          style={{ fontFamily: bodyFont.family }}
         >
           Premium sound quality
         </p>
         <div className="mt-4 flex justify-between items-center">
           <span
-            className="text-lg font-bold"
-            style={{
-              fontFamily: headingFont.family,
-              color: isDarkMode ? accentColorScale[300] : accentColorScale[700],
-            }}
+            className={`text-lg font-bold ${
+              isDarkMode ? 'text-gray-100' : 'text-gray-900'
+            }`}
           >
             $299
           </span>
           <button
-            className={`px-4 py-2 text-sm transition-colors ${radius.name}`}
+            className={`px-4 py-2 text-sm ${radius.name}`}
             style={{
-              fontFamily: bodyFont.family,
-              backgroundColor: primaryColorScale[600],
+              backgroundColor: isDarkMode
+                ? primaryColorScale[600]
+                : primaryColorScale[600],
               color: 'white',
             }}
           >

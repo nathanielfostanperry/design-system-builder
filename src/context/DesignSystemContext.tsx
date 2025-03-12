@@ -8,6 +8,10 @@ import {
   generateNeutrals,
 } from '../utils/colorUtils';
 import type { FontOption } from '@/types/designSystem';
+import {
+  BORDER_WIDTH_OPTIONS,
+  BORDER_OPACITY_OPTIONS,
+} from '@/components/Borders';
 
 type SpacingOption = {
   name: string;
@@ -20,6 +24,16 @@ type RadiusOption = {
 };
 
 type ShadowOption = {
+  name: string;
+  label: string;
+};
+
+type BorderWidthOption = {
+  name: string;
+  label: string;
+};
+
+type BorderOpacityOption = {
   name: string;
   label: string;
 };
@@ -80,6 +94,12 @@ interface DesignSystemContextType {
   // Dark mode control
   isDarkMode: boolean;
   setIsDarkMode: (isDark: boolean) => void;
+
+  // Border control
+  borderWidth: BorderWidthOption;
+  setBorderWidth: (width: BorderWidthOption) => void;
+  borderOpacity: BorderOpacityOption;
+  setBorderOpacity: (opacity: BorderOpacityOption) => void;
 }
 
 // Create context with default values
@@ -139,6 +159,14 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 
   // Dark mode control
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Border control
+  const [borderWidth, setBorderWidth] = useState<BorderWidthOption>(
+    BORDER_WIDTH_OPTIONS[1]
+  ); // Default to 'border'
+  const [borderOpacity, setBorderOpacity] = useState<BorderOpacityOption>(
+    BORDER_OPACITY_OPTIONS[0]
+  ); // Default to 100%
 
   // Method to set a base color and update its scale
   const setBaseColor = (
@@ -229,6 +257,11 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 
     isDarkMode,
     setIsDarkMode,
+
+    borderWidth,
+    setBorderWidth,
+    borderOpacity,
+    setBorderOpacity,
   };
 
   return (

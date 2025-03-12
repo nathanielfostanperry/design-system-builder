@@ -5,14 +5,29 @@ import Image from 'next/image';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 
 export default function DemoTeamCard() {
-  const { radius, shadow, isDarkMode, headingFont, bodyFont } =
-    useDesignSystem();
+  const {
+    radius,
+    shadow,
+    isDarkMode,
+    headingFont,
+    bodyFont,
+    borderWidth,
+    borderOpacity,
+    primaryColorScale,
+  } = useDesignSystem();
+
+  const borderColorWithOpacity = `${
+    isDarkMode ? primaryColorScale[700] : primaryColorScale[200]
+  }${borderOpacity.name === '100' ? '' : borderOpacity.name}`;
 
   return (
     <div
-      className={`${
-        isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-      } overflow-hidden border ${radius.name} ${shadow.name}`}
+      className={`${isDarkMode ? 'bg-gray-800' : 'bg-white'} overflow-hidden ${
+        radius.name
+      } ${shadow.name} ${borderWidth.name}`}
+      style={{
+        borderColor: borderColorWithOpacity,
+      }}
     >
       <div className="p-4">
         <div className="flex items-center space-x-4">
