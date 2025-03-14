@@ -63,6 +63,10 @@ interface DesignSystemContextType {
   neutralColorScale: Record<string, string>;
   setNeutralColorScale: (scale: Record<string, string>) => void;
 
+  // Icon library control
+  iconLibrary: string;
+  setIconLibrary: (library: string) => void;
+
   // Method to set a base color that handles updating scales
   setBaseColor: (type: 'primary' | 'accent' | 'neutral', color: string) => void;
 
@@ -129,6 +133,9 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
   const [accentColorScale, setAccentColorScale] = useState<
     Record<string, string>
   >(generateColorScale(initialAccentColor));
+
+  // Icon library state
+  const [iconLibrary, setIconLibrary] = useState<string>('hi'); // Default to Heroicons
 
   // Neutral color (derived from primary by default)
   const [neutralColor, setNeutralColor] = useState<string>(initialPrimaryColor);
@@ -232,6 +239,9 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     setNeutralColor,
     neutralColorScale,
     setNeutralColorScale,
+
+    iconLibrary,
+    setIconLibrary,
 
     setBaseColor,
 

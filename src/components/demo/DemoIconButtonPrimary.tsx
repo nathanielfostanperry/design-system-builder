@@ -2,27 +2,45 @@
 
 import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
+import { HiPlus } from 'react-icons/hi';
+import { BiPlus } from 'react-icons/bi';
+import { FaPlus } from 'react-icons/fa';
+import { FiPlus } from 'react-icons/fi';
+import { IoAddOutline } from 'react-icons/io5';
+import { LuPlus } from 'react-icons/lu';
+import { MdAdd } from 'react-icons/md';
+import { PiPlus } from 'react-icons/pi';
+import { RiAddLine } from 'react-icons/ri';
+import { TbPlus } from 'react-icons/tb';
+
+const ICON_MAP = {
+  hi: HiPlus,
+  bi: BiPlus,
+  fa: FaPlus,
+  fi: FiPlus,
+  io: IoAddOutline,
+  lu: LuPlus,
+  md: MdAdd,
+  pi: PiPlus,
+  ri: RiAddLine,
+  tb: TbPlus,
+} as const;
 
 export default function DemoIconButtonPrimary() {
-  const { radius } = useDesignSystem();
+  const { radius, primaryColorScale, iconLibrary } = useDesignSystem();
+
+  const IconComponent =
+    ICON_MAP[iconLibrary as keyof typeof ICON_MAP] || ICON_MAP.hi;
 
   return (
     <button
-      className={`p-2 bg-primary-600 text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors ${radius.name}`}
+      className={`p-2 ${radius.name} transition-colors`}
+      style={{
+        backgroundColor: primaryColorScale['500'],
+        color: 'white',
+      }}
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-        <path
-          fillRule="evenodd"
-          d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-          clipRule="evenodd"
-        />
-      </svg>
+      <IconComponent size={20} />
     </button>
   );
 }

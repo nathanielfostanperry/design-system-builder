@@ -24,6 +24,7 @@ import Borders from '@/components/Borders';
 import Fonts from '@/components/Fonts';
 import FontPreview from '@/components/FontPreview';
 import CodeExport from '@/components/CodeExport';
+import IconLibraryPicker from '@/components/IconLibraryPicker';
 
 export default function Home() {
   const {
@@ -52,6 +53,7 @@ export default function Home() {
         >
           <Fonts />
           <div className="flex justify-between gap-4">
+            <IconLibraryPicker />
             <Corners />
             <Spacing />
             <Shadows />
