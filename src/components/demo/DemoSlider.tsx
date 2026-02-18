@@ -1,26 +1,28 @@
+'use client';
+
 import React, { useState } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
+import { useComponentPalette } from '@/hooks/useComponentPalette';
 import * as Slider from '@radix-ui/react-slider';
 
 export default function DemoSlider() {
-  const { radius, spacing, primaryColorScale, isDarkMode } = useDesignSystem();
+  const { radius, spacing, isDarkMode } = useDesignSystem();
+  const scale = useComponentPalette('slider');
   const [sliderValue, setSliderValue] = useState([50]);
 
   return (
     <div
       className={`p-4 ${radius.name} border`}
       style={{
-        backgroundColor: isDarkMode ? primaryColorScale[800] : 'white',
-        borderColor: isDarkMode ? primaryColorScale[700] : primaryColorScale[200],
+        backgroundColor: isDarkMode ? scale['800'] : 'white',
+        borderColor: isDarkMode ? scale['700'] : scale['200'],
       }}
     >
       <div className={`${spacing.name}`}>
         <div className="flex justify-between">
           <label
             className="text-sm font-medium"
-            style={{
-              color: isDarkMode ? primaryColorScale[200] : primaryColorScale[700],
-            }}
+            style={{ color: isDarkMode ? scale['200'] : scale['700'] }}
           >
             Slider Value: {sliderValue[0]}
           </label>
@@ -35,29 +37,21 @@ export default function DemoSlider() {
         >
           <Slider.Track
             className="relative flex-1 h-2 rounded-full"
-            style={{
-              backgroundColor: isDarkMode ? primaryColorScale[700] : primaryColorScale[200],
-            }}
+            style={{ backgroundColor: isDarkMode ? scale['700'] : scale['200'] }}
           >
             <Slider.Range
               className="absolute h-full rounded-full"
-              style={{
-                backgroundColor: primaryColorScale[600],
-              }}
+              style={{ backgroundColor: scale['600'] }}
             />
           </Slider.Track>
           <Slider.Thumb
-            className="block w-5 h-5 rounded-full outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
-            style={{
-              backgroundColor: primaryColorScale[600],
-            }}
+            className="block w-5 h-5 rounded-full outline-none focus:ring-2 focus:ring-offset-2"
+            style={{ backgroundColor: scale['600'] }}
           />
         </Slider.Root>
         <div
           className="flex justify-between text-xs"
-          style={{
-            color: isDarkMode ? primaryColorScale[400] : primaryColorScale[500],
-          }}
+          style={{ color: isDarkMode ? scale['400'] : scale['500'] }}
         >
           <span>0</span>
           <span>50</span>

@@ -122,6 +122,10 @@ interface DesignSystemContextType {
   // Component → palette assignments
   componentPaletteMap: Record<string, string>;
   setComponentPalette: (componentId: string, paletteId: string) => void;
+
+  // Component → style settings (e.g. layout, border type, arrow style)
+  componentSettingsMap: Record<string, Record<string, string>>;
+  setComponentSetting: (componentId: string, key: string, value: string) => void;
 }
 
 // Create context with default values
@@ -227,15 +231,30 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     'button-primary':   'primary',
     'button-secondary': 'neutral',
     'card':             'primary',
-    'badge':            'accent',
-    'input':            'neutral',
     'navigation':       'primary',
-    'alert':            'accent',
-    'link':             'primary',
+    'input':            'neutral',
+    'radio-group':      'primary',
+    'slider':           'primary',
+    'badge':            'accent',
+    'accordion':        'primary',
+    'toast':            'accent',
   });
 
   const setComponentPalette = (componentId: string, paletteId: string) => {
     setComponentPaletteMapState((prev) => ({ ...prev, [componentId]: paletteId }));
+  };
+
+  // Component style settings
+  const [componentSettingsMap, setComponentSettingsMapState] = useState<Record<string, Record<string, string>>>({
+    card:      { layout: 'horizontal', avatarShape: 'rounded', showActions: 'show' },
+    accordion: { arrowType: 'chevron', borderType: 'full', background: 'solid' },
+  });
+
+  const setComponentSetting = (componentId: string, key: string, value: string) => {
+    setComponentSettingsMapState((prev) => ({
+      ...prev,
+      [componentId]: { ...(prev[componentId] ?? {}), [key]: value },
+    }));
   };
 
   // Method to set a base color and update its scale
@@ -344,6 +363,9 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 
     componentPaletteMap,
     setComponentPalette,
+
+    componentSettingsMap,
+    setComponentSetting,
   };
 
   return (

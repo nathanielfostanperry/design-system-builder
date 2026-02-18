@@ -7,7 +7,7 @@ import * as Toast from '@radix-ui/react-toast';
 
 export default function DemoToast() {
   const { radius, isDarkMode } = useDesignSystem();
-  const scale = useComponentPalette('alert');
+  const scale = useComponentPalette('toast');
   const [open, setOpen] = useState(false);
 
   return (

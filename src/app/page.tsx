@@ -26,6 +26,7 @@ export default function Home() {
     primaryColorScale,
     accentColorScale,
     neutralColorScale,
+    extraPalettes,
     spacing,
     radius,
     isDarkMode,
@@ -157,7 +158,7 @@ export default function Home() {
                     <ColorScaleDisplay colorScale={primaryColorScale} />
                   </div>
 
-                  {/* Accent Colors */}
+                  {/* Secondary Colors */}
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <h2
@@ -167,7 +168,7 @@ export default function Home() {
                           color: textColors.primary,
                         }}
                       >
-                        Accent Colors
+                        Secondary Colors
                       </h2>
                       <span
                         className="text-xs"
@@ -200,6 +201,24 @@ export default function Home() {
                     </div>
                     <ColorScaleDisplay colorScale={neutralColorScale} />
                   </div>
+
+                  {/* Extra palettes */}
+                  {extraPalettes.map((palette) => (
+                    <div key={palette.id}>
+                      <div className="flex items-center justify-between mb-4">
+                        <h2
+                          className="text-sm font-medium"
+                          style={{ fontFamily: headingFont.family, color: textColors.primary }}
+                        >
+                          {palette.name}
+                        </h2>
+                        <span className="text-xs" style={{ color: textColors.tertiary }}>
+                          11 shades
+                        </span>
+                      </div>
+                      <ColorScaleDisplay colorScale={palette.scale} />
+                    </div>
+                  ))}
                 </div>
               </Tabs.Content>
 
