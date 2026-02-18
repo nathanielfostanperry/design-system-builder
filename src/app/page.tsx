@@ -19,6 +19,7 @@ import DemoRadioGroup from '@/components/demo/DemoRadioGroup';
 import DemoSlider from '@/components/demo/DemoSlider';
 import FontPreview from '@/components/FontPreview';
 import CodeExport from '@/components/CodeExport';
+import BrandDocs from '@/components/BrandDocs';
 import DesignSidebar from '@/components/DesignSidebar';
 
 export default function Home() {
@@ -32,6 +33,8 @@ export default function Home() {
     isDarkMode,
     headingFont,
     bodyFont,
+    componentPaletteMap,
+    componentSettingsMap,
   } = useDesignSystem();
   // Whisper-quiet borders: rgba with low opacity
   const getBorderColor = (opacity: number = 0.08) => {
@@ -117,6 +120,16 @@ export default function Home() {
                   }}
                 >
                   Components
+                </Tabs.Trigger>
+                <Tabs.Trigger
+                  value="brand"
+                  className="px-4 py-3 text-sm font-medium border-b-2 border-transparent outline-none transition-colors data-[state=active]:border-current"
+                  style={{
+                    color: activeTab === 'brand' ? textColors.primary : textColors.tertiary,
+                    borderColor: activeTab === 'brand' ? primaryColorScale[500] : 'transparent',
+                  }}
+                >
+                  Brand
                 </Tabs.Trigger>
                 <Tabs.Trigger
                   value="export"
@@ -252,6 +265,11 @@ export default function Home() {
                 </div>
               </Tabs.Content>
 
+              {/* Brand Tab */}
+              <Tabs.Content value="brand" className="h-full">
+                <BrandDocs />
+              </Tabs.Content>
+
               {/* Export Tab */}
               <Tabs.Content value="export" className="p-6">
                 <div className="max-w-4xl mx-auto">
@@ -259,6 +277,9 @@ export default function Home() {
                     primaryColorScale={primaryColorScale}
                     accentColorScale={accentColorScale}
                     neutralColorScale={neutralColorScale}
+                    extraPalettes={extraPalettes}
+                    componentPaletteMap={componentPaletteMap}
+                    componentSettingsMap={componentSettingsMap}
                     radius={radius}
                     spacing={spacing}
                   />

@@ -20,6 +20,15 @@ export type ExtraPalette = {
   scale: Record<string, string>;
 };
 
+export type BrandSettings = {
+  name: string;
+  industry: string;
+  mission: string;
+  values: string[];
+  positioning: string;
+  voice: string[];
+};
+
 type SpacingOption = {
   name: string;
   label: string;
@@ -126,6 +135,10 @@ interface DesignSystemContextType {
   // Component → style settings (e.g. layout, border type, arrow style)
   componentSettingsMap: Record<string, Record<string, string>>;
   setComponentSetting: (componentId: string, key: string, value: string) => void;
+
+  // Brand identity
+  brandSettings: BrandSettings;
+  setBrandSetting: <K extends keyof BrandSettings>(key: K, value: BrandSettings[K]) => void;
 }
 
 // Create context with default values
@@ -257,6 +270,20 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     }));
   };
 
+  // Brand settings
+  const [brandSettings, setBrandSettingsState] = useState<BrandSettings>({
+    name: '',
+    industry: '',
+    mission: '',
+    values: [],
+    positioning: '',
+    voice: [],
+  });
+
+  const setBrandSetting = <K extends keyof BrandSettings>(key: K, value: BrandSettings[K]) => {
+    setBrandSettingsState((prev) => ({ ...prev, [key]: value }));
+  };
+
   // Method to set a base color and update its scale
   const setBaseColor = (
     type: 'primary' | 'accent' | 'neutral',
@@ -366,6 +393,9 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 
     componentSettingsMap,
     setComponentSetting,
+
+    brandSettings,
+    setBrandSetting,
   };
 
   return (

@@ -10,9 +10,10 @@ import Borders from './Borders';
 import ColorSystemBuilder from './ColorSystemBuilder';
 import IconLibraryPicker from './IconLibraryPicker';
 import ComponentsPanel from './ComponentsPanel';
-import { TbTypography, TbAdjustmentsHorizontal, TbPalette, TbMoon, TbSun, TbX, TbIcons, TbComponents } from 'react-icons/tb';
+import BrandPanel from './BrandPanel';
+import { TbTypography, TbAdjustmentsHorizontal, TbPalette, TbMoon, TbSun, TbX, TbIcons, TbComponents, TbBriefcase } from 'react-icons/tb';
 
-type PanelId = 'typography' | 'icons' | 'spacing' | 'colors' | 'components';
+type PanelId = 'typography' | 'icons' | 'spacing' | 'colors' | 'components' | 'brand';
 
 const NAV_ITEMS = [
   { id: 'typography'  as PanelId, label: 'Typography',  Icon: TbTypography },
@@ -20,6 +21,7 @@ const NAV_ITEMS = [
   { id: 'spacing'     as PanelId, label: 'Spacing',     Icon: TbAdjustmentsHorizontal },
   { id: 'colors'      as PanelId, label: 'Colors',      Icon: TbPalette },
   { id: 'components'  as PanelId, label: 'Components',  Icon: TbComponents },
+  { id: 'brand'       as PanelId, label: 'Brand',       Icon: TbBriefcase },
 ];
 
 const PANEL_WIDTH = 296;
@@ -44,6 +46,7 @@ export default function DesignSidebar() {
     spacing:    'Spacing',
     colors:     'Colors',
     components: 'Components',
+    brand:      'Brand',
   };
 
   return (
@@ -147,6 +150,8 @@ export default function DesignSidebar() {
               {activePanel === 'colors' && <ColorSystemBuilder />}
 
               {activePanel === 'components' && <ComponentsPanel />}
+
+              {activePanel === 'brand' && <BrandPanel />}
             </div>
           </div>
         </div>

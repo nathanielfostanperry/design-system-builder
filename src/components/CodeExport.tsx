@@ -1,91 +1,147 @@
+'use client';
+
 import React, { useState } from 'react';
+import type { ExtraPalette } from '@/context/DesignSystemContext';
 
 interface CodeExportProps {
   primaryColorScale: Record<string, string>;
   accentColorScale: Record<string, string>;
   neutralColorScale: Record<string, string>;
+  extraPalettes?: ExtraPalette[];
+  componentPaletteMap?: Record<string, string>;
+  componentSettingsMap?: Record<string, Record<string, string>>;
   radius: { name: string; label: string };
   spacing: { name: string; label: string };
 }
+
+// Convert a human name like "Accent 1" or "My Brand Color" to a CSS-safe slug
+const toSlug = (name: string) =>
+  name.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+// Convert camelCase key like "arrowType" to "arrow-type"
+const camelToKebab = (key: string) =>
+  key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
 const CodeExport: React.FC<CodeExportProps> = ({
   primaryColorScale,
   accentColorScale,
   neutralColorScale,
+  extraPalettes = [],
+  componentPaletteMap = {},
+  componentSettingsMap = {},
   radius,
   spacing,
 }) => {
   const [copied, setCopied] = useState(false);
-  const [exportFormat, setExportFormat] = useState<'css' | 'scss'>(
-    'css'
-  );
+  const [exportFormat, setExportFormat] = useState<'css' | 'scss'>('css');
 
-  // Generate CSS variables
   const generateCssVariables = () => {
     let css = `:root {\n`;
 
-    // Primary colors
+    // ── Color scales ──────────────────────────────────────
+    css += `\n  /* Primary */\n`;
     Object.entries(primaryColorScale).forEach(([shade, color]) => {
       css += `  --color-primary-${shade}: ${color};\n`;
     });
 
-    // Accent colors
+    css += `\n  /* Secondary */\n`;
     Object.entries(accentColorScale).forEach(([shade, color]) => {
-      css += `  --color-accent-${shade}: ${color};\n`;
+      css += `  --color-secondary-${shade}: ${color};\n`;
     });
 
-    // Neutral colors
+    css += `\n  /* Neutral */\n`;
     Object.entries(neutralColorScale).forEach(([shade, color]) => {
       css += `  --color-neutral-${shade}: ${color};\n`;
     });
 
-    // Border radius
-    css += `  --radius: ${radius.name};\n`;
+    if (extraPalettes.length > 0) {
+      extraPalettes.forEach((palette) => {
+        const slug = toSlug(palette.name);
+        css += `\n  /* ${palette.name} */\n`;
+        Object.entries(palette.scale).forEach(([shade, color]) => {
+          css += `  --color-${slug}-${shade}: ${color};\n`;
+        });
+      });
+    }
 
-    // Spacing
+    // ── Design tokens ─────────────────────────────────────
+    css += `\n  /* Tokens */\n`;
+    css += `  --radius: ${radius.name};\n`;
     css += `  --spacing: ${spacing.name};\n`;
+
+    // ── Component palette assignments ─────────────────────
+    if (Object.keys(componentPaletteMap).length > 0) {
+      css += `\n  /* Component palette assignments */\n`;
+      Object.entries(componentPaletteMap).forEach(([componentId, paletteId]) => {
+        css += `  --component-${componentId}-palette: ${paletteId};\n`;
+      });
+    }
+
+    // ── Component style settings ──────────────────────────
+    if (Object.keys(componentSettingsMap).length > 0) {
+      css += `\n  /* Component style settings */\n`;
+      Object.entries(componentSettingsMap).forEach(([componentId, settings]) => {
+        Object.entries(settings).forEach(([key, value]) => {
+          css += `  --component-${componentId}-${camelToKebab(key)}: ${value};\n`;
+        });
+      });
+    }
 
     css += `}`;
     return css;
   };
 
-  // Generate SCSS variables
   const generateScssVariables = () => {
-    let scss = `// Primary Colors\n`;
-
+    let scss = `// ── Primary Colors ───────────────────────────────────\n`;
     Object.entries(primaryColorScale).forEach(([shade, color]) => {
       scss += `$color-primary-${shade}: ${color};\n`;
     });
 
-    scss += `\n// Accent Colors\n`;
+    scss += `\n// ── Secondary Colors ─────────────────────────────────\n`;
     Object.entries(accentColorScale).forEach(([shade, color]) => {
-      scss += `$color-accent-${shade}: ${color};\n`;
+      scss += `$color-secondary-${shade}: ${color};\n`;
     });
 
-    scss += `\n// Neutral Colors\n`;
+    scss += `\n// ── Neutral Colors ───────────────────────────────────\n`;
     Object.entries(neutralColorScale).forEach(([shade, color]) => {
       scss += `$color-neutral-${shade}: ${color};\n`;
     });
 
-    scss += `\n// Border Radius\n`;
-    scss += `$radius: ${radius.name};\n`;
+    if (extraPalettes.length > 0) {
+      extraPalettes.forEach((palette) => {
+        const slug = toSlug(palette.name);
+        scss += `\n// ── ${palette.name} ───────────────────────────────────\n`;
+        Object.entries(palette.scale).forEach(([shade, color]) => {
+          scss += `$color-${slug}-${shade}: ${color};\n`;
+        });
+      });
+    }
 
-    scss += `\n// Spacing\n`;
+    scss += `\n// ── Tokens ───────────────────────────────────────────\n`;
+    scss += `$radius: ${radius.name};\n`;
     scss += `$spacing: ${spacing.name};\n`;
+
+    if (Object.keys(componentPaletteMap).length > 0) {
+      scss += `\n// ── Component Palette Assignments ────────────────────\n`;
+      Object.entries(componentPaletteMap).forEach(([componentId, paletteId]) => {
+        scss += `$component-${componentId}-palette: ${paletteId};\n`;
+      });
+    }
+
+    if (Object.keys(componentSettingsMap).length > 0) {
+      scss += `\n// ── Component Style Settings ─────────────────────────\n`;
+      Object.entries(componentSettingsMap).forEach(([componentId, settings]) => {
+        Object.entries(settings).forEach(([key, value]) => {
+          scss += `$component-${componentId}-${camelToKebab(key)}: ${value};\n`;
+        });
+      });
+    }
 
     return scss;
   };
 
-  const getExportCode = () => {
-    switch (exportFormat) {
-      case 'css':
-        return generateCssVariables();
-      case 'scss':
-        return generateScssVariables();
-      default:
-        return generateCssVariables();
-    }
-  };
+  const getExportCode = () =>
+    exportFormat === 'scss' ? generateScssVariables() : generateCssVariables();
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(getExportCode());
@@ -139,8 +195,7 @@ const CodeExport: React.FC<CodeExportProps> = ({
 
       <div className="mt-6 text-center text-sm text-gray-600">
         <p>
-          Copy and paste this code into your project to use your design system
-          colors.
+          Copy and paste this code into your project to use your design system tokens.
         </p>
       </div>
     </div>
