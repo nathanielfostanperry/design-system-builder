@@ -2,17 +2,12 @@
 
 import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
+import { useComponentPalette } from '@/hooks/useComponentPalette';
 import * as Label from '@radix-ui/react-label';
 
 export default function DemoInput() {
-  const {
-    radius,
-    isDarkMode,
-    headingFont,
-    bodyFont,
-    primaryColorScale,
-    accentColorScale,
-  } = useDesignSystem();
+  const { radius, isDarkMode, headingFont, bodyFont } = useDesignSystem();
+  const scale = useComponentPalette('input');
 
   return (
     <div className="space-y-4">
@@ -22,7 +17,7 @@ export default function DemoInput() {
           className="block text-sm font-medium mb-1"
           style={{
             fontFamily: headingFont.family,
-            color: isDarkMode ? primaryColorScale[300] : primaryColorScale[700],
+            color: isDarkMode ? scale['300'] : scale['700'],
           }}
         >
           Demo Input
@@ -36,19 +31,16 @@ export default function DemoInput() {
             fontFamily: bodyFont.family,
             backgroundColor: isDarkMode ? 'rgb(55, 65, 81)' : 'white',
             borderWidth: '1px',
-            borderColor: isDarkMode
-              ? primaryColorScale[600]
-              : primaryColorScale[200],
-            color: isDarkMode ? primaryColorScale[100] : primaryColorScale[900],
+            borderColor: isDarkMode ? scale['600'] : scale['200'],
+            color: isDarkMode ? scale['100'] : scale['900'],
           }}
         />
       </div>
       <button
-        className={`w-full px-4 py-2 transition-colors outline-none focus:ring-2 focus:ring-offset-2 ${radius.name}`}
+        className={`w-full px-4 py-2 text-white hover:opacity-90 transition-opacity outline-none focus:ring-2 focus:ring-offset-2 ${radius.name}`}
         style={{
           fontFamily: bodyFont.family,
-          backgroundColor: primaryColorScale[600],
-          color: 'white',
+          backgroundColor: scale['600'],
         }}
       >
         Submit

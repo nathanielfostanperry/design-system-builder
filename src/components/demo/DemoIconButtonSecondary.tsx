@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
+import { useComponentPalette } from '@/hooks/useComponentPalette';
 import { HiHeart } from 'react-icons/hi';
 import { BiHeart } from 'react-icons/bi';
 import { FaHeart } from 'react-icons/fa';
@@ -14,34 +15,25 @@ import { RiHeartLine } from 'react-icons/ri';
 import { TbHeart } from 'react-icons/tb';
 
 const ICON_MAP = {
-  hi: HiHeart,
-  bi: BiHeart,
-  fa: FaHeart,
-  fi: FiHeart,
-  io: IoHeartOutline,
-  lu: LuHeart,
-  md: MdFavorite,
-  pi: PiHeart,
-  ri: RiHeartLine,
-  tb: TbHeart,
+  hi: HiHeart, bi: BiHeart, fa: FaHeart, fi: FiHeart, io: IoHeartOutline,
+  lu: LuHeart, md: MdFavorite, pi: PiHeart, ri: RiHeartLine, tb: TbHeart,
 } as const;
 
 export default function DemoIconButtonSecondary() {
-  const { radius, primaryColorScale, iconLibrary } = useDesignSystem();
-
-  const IconComponent =
-    ICON_MAP[iconLibrary as keyof typeof ICON_MAP] || ICON_MAP.hi;
+  const { radius, iconLibrary } = useDesignSystem();
+  const scale = useComponentPalette('button-secondary');
+  const Icon = ICON_MAP[iconLibrary as keyof typeof ICON_MAP] ?? ICON_MAP.hi;
 
   return (
     <button
-      className={`p-2 ${radius.name} transition-colors`}
+      className={`p-2 ${radius.name} transition-colors hover:opacity-80`}
       style={{
         backgroundColor: 'transparent',
-        color: primaryColorScale['500'],
-        border: `1px solid ${primaryColorScale['200']}`,
+        color: scale['500'],
+        border: `1px solid ${scale['200']}`,
       }}
     >
-      <IconComponent size={20} />
+      <Icon size={20} />
     </button>
   );
 }

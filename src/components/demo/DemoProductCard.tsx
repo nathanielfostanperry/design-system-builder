@@ -3,23 +3,16 @@
 import React from 'react';
 import Image from 'next/image';
 import { useDesignSystem } from '@/context/DesignSystemContext';
+import { useComponentPalette } from '@/hooks/useComponentPalette';
 
 export default function DemoProductCard() {
-  const {
-    radius,
-    shadow,
-    isDarkMode,
-    headingFont,
-    bodyFont,
-    borderWidth,
-    borderOpacity,
-    primaryColorScale,
-    accentColorScale,
-  } = useDesignSystem();
+  const { radius, shadow, isDarkMode, headingFont, bodyFont, borderWidth, borderOpacity } = useDesignSystem();
+  const cardScale  = useComponentPalette('card');
+  const badgeScale = useComponentPalette('badge');
 
-  const borderColorWithOpacity = `${
-    isDarkMode ? primaryColorScale[700] : primaryColorScale[200]
-  }${borderOpacity.name === '100' ? '' : borderOpacity.name}`;
+  const borderColorWithOpacity = `${isDarkMode ? cardScale['700'] : cardScale['200']}${
+    borderOpacity.name === '100' ? '' : borderOpacity.name
+  }`;
 
   return (
     <div
@@ -41,10 +34,8 @@ export default function DemoProductCard() {
             className={`inline-flex items-center px-2.5 py-0.5 text-xs font-medium ${radius.name}`}
             style={{
               fontFamily: bodyFont.family,
-              backgroundColor: isDarkMode
-                ? accentColorScale[900]
-                : accentColorScale[100],
-              color: isDarkMode ? accentColorScale[100] : accentColorScale[800],
+              backgroundColor: isDarkMode ? badgeScale['900'] : badgeScale['100'],
+              color: isDarkMode ? badgeScale['100'] : badgeScale['800'],
             }}
           >
             New
@@ -53,37 +44,24 @@ export default function DemoProductCard() {
       </div>
       <div className="p-4">
         <h4
-          className={`text-lg font-semibold ${
-            isDarkMode ? 'text-gray-100' : 'text-gray-900'
-          }`}
+          className={`text-lg font-semibold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}
           style={{ fontFamily: headingFont.family }}
         >
           Wireless Headphones
         </h4>
         <p
-          className={`text-sm ${
-            isDarkMode ? 'text-gray-400' : 'text-gray-500'
-          }`}
+          className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}
           style={{ fontFamily: bodyFont.family }}
         >
           Premium sound quality
         </p>
         <div className="mt-4 flex justify-between items-center">
-          <span
-            className={`text-lg font-bold ${
-              isDarkMode ? 'text-gray-100' : 'text-gray-900'
-            }`}
-          >
+          <span className={`text-lg font-bold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
             $299
           </span>
           <button
-            className={`px-4 py-2 text-sm ${radius.name}`}
-            style={{
-              backgroundColor: isDarkMode
-                ? primaryColorScale[600]
-                : primaryColorScale[600],
-              color: 'white',
-            }}
+            className={`px-4 py-2 text-sm text-white hover:opacity-90 transition-opacity ${radius.name}`}
+            style={{ backgroundColor: cardScale['600'] }}
           >
             Add to Cart
           </button>
