@@ -28,7 +28,7 @@ export default function FontSelect({
   value,
   onChange,
 }: FontSelectProps) {
-  const { radius, isDarkMode, primaryColorScale, neutralColorScale, headingFont, bodyFont } = useDesignSystem();
+  const { isDarkMode, primaryColorScale, neutralColorScale } = useDesignSystem();
   const [search, setSearch] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
     new Set()
@@ -117,12 +117,9 @@ export default function FontSelect({
 
   return (
     <div className="relative w-full">
-      <label 
+      <label
         className="block text-sm font-medium mb-2"
-        style={{
-          fontFamily: headingFont.family,
-          color: textColors.primary,
-        }}
+        style={{ color: textColors.primary }}
       >
         {label}
       </label>
@@ -138,7 +135,7 @@ export default function FontSelect({
           }}
         >
           <Select.Trigger
-            className={`w-full flex items-center justify-between px-3 py-2 border ${radius.name} outline-none transition-colors focus:ring-2 focus:ring-offset-1`}
+            className="w-full flex items-center justify-between px-3 py-2 border rounded-md outline-none transition-colors focus:ring-2 focus:ring-offset-1"
             style={{
               backgroundColor: bgColor,
               borderColor: borderColor,
@@ -233,12 +230,11 @@ export default function FontSelect({
           onValueChange={(weight) => handleWeightChange(weight as FontWeight)}
         >
           <Select.Trigger
-            className={`w-full flex items-center justify-between px-3 py-2 border ${radius.name} outline-none transition-colors focus:ring-2 focus:ring-offset-1`}
+            className="w-full flex items-center justify-between px-3 py-2 border rounded-md outline-none transition-colors focus:ring-2 focus:ring-offset-1"
             style={{
               backgroundColor: bgColor,
               borderColor: borderColor,
               color: textColors.primary,
-              fontFamily: bodyFont.family,
               fontSize: '14px',
             }}
           >
@@ -288,12 +284,11 @@ export default function FontSelect({
           onValueChange={(size) => handleSizeChange(size as FontSize)}
         >
           <Select.Trigger
-            className={`w-full flex items-center justify-between px-3 py-2 border ${radius.name} outline-none transition-colors focus:ring-2 focus:ring-offset-1`}
+            className="w-full flex items-center justify-between px-3 py-2 border rounded-md outline-none transition-colors focus:ring-2 focus:ring-offset-1"
             style={{
               backgroundColor: bgColor,
               borderColor: borderColor,
               color: textColors.primary,
-              fontFamily: bodyFont.family,
               fontSize: '14px',
             }}
           >

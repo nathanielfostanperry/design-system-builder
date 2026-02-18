@@ -4,7 +4,7 @@ import React from 'react';
 import { useDesignSystem, SHADOW_OPTIONS } from '@/context/DesignSystemContext';
 
 export default function Shadows() {
-  const { shadow, setShadow, radius, isDarkMode, primaryColorScale, neutralColorScale, headingFont, bodyFont } = useDesignSystem();
+  const { shadow, setShadow, isDarkMode, primaryColorScale, neutralColorScale } = useDesignSystem();
 
   const handleClick = () => {
     const currentIndex = SHADOW_OPTIONS.findIndex(
@@ -32,32 +32,24 @@ export default function Shadows() {
     <div>
       <label
         className="block text-xs font-medium mb-2"
-        style={{
-          fontFamily: headingFont.family,
-          color: textColors.secondary,
-        }}
+        style={{ color: textColors.secondary }}
       >
         Shadows
       </label>
       <button
         onClick={handleClick}
-        className={`w-full flex items-center justify-between px-3 py-2 border transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 ${radius.name} ${shadow.name}`}
+        className={`w-full flex items-center justify-between px-3 py-2 border rounded-md transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 ${shadow.name}`}
         style={{
           backgroundColor: bgColor,
           borderColor: borderColor,
           color: textColors.primary,
         }}
       >
-        <span
-          className="text-sm"
-          style={{
-            fontFamily: bodyFont.family,
-          }}
-        >
+        <span className="text-sm">
           {shadow.label}
         </span>
         <div
-          className={`w-8 h-8 ${radius.name}`}
+          className="w-8 h-8 rounded-md"
           style={{
             backgroundColor: primaryColorScale['500'],
           }}

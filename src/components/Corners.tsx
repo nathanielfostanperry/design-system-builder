@@ -4,7 +4,7 @@ import React from 'react';
 import { useDesignSystem, RADIUS_OPTIONS } from '@/context/DesignSystemContext';
 
 export default function Corners() {
-  const { radius, setRadius, isDarkMode, primaryColorScale, neutralColorScale, headingFont, bodyFont } = useDesignSystem();
+  const { radius, setRadius, isDarkMode, primaryColorScale, neutralColorScale } = useDesignSystem();
 
   const handleClick = () => {
     const currentIndex = RADIUS_OPTIONS.findIndex(
@@ -32,28 +32,20 @@ export default function Corners() {
     <div>
       <label
         className="block text-xs font-medium mb-2"
-        style={{
-          fontFamily: headingFont.family,
-          color: textColors.secondary,
-        }}
+        style={{ color: textColors.secondary }}
       >
         Border Radius
       </label>
       <button
         onClick={handleClick}
-        className={`w-full flex items-center justify-between px-3 py-2 border transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 ${radius.name}`}
+        className="w-full flex items-center justify-between px-3 py-2 border rounded-md transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1"
         style={{
           backgroundColor: bgColor,
           borderColor: borderColor,
           color: textColors.primary,
         }}
       >
-        <span
-          className="text-sm"
-          style={{
-            fontFamily: bodyFont.family,
-          }}
-        >
+        <span className="text-sm">
           {radius.label}
         </span>
         <div

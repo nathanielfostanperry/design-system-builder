@@ -155,8 +155,8 @@ export default function Home() {
         </aside>
 
         {/* Main content area - Tabbed interface */}
-        <div className="flex-1 flex flex-col min-w-0">
-          <Tabs.Root value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col min-w-0 min-h-0">
+          <Tabs.Root value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
             {/* Tab navigation */}
             <div
               className="sticky top-0 z-40 border-b px-6"
@@ -213,7 +213,7 @@ export default function Home() {
             {/* Tab content */}
             <div className="flex-1 overflow-y-auto">
               {/* Colors Tab */}
-              <Tabs.Content value="colors" className="p-6 h-full">
+              <Tabs.Content value="colors" className="p-6">
                 <div className="max-w-6xl mx-auto space-y-8">
                   {/* Primary Colors */}
                   <div>
@@ -284,14 +284,14 @@ export default function Home() {
               </Tabs.Content>
 
               {/* Typography Tab */}
-              <Tabs.Content value="typography" className="p-6 h-full">
+              <Tabs.Content value="typography" className="p-6">
                 <div className="max-w-4xl mx-auto">
                   <FontPreview />
                 </div>
               </Tabs.Content>
 
               {/* Components Tab */}
-              <Tabs.Content value="components" className="p-6 h-full">
+              <Tabs.Content value="components" className="p-6">
                 <div className="max-w-7xl mx-auto">
                   <div
                     className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4 ${spacing.name}`}
@@ -314,7 +314,7 @@ export default function Home() {
               </Tabs.Content>
 
               {/* Export Tab */}
-              <Tabs.Content value="export" className="p-6 h-full">
+              <Tabs.Content value="export" className="p-6">
                 <div className="max-w-4xl mx-auto">
                   <CodeExport
                     primaryColorScale={primaryColorScale}

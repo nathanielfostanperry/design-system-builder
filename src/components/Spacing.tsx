@@ -7,7 +7,7 @@ import {
 } from '@/context/DesignSystemContext';
 
 export default function Spacing() {
-  const { spacing, setSpacing, isDarkMode, primaryColorScale, neutralColorScale, headingFont, bodyFont, radius } = useDesignSystem();
+  const { spacing, setSpacing, isDarkMode, primaryColorScale, neutralColorScale } = useDesignSystem();
 
   const handleClick = () => {
     const currentIndex = SPACING_OPTIONS.findIndex(
@@ -35,28 +35,20 @@ export default function Spacing() {
     <div>
       <label
         className="block text-xs font-medium mb-2"
-        style={{
-          fontFamily: headingFont.family,
-          color: textColors.secondary,
-        }}
+        style={{ color: textColors.secondary }}
       >
         Spacing
       </label>
       <button
         onClick={handleClick}
-        className={`w-full flex items-center justify-between px-3 py-2 border transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 ${radius.name}`}
+        className="w-full flex items-center justify-between px-3 py-2 border rounded-md transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1"
         style={{
           backgroundColor: bgColor,
           borderColor: borderColor,
           color: textColors.primary,
         }}
       >
-        <span
-          className="text-sm"
-          style={{
-            fontFamily: bodyFont.family,
-          }}
-        >
+        <span className="text-sm">
           {spacing.label}
         </span>
         <div className={`flex ${spacing.name}`}>

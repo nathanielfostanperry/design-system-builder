@@ -19,7 +19,6 @@ export const BORDER_OPACITY_OPTIONS = [
 
 export default function Borders() {
   const {
-    radius,
     borderWidth,
     setBorderWidth,
     borderOpacity,
@@ -27,8 +26,6 @@ export default function Borders() {
     primaryColorScale,
     isDarkMode,
     neutralColorScale,
-    headingFont,
-    bodyFont,
   } = useDesignSystem();
 
   const handleWidthClick = () => {
@@ -70,32 +67,24 @@ export default function Borders() {
     <div className="space-y-2">
       <label
         className="block text-xs font-medium mb-2"
-        style={{
-          fontFamily: headingFont.family,
-          color: textColors.secondary,
-        }}
+        style={{ color: textColors.secondary }}
       >
         Borders
       </label>
       <button
         onClick={handleWidthClick}
-        className={`w-full flex items-center justify-between px-3 py-2 border transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 ${radius.name} ${borderWidth.name}`}
+        className={`w-full flex items-center justify-between px-3 py-2 border rounded-md transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1`}
         style={{
           backgroundColor: bgColor,
-          borderColor: `${primaryColorScale['600']}${getBorderOpacity()}`,
+          borderColor: borderColor,
           color: textColors.primary,
         }}
       >
-        <span
-          className="text-sm"
-          style={{
-            fontFamily: bodyFont.family,
-          }}
-        >
+        <span className="text-sm">
           Width: {borderWidth.label}
         </span>
         <div
-          className={`w-8 h-8 ${radius.name} ${borderWidth.name}`}
+          className={`w-8 h-8 rounded-md ${borderWidth.name}`}
           style={{
             borderColor: `${primaryColorScale['600']}${getBorderOpacity()}`,
             backgroundColor: 'transparent',
@@ -104,23 +93,18 @@ export default function Borders() {
       </button>
       <button
         onClick={handleOpacityClick}
-        className={`w-full flex items-center justify-between px-3 py-2 border-2 transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 ${radius.name}`}
+        className="w-full flex items-center justify-between px-3 py-2 border rounded-md transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1"
         style={{
           backgroundColor: bgColor,
-          borderColor: `${primaryColorScale['600']}${getBorderOpacity()}`,
+          borderColor: borderColor,
           color: textColors.primary,
         }}
       >
-        <span
-          className="text-sm"
-          style={{
-            fontFamily: bodyFont.family,
-          }}
-        >
+        <span className="text-sm">
           Opacity: {borderOpacity.label}
         </span>
         <div
-          className={`w-8 h-8 ${radius.name} border-2`}
+          className="w-8 h-8 rounded-md border-2"
           style={{
             borderColor: `${primaryColorScale['600']}${getBorderOpacity()}`,
             backgroundColor: 'transparent',
