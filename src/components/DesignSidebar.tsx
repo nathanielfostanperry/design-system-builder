@@ -9,13 +9,14 @@ import Shadows from './Shadows';
 import Borders from './Borders';
 import ColorSystemBuilder from './ColorSystemBuilder';
 import IconLibraryPicker from './IconLibraryPicker';
-import { TbTypography, TbAdjustmentsHorizontal, TbPalette, TbMoon, TbSun, TbX } from 'react-icons/tb';
+import { TbTypography, TbAdjustmentsHorizontal, TbPalette, TbMoon, TbSun, TbX, TbIcons } from 'react-icons/tb';
 
-type PanelId = 'typography' | 'tokens' | 'colors';
+type PanelId = 'typography' | 'icons' | 'spacing' | 'colors';
 
 const NAV_ITEMS = [
   { id: 'typography' as PanelId, label: 'Typography', Icon: TbTypography },
-  { id: 'tokens'     as PanelId, label: 'Tokens',     Icon: TbAdjustmentsHorizontal },
+  { id: 'icons'      as PanelId, label: 'Icons',      Icon: TbIcons },
+  { id: 'spacing'    as PanelId, label: 'Spacing',    Icon: TbAdjustmentsHorizontal },
   { id: 'colors'     as PanelId, label: 'Colors',     Icon: TbPalette },
 ];
 
@@ -34,6 +35,13 @@ export default function DesignSidebar() {
   const iconMuted  = isDarkMode ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.35)';
   const iconActive = isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.85)';
   const activeBg   = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)';
+
+  const panelLabel: Record<PanelId, string> = {
+    typography: 'Typography',
+    icons:      'Icons',
+    spacing:    'Spacing',
+    colors:     'Colors',
+  };
 
   return (
     <div
@@ -59,7 +67,6 @@ export default function DesignSidebar() {
               }}
             >
               <Icon size={17} strokeWidth={active ? 2 : 1.5} />
-              {/* Active indicator pip */}
               {active && (
                 <span
                   className="absolute right-0 top-1/2 -translate-y-1/2 w-0.5 h-4 rounded-full"
@@ -107,7 +114,7 @@ export default function DesignSidebar() {
               className="text-xs font-semibold uppercase tracking-widest select-none"
               style={{ color: isDarkMode ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)', letterSpacing: '0.1em' }}
             >
-              {activePanel}
+              {activePanel ? panelLabel[activePanel] : ''}
             </span>
             <button
               onClick={() => setActivePanel(null)}
@@ -123,16 +130,15 @@ export default function DesignSidebar() {
             <div className="p-4 space-y-5">
               {activePanel === 'typography' && <Fonts />}
 
-              {activePanel === 'tokens' && (
-                <>
-                  <IconLibraryPicker />
-                  <div className="grid grid-cols-2 gap-2">
-                    <Corners />
-                    <Spacing />
-                    <Shadows />
-                    <Borders />
-                  </div>
-                </>
+              {activePanel === 'icons' && <IconLibraryPicker />}
+
+              {activePanel === 'spacing' && (
+                <div className="flex flex-col gap-4">
+                  <Corners />
+                  <Spacing />
+                  <Shadows />
+                  <Borders />
+                </div>
               )}
 
               {activePanel === 'colors' && <ColorSystemBuilder />}

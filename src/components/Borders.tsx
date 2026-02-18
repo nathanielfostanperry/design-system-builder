@@ -64,53 +64,60 @@ export default function Borders() {
   };
 
   return (
-    <div className="space-y-2">
-      <label
-        className="block text-xs font-medium mb-2"
-        style={{ color: textColors.secondary }}
-      >
-        Borders
-      </label>
-      <button
-        onClick={handleWidthClick}
-        className={`w-full flex items-center justify-between px-3 py-2 border rounded-md transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1`}
-        style={{
-          backgroundColor: bgColor,
-          borderColor: borderColor,
-          color: textColors.primary,
-        }}
-      >
-        <span className="text-sm">
-          Width: {borderWidth.label}
-        </span>
-        <div
-          className={`w-8 h-8 rounded-md ${borderWidth.name}`}
+    <div className="space-y-3">
+      <div>
+        <label
+          className="block text-xs font-medium mb-2"
+          style={{ color: textColors.secondary }}
+        >
+          Border Width
+        </label>
+        <button
+          onClick={handleWidthClick}
+          className="w-full flex items-center justify-between px-3 py-2 border rounded-md transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1"
           style={{
-            borderColor: `${primaryColorScale['600']}${getBorderOpacity()}`,
-            backgroundColor: 'transparent',
+            backgroundColor: bgColor,
+            borderColor: borderColor,
+            color: textColors.primary,
           }}
-        />
-      </button>
-      <button
-        onClick={handleOpacityClick}
-        className="w-full flex items-center justify-between px-3 py-2 border rounded-md transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1"
-        style={{
-          backgroundColor: bgColor,
-          borderColor: borderColor,
-          color: textColors.primary,
-        }}
-      >
-        <span className="text-sm">
-          Opacity: {borderOpacity.label}
-        </span>
-        <div
-          className="w-8 h-8 rounded-md border-2"
+        >
+          <span className="text-sm">{borderWidth.label}</span>
+          <div
+            className={`w-8 h-8 rounded-md ${borderWidth.name}`}
+            style={{
+              borderColor: `${primaryColorScale['600']}${getBorderOpacity()}`,
+              backgroundColor: 'transparent',
+            }}
+          />
+        </button>
+      </div>
+
+      <div>
+        <label
+          className="block text-xs font-medium mb-2"
+          style={{ color: textColors.secondary }}
+        >
+          Border Opacity
+        </label>
+        <button
+          onClick={handleOpacityClick}
+          className="w-full flex items-center justify-between px-3 py-2 border rounded-md transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1"
           style={{
-            borderColor: `${primaryColorScale['600']}${getBorderOpacity()}`,
-            backgroundColor: 'transparent',
+            backgroundColor: bgColor,
+            borderColor: borderColor,
+            color: textColors.primary,
           }}
-        />
-      </button>
+        >
+          <span className="text-sm">{borderOpacity.label}</span>
+          <div
+            className="w-8 h-8 rounded-md border-2"
+            style={{
+              borderColor: `${primaryColorScale['600']}${getBorderOpacity()}`,
+              backgroundColor: 'transparent',
+            }}
+          />
+        </button>
+      </div>
     </div>
   );
 }
