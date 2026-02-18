@@ -46,15 +46,15 @@ const ColorPicker: React.FC<{
   return (
     <div className="mb-4">
       <label className="block text-sm font-medium mb-2">{label}</label>
-      <div className="flex items-start">
+      <div className="flex flex-col gap-4">
         <HexColorPicker color={value} onChange={onChange} />
-        <div className="ml-4">
+        <div className="flex items-center gap-2">
           <div
-            className="w-12 h-12 rounded border border-gray-300 mb-2"
+            className="w-12 h-12 rounded border border-gray-300 flex-shrink-0"
             style={{ backgroundColor: value }}
           />
           <input
-            className="w-full px-2 py-1 text-sm font-mono border border-gray-300 rounded"
+            className="flex-1 px-2 py-1 text-sm font-mono border border-gray-300 rounded"
             type="text"
             value={inputValue}
             onChange={handleInputChange}
@@ -95,7 +95,7 @@ const ColorSystemBuilder: React.FC<ColorSystemBuilderProps> = ({
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         {/* Primary Color Picker */}
         <div>
           <ColorPicker

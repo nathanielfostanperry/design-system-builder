@@ -25,6 +25,10 @@ export default function Borders() {
     borderOpacity,
     setBorderOpacity,
     primaryColorScale,
+    isDarkMode,
+    neutralColorScale,
+    headingFont,
+    bodyFont,
   } = useDesignSystem();
 
   const handleWidthClick = () => {
@@ -43,29 +47,86 @@ export default function Borders() {
     setBorderOpacity(BORDER_OPACITY_OPTIONS[nextIndex]);
   };
 
+  const textColors = {
+    primary: isDarkMode ? neutralColorScale['100'] : neutralColorScale['900'],
+    secondary: isDarkMode ? neutralColorScale['300'] : neutralColorScale['600'],
+    tertiary: isDarkMode ? neutralColorScale['400'] : neutralColorScale['500'],
+  };
+
+  const borderColor = isDarkMode
+    ? `rgba(255, 255, 255, 0.1)`
+    : `rgba(0, 0, 0, 0.1)`;
+
+  const bgColor = isDarkMode
+    ? neutralColorScale['800']
+    : 'white';
+
+  const getBorderOpacity = () => {
+    if (borderOpacity.name === '100') return '';
+    return borderOpacity.name;
+  };
+
   return (
-    <div className="mb-8">
-      <h3 className="text-xl font-semibold mb-4">Borders</h3>
-      <div className="flex items-center gap-4">
-        <button
-          onClick={handleWidthClick}
-          className={`w-16 h-16 ${radius.name} ${borderWidth.name}`}
+    <div className="space-y-2">
+      <label
+        className="block text-xs font-medium mb-2"
+        style={{
+          fontFamily: headingFont.family,
+          color: textColors.secondary,
+        }}
+      >
+        Borders
+      </label>
+      <button
+        onClick={handleWidthClick}
+        className={`w-full flex items-center justify-between px-3 py-2 border transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 ${radius.name} ${borderWidth.name}`}
+        style={{
+          backgroundColor: bgColor,
+          borderColor: `${primaryColorScale['600']}${getBorderOpacity()}`,
+          color: textColors.primary,
+        }}
+      >
+        <span
+          className="text-sm"
           style={{
-            borderColor: `${primaryColorScale['600']}${
-              borderOpacity.name === '100' ? '' : borderOpacity.name
-            }`,
+            fontFamily: bodyFont.family,
+          }}
+        >
+          Width: {borderWidth.label}
+        </span>
+        <div
+          className={`w-8 h-8 ${radius.name} ${borderWidth.name}`}
+          style={{
+            borderColor: `${primaryColorScale['600']}${getBorderOpacity()}`,
+            backgroundColor: 'transparent',
           }}
         />
-        <button
-          onClick={handleOpacityClick}
-          className={`w-16 h-16 ${radius.name} border-2`}
+      </button>
+      <button
+        onClick={handleOpacityClick}
+        className={`w-full flex items-center justify-between px-3 py-2 border-2 transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 ${radius.name}`}
+        style={{
+          backgroundColor: bgColor,
+          borderColor: `${primaryColorScale['600']}${getBorderOpacity()}`,
+          color: textColors.primary,
+        }}
+      >
+        <span
+          className="text-sm"
           style={{
-            borderColor: `${primaryColorScale['600']}${
-              borderOpacity.name === '100' ? '' : borderOpacity.name
-            }`,
+            fontFamily: bodyFont.family,
+          }}
+        >
+          Opacity: {borderOpacity.label}
+        </span>
+        <div
+          className={`w-8 h-8 ${radius.name} border-2`}
+          style={{
+            borderColor: `${primaryColorScale['600']}${getBorderOpacity()}`,
+            backgroundColor: 'transparent',
           }}
         />
-      </div>
+      </button>
     </div>
   );
 }

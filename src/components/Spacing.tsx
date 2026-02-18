@@ -7,7 +7,7 @@ import {
 } from '@/context/DesignSystemContext';
 
 export default function Spacing() {
-  const { spacing, setSpacing } = useDesignSystem();
+  const { spacing, setSpacing, isDarkMode, primaryColorScale, neutralColorScale, headingFont, bodyFont, radius } = useDesignSystem();
 
   const handleClick = () => {
     const currentIndex = SPACING_OPTIONS.findIndex(
@@ -17,17 +17,63 @@ export default function Spacing() {
     setSpacing(SPACING_OPTIONS[nextIndex]);
   };
 
+  const textColors = {
+    primary: isDarkMode ? neutralColorScale['100'] : neutralColorScale['900'],
+    secondary: isDarkMode ? neutralColorScale['300'] : neutralColorScale['600'],
+    tertiary: isDarkMode ? neutralColorScale['400'] : neutralColorScale['500'],
+  };
+
+  const borderColor = isDarkMode
+    ? `rgba(255, 255, 255, 0.1)`
+    : `rgba(0, 0, 0, 0.1)`;
+
+  const bgColor = isDarkMode
+    ? neutralColorScale['800']
+    : 'white';
+
   return (
-    <div className="mb-8">
-      <h3 className="text-xl font-semibold mb-4">Spacing</h3>
-      <div
-        onClick={handleClick}
-        className={`flex ${spacing.name} bg-red-100 p-4 rounded cursor-pointer`}
+    <div>
+      <label
+        className="block text-xs font-medium mb-2"
+        style={{
+          fontFamily: headingFont.family,
+          color: textColors.secondary,
+        }}
       >
-        <div className="w-16 h-16 bg-red-600" />
-        <div className="w-16 h-16 bg-red-600" />
-      </div>
-      {/* <span className="text-sm text-gray-600 mt-2 block">{spacing.label}</span> */}
+        Spacing
+      </label>
+      <button
+        onClick={handleClick}
+        className={`w-full flex items-center justify-between px-3 py-2 border transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-1 ${radius.name}`}
+        style={{
+          backgroundColor: bgColor,
+          borderColor: borderColor,
+          color: textColors.primary,
+        }}
+      >
+        <span
+          className="text-sm"
+          style={{
+            fontFamily: bodyFont.family,
+          }}
+        >
+          {spacing.label}
+        </span>
+        <div className={`flex ${spacing.name}`}>
+          <div
+            className="w-4 h-4"
+            style={{
+              backgroundColor: primaryColorScale['500'],
+            }}
+          />
+          <div
+            className="w-4 h-4"
+            style={{
+              backgroundColor: primaryColorScale['500'],
+            }}
+          />
+        </div>
+      </button>
     </div>
   );
 }

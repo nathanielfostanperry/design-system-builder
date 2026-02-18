@@ -4,15 +4,19 @@ interface CodeExportProps {
   primaryColorScale: Record<string, string>;
   accentColorScale: Record<string, string>;
   neutralColorScale: Record<string, string>;
+  radius: { name: string; label: string };
+  spacing: { name: string; label: string };
 }
 
 const CodeExport: React.FC<CodeExportProps> = ({
   primaryColorScale,
   accentColorScale,
   neutralColorScale,
+  radius,
+  spacing,
 }) => {
   const [copied, setCopied] = useState(false);
-  const [exportFormat, setExportFormat] = useState<'css' | 'scss' | 'tailwind'>(
+  const [exportFormat, setExportFormat] = useState<'css' | 'scss'>(
     'css'
   );
 
@@ -34,6 +38,12 @@ const CodeExport: React.FC<CodeExportProps> = ({
     Object.entries(neutralColorScale).forEach(([shade, color]) => {
       css += `  --color-neutral-${shade}: ${color};\n`;
     });
+
+    // Border radius
+    css += `  --radius: ${radius.name};\n`;
+
+    // Spacing
+    css += `  --spacing: ${spacing.name};\n`;
 
     css += `}`;
     return css;
@@ -57,43 +67,13 @@ const CodeExport: React.FC<CodeExportProps> = ({
       scss += `$color-neutral-${shade}: ${color};\n`;
     });
 
+    scss += `\n// Border Radius\n`;
+    scss += `$radius: ${radius.name};\n`;
+
+    scss += `\n// Spacing\n`;
+    scss += `$spacing: ${spacing.name};\n`;
+
     return scss;
-  };
-
-  // Generate Tailwind config
-  const generateTailwindConfig = () => {
-    let config = `// tailwind.config.js
-module.exports = {
-  theme: {
-    extend: {
-      colors: {
-        primary: {\n`;
-
-    Object.entries(primaryColorScale).forEach(([shade, color]) => {
-      config += `          '${shade}': '${color}',\n`;
-    });
-
-    config += `        },
-        accent: {\n`;
-
-    Object.entries(accentColorScale).forEach(([shade, color]) => {
-      config += `          '${shade}': '${color}',\n`;
-    });
-
-    config += `        },
-        neutral: {\n`;
-
-    Object.entries(neutralColorScale).forEach(([shade, color]) => {
-      config += `          '${shade}': '${color}',\n`;
-    });
-
-    config += `        }
-      }
-    }
-  }
-}`;
-
-    return config;
   };
 
   const getExportCode = () => {
@@ -102,8 +82,6 @@ module.exports = {
         return generateCssVariables();
       case 'scss':
         return generateScssVariables();
-      case 'tailwind':
-        return generateTailwindConfig();
       default:
         return generateCssVariables();
     }
@@ -131,7 +109,7 @@ module.exports = {
           </button>
           <button
             onClick={() => setExportFormat('scss')}
-            className={`px-4 py-2 text-sm font-medium border-t border-b border-r ${
+            className={`px-4 py-2 text-sm font-medium border border-l-0 rounded-r-md ${
               exportFormat === 'scss'
                 ? 'bg-blue-500 text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-100'
@@ -139,27 +117,13 @@ module.exports = {
           >
             SCSS Variables
           </button>
-          <button
-            onClick={() => setExportFormat('tailwind')}
-            className={`px-4 py-2 text-sm font-medium border border-l-0 rounded-r-md ${
-              exportFormat === 'tailwind'
-                ? 'bg-blue-500 text-white'
-                : 'bg-white text-gray-700 hover:bg-gray-100'
-            }`}
-          >
-            Tailwind Config
-          </button>
         </div>
       </div>
 
       <div className="bg-gray-900 rounded-md overflow-hidden">
         <div className="flex justify-between items-center px-4 py-2 bg-gray-800">
           <span className="text-gray-400 text-sm">
-            {exportFormat === 'css'
-              ? 'CSS Variables'
-              : exportFormat === 'scss'
-              ? 'SCSS Variables'
-              : 'Tailwind Config'}
+            {exportFormat === 'css' ? 'CSS Variables' : 'SCSS Variables'}
           </span>
           <button
             onClick={copyToClipboard}

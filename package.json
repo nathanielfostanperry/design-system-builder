@@ -37,6 +37,7 @@
     "typescript": "latest"
   },
   "devDependencies": {
+    "agentation": "^2.2.1",
     "autoprefixer": "latest",
     "postcss": "latest",
     "tailwindcss": "latest"

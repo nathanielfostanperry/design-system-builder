@@ -105,7 +105,7 @@ const GlobalCurveEditor: React.FC = () => {
     <div className="p-4 bg-white rounded-lg shadow">
       {/* <h2 className="text-xl font-bold mb-4">Global Color Curves</h2> */}
 
-      <div className="space-y-8 grid grid-cols-2">
+      <div className="space-y-8">
         {/* Lightness Curve Editor */}
         <div>
           <h3 className="text-lg font-semibold mb-2">Lightness Curve</h3>

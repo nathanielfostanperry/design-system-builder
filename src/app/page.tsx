@@ -1,12 +1,13 @@
 'use client';
 
+import { useState } from 'react';
+import * as Tabs from '@radix-ui/react-tabs';
 import ColorSystemBuilder from '@/components/ColorSystemBuilder';
 import ColorScaleDisplay from '@/components/ColorScaleDisplay';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 import DemoInput from '@/components/demo/DemoInput';
 import DemoToast from '@/components/demo/DemoToast';
 import DemoDropdown from '@/components/demo/DemoDropdown';
-import DemoTabs from '@/components/demo/DemoTabs';
 import DemoPrimaryButton from '@/components/demo/DemoPrimaryButton';
 import DemoSecondaryButton from '@/components/demo/DemoSecondaryButton';
 import DemoIconButtonPrimary from '@/components/demo/DemoIconButtonPrimary';
@@ -75,9 +76,11 @@ export default function Home() {
     muted: isDarkMode ? neutralColorScale['500'] : neutralColorScale['400'],
   };
 
+  const [activeTab, setActiveTab] = useState('colors');
+
   return (
     <main
-      className="min-h-screen"
+      className="h-screen flex flex-col overflow-hidden"
       style={{
         backgroundColor: isDarkMode
           ? neutralColorScale['900']
@@ -85,50 +88,21 @@ export default function Home() {
         fontFamily: bodyFont.family,
       }}
     >
-      {/* Header - Integrated, not separated */}
-      <header
-        className="sticky top-0 z-50 border-b"
-        style={{
-          backgroundColor: getSurfaceColor(1),
-          borderColor: getBorderColor(0.1),
-          backdropFilter: 'blur(8px)',
-        }}
-      >
-        <div className="max-w-[1600px] mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+      {/* Main workspace */}
+      <div className="flex-1 flex mx-auto w-full min-h-0">
+        {/* Controls sidebar - Fixed width, compact */}
+        <aside
+          className="w-80 border-r flex-shrink-0 overflow-y-auto"
+          style={{
+            backgroundColor: getSurfaceColor(0),
+            borderColor: getBorderColor(0.08),
+          }}
+        >
+          <div className="p-4 space-y-6">
+            {/* Typography Controls */}
             <div>
-              <h1
-                className="text-xl font-semibold tracking-tight"
-                style={{
-                  fontFamily: headingFont.family,
-                  color: textColors.primary,
-                  letterSpacing: '-0.01em',
-                }}
-              >
-                Design System Builder
-              </h1>
-              <p
-                className="text-xs mt-1"
-                style={{
-                  color: textColors.tertiary,
-                }}
-              >
-                Create and customize your design system
-              </p>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      {/* Main workspace - Single focused layout */}
-      <div className="max-w-[1600px] mx-auto px-6 py-8">
-        <div className="grid lg:grid-cols-[320px_1fr] gap-8">
-          {/* Controls sidebar - Subtle, organized */}
-          <aside className="space-y-8">
-            {/* Typography */}
-            <div>
-              <h2
-                className="text-xs font-medium uppercase tracking-wider mb-4"
+              <label
+                className="text-xs font-medium uppercase tracking-wider block mb-3"
                 style={{
                   fontFamily: headingFont.family,
                   color: textColors.tertiary,
@@ -136,39 +110,25 @@ export default function Home() {
                 }}
               >
                 Typography
-              </h2>
-              <div
-                className="border rounded-lg p-4"
-                style={{
-                  backgroundColor: getSurfaceColor(1),
-                  borderColor: getBorderColor(0.08),
-                }}
-              >
-                <Fonts />
-              </div>
+              </label>
+              <Fonts />
             </div>
 
-            {/* Design Tokens */}
+            {/* Design Tokens - Compact grid */}
             <div>
-              <h2
-                className="text-xs font-medium uppercase tracking-wider mb-4"
+              <label
+                className="text-xs font-medium uppercase tracking-wider block mb-3"
                 style={{
                   fontFamily: headingFont.family,
                   color: textColors.tertiary,
                   letterSpacing: '0.05em',
                 }}
               >
-                Design Tokens
-              </h2>
-              <div
-                className="border rounded-lg p-4 space-y-3"
-                style={{
-                  backgroundColor: getSurfaceColor(1),
-                  borderColor: getBorderColor(0.08),
-                }}
-              >
+                Tokens
+              </label>
+              <div className="space-y-3">
                 <IconLibraryPicker />
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2">
                   <Corners />
                   <Spacing />
                   <Shadows />
@@ -177,10 +137,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Color System */}
+            {/* Color Controls */}
             <div>
-              <h2
-                className="text-xs font-medium uppercase tracking-wider mb-4"
+              <label
+                className="text-xs font-medium uppercase tracking-wider block mb-3"
                 style={{
                   fontFamily: headingFont.family,
                   color: textColors.tertiary,
@@ -188,196 +148,185 @@ export default function Home() {
                 }}
               >
                 Colors
-              </h2>
-              <div
-                className="border rounded-lg p-4"
-                style={{
-                  backgroundColor: getSurfaceColor(1),
-                  borderColor: getBorderColor(0.08),
-                }}
-              >
-                <ColorSystemBuilder />
-              </div>
+              </label>
+              <ColorSystemBuilder />
+            </div>
+          </div>
+        </aside>
+
+        {/* Main content area - Tabbed interface */}
+        <div className="flex-1 flex flex-col min-w-0">
+          <Tabs.Root value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
+            {/* Tab navigation */}
+            <div
+              className="sticky top-0 z-40 border-b px-6"
+              style={{
+                backgroundColor: getSurfaceColor(1),
+                borderColor: getBorderColor(0.08),
+                backdropFilter: 'blur(8px)',
+              }}
+            >
+              <Tabs.List className="flex gap-1 -mb-px">
+                <Tabs.Trigger
+                  value="colors"
+                  className="px-4 py-3 text-sm font-medium border-b-2 border-transparent outline-none transition-colors data-[state=active]:border-current"
+                  style={{
+                    color: activeTab === 'colors' ? textColors.primary : textColors.tertiary,
+                    borderColor: activeTab === 'colors' ? primaryColorScale[500] : 'transparent',
+                  }}
+                >
+                  Colors
+                </Tabs.Trigger>
+                <Tabs.Trigger
+                  value="typography"
+                  className="px-4 py-3 text-sm font-medium border-b-2 border-transparent outline-none transition-colors data-[state=active]:border-current"
+                  style={{
+                    color: activeTab === 'typography' ? textColors.primary : textColors.tertiary,
+                    borderColor: activeTab === 'typography' ? primaryColorScale[500] : 'transparent',
+                  }}
+                >
+                  Typography
+                </Tabs.Trigger>
+                <Tabs.Trigger
+                  value="components"
+                  className="px-4 py-3 text-sm font-medium border-b-2 border-transparent outline-none transition-colors data-[state=active]:border-current"
+                  style={{
+                    color: activeTab === 'components' ? textColors.primary : textColors.tertiary,
+                    borderColor: activeTab === 'components' ? primaryColorScale[500] : 'transparent',
+                  }}
+                >
+                  Components
+                </Tabs.Trigger>
+                <Tabs.Trigger
+                  value="export"
+                  className="px-4 py-3 text-sm font-medium border-b-2 border-transparent outline-none transition-colors data-[state=active]:border-current"
+                  style={{
+                    color: activeTab === 'export' ? textColors.primary : textColors.tertiary,
+                    borderColor: activeTab === 'export' ? primaryColorScale[500] : 'transparent',
+                  }}
+                >
+                  Export
+                </Tabs.Trigger>
+              </Tabs.List>
             </div>
 
-            {/* Export */}
-            <div>
-              <h2
-                className="text-xs font-medium uppercase tracking-wider mb-4"
-                style={{
-                  fontFamily: headingFont.family,
-                  color: textColors.tertiary,
-                  letterSpacing: '0.05em',
-                }}
-              >
-                Export
-              </h2>
-              <div
-                className="border rounded-lg p-4"
-                style={{
-                  backgroundColor: getSurfaceColor(1),
-                  borderColor: getBorderColor(0.08),
-                }}
-              >
-                <CodeExport
-                  primaryColorScale={primaryColorScale}
-                  accentColorScale={accentColorScale}
-                  neutralColorScale={neutralColorScale}
-                />
-              </div>
+            {/* Tab content */}
+            <div className="flex-1 overflow-y-auto">
+              {/* Colors Tab */}
+              <Tabs.Content value="colors" className="p-6 h-full">
+                <div className="max-w-6xl mx-auto space-y-8">
+                  {/* Primary Colors */}
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <h2
+                        className="text-sm font-medium"
+                        style={{
+                          fontFamily: headingFont.family,
+                          color: textColors.primary,
+                        }}
+                      >
+                        Primary Colors
+                      </h2>
+                      <span
+                        className="text-xs"
+                        style={{ color: textColors.tertiary }}
+                      >
+                        11 shades
+                      </span>
+                    </div>
+                    <ColorScaleDisplay colorScale={primaryColorScale} />
+                  </div>
+
+                  {/* Accent Colors */}
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <h2
+                        className="text-sm font-medium"
+                        style={{
+                          fontFamily: headingFont.family,
+                          color: textColors.primary,
+                        }}
+                      >
+                        Accent Colors
+                      </h2>
+                      <span
+                        className="text-xs"
+                        style={{ color: textColors.tertiary }}
+                      >
+                        11 shades
+                      </span>
+                    </div>
+                    <ColorScaleDisplay colorScale={accentColorScale} />
+                  </div>
+
+                  {/* Neutral Colors */}
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <h2
+                        className="text-sm font-medium"
+                        style={{
+                          fontFamily: headingFont.family,
+                          color: textColors.primary,
+                        }}
+                      >
+                        Neutral Colors
+                      </h2>
+                      <span
+                        className="text-xs"
+                        style={{ color: textColors.tertiary }}
+                      >
+                        11 shades
+                      </span>
+                    </div>
+                    <ColorScaleDisplay colorScale={neutralColorScale} />
+                  </div>
+                </div>
+              </Tabs.Content>
+
+              {/* Typography Tab */}
+              <Tabs.Content value="typography" className="p-6 h-full">
+                <div className="max-w-4xl mx-auto">
+                  <FontPreview />
+                </div>
+              </Tabs.Content>
+
+              {/* Components Tab */}
+              <Tabs.Content value="components" className="p-6 h-full">
+                <div className="max-w-7xl mx-auto">
+                  <div
+                    className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4 ${spacing.name}`}
+                  >
+                    <DemoPrimaryButton />
+                    <DemoSecondaryButton />
+                    <DemoIconButtonPrimary />
+                    <DemoIconButtonSecondary />
+                    <DemoTeamCard />
+                    <DemoProductCard />
+                    <DemoInput />
+                    <DemoAccordion />
+                    <DemoRadioGroup />
+                    <DemoSlider />
+                    <DemoToast />
+                    <DemoDropdown />
+                    <DemoChips />
+                  </div>
+                </div>
+              </Tabs.Content>
+
+              {/* Export Tab */}
+              <Tabs.Content value="export" className="p-6 h-full">
+                <div className="max-w-4xl mx-auto">
+                  <CodeExport
+                    primaryColorScale={primaryColorScale}
+                    accentColorScale={accentColorScale}
+                    neutralColorScale={neutralColorScale}
+                    radius={radius}
+                    spacing={spacing}
+                  />
+                </div>
+              </Tabs.Content>
             </div>
-          </aside>
-
-          {/* Preview area - Prominent, spacious */}
-          <main className="space-y-12">
-            {/* Color Scales - Prominent display */}
-            <section>
-              <div className="mb-6">
-                <h2
-                  className="text-sm font-medium mb-1"
-                  style={{
-                    fontFamily: headingFont.family,
-                    color: textColors.primary,
-                  }}
-                >
-                  Color Scales
-                </h2>
-                <p
-                  className="text-xs"
-                  style={{
-                    color: textColors.tertiary,
-                  }}
-                >
-                  Generated color scales from your selections
-                </p>
-              </div>
-              <div
-                className="border rounded-lg p-6 space-y-8"
-                style={{
-                  backgroundColor: getSurfaceColor(1),
-                  borderColor: getBorderColor(0.08),
-                }}
-              >
-                <div>
-                  <h3
-                    className="text-xs font-medium mb-3 uppercase tracking-wider"
-                    style={{
-                      color: textColors.secondary,
-                      letterSpacing: '0.05em',
-                    }}
-                  >
-                    Primary
-                  </h3>
-                  <ColorScaleDisplay colorScale={primaryColorScale} />
-                </div>
-                <div className="border-t" style={{ borderColor: getBorderColor(0.06) }}>
-                  <h3
-                    className="text-xs font-medium mb-3 mt-8 uppercase tracking-wider"
-                    style={{
-                      color: textColors.secondary,
-                      letterSpacing: '0.05em',
-                    }}
-                  >
-                    Accent
-                  </h3>
-                  <ColorScaleDisplay colorScale={accentColorScale} />
-                </div>
-                <div className="border-t" style={{ borderColor: getBorderColor(0.06) }}>
-                  <h3
-                    className="text-xs font-medium mb-3 mt-8 uppercase tracking-wider"
-                    style={{
-                      color: textColors.secondary,
-                      letterSpacing: '0.05em',
-                    }}
-                  >
-                    Neutral
-                  </h3>
-                  <ColorScaleDisplay colorScale={neutralColorScale} />
-                </div>
-              </div>
-            </section>
-
-            {/* Typography Preview */}
-            <section>
-              <div className="mb-6">
-                <h2
-                  className="text-sm font-medium mb-1"
-                  style={{
-                    fontFamily: headingFont.family,
-                    color: textColors.primary,
-                  }}
-                >
-                  Typography Preview
-                </h2>
-                <p
-                  className="text-xs"
-                  style={{
-                    color: textColors.tertiary,
-                  }}
-                >
-                  See how your typography choices render
-                </p>
-              </div>
-              <div
-                className="border rounded-lg p-6"
-                style={{
-                  backgroundColor: getSurfaceColor(1),
-                  borderColor: getBorderColor(0.08),
-                }}
-              >
-                <FontPreview />
-              </div>
-            </section>
-
-            {/* Component Library - The signature feature */}
-            <section>
-              <div className="mb-6">
-                <h2
-                  className="text-sm font-medium mb-1"
-                  style={{
-                    fontFamily: headingFont.family,
-                    color: textColors.primary,
-                  }}
-                >
-                  Component Library
-                </h2>
-                <p
-                  className="text-xs"
-                  style={{
-                    color: textColors.tertiary,
-                  }}
-                >
-                  Live preview of components using your design system
-                </p>
-              </div>
-              <div
-                className="border rounded-lg p-6"
-                style={{
-                  backgroundColor: getSurfaceColor(1),
-                  borderColor: getBorderColor(0.08),
-                }}
-              >
-                <div
-                  className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4 ${spacing.name}`}
-                >
-                  <DemoPrimaryButton />
-                  <DemoSecondaryButton />
-                  <DemoIconButtonPrimary />
-                  <DemoIconButtonSecondary />
-                  <DemoTeamCard />
-                  <DemoProductCard />
-                  <DemoInput />
-                  <DemoAccordion />
-                  <DemoRadioGroup />
-                  <DemoSlider />
-                  <DemoToast />
-                  <DemoDropdown />
-                  <DemoTabs />
-                  <DemoChips />
-                </div>
-              </div>
-            </section>
-          </main>
+          </Tabs.Root>
         </div>
       </div>
     </main>

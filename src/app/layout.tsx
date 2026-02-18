@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { DesignSystemProvider } from '../context/DesignSystemContext';
 import * as Toast from '@radix-ui/react-toast';
+import { Agentation } from "agentation";
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,6 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      {process.env.NODE_ENV === "development" && <Agentation />}
       <body className={inter.className}>
         <DesignSystemProvider>
           <Toast.Provider>
