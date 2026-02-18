@@ -9,15 +9,17 @@ import Shadows from './Shadows';
 import Borders from './Borders';
 import ColorSystemBuilder from './ColorSystemBuilder';
 import IconLibraryPicker from './IconLibraryPicker';
-import { TbTypography, TbAdjustmentsHorizontal, TbPalette, TbMoon, TbSun, TbX, TbIcons } from 'react-icons/tb';
+import ComponentsPanel from './ComponentsPanel';
+import { TbTypography, TbAdjustmentsHorizontal, TbPalette, TbMoon, TbSun, TbX, TbIcons, TbComponents } from 'react-icons/tb';
 
-type PanelId = 'typography' | 'icons' | 'spacing' | 'colors';
+type PanelId = 'typography' | 'icons' | 'spacing' | 'colors' | 'components';
 
 const NAV_ITEMS = [
-  { id: 'typography' as PanelId, label: 'Typography', Icon: TbTypography },
-  { id: 'icons'      as PanelId, label: 'Icons',      Icon: TbIcons },
-  { id: 'spacing'    as PanelId, label: 'Spacing',    Icon: TbAdjustmentsHorizontal },
-  { id: 'colors'     as PanelId, label: 'Colors',     Icon: TbPalette },
+  { id: 'typography'  as PanelId, label: 'Typography',  Icon: TbTypography },
+  { id: 'icons'       as PanelId, label: 'Icons',       Icon: TbIcons },
+  { id: 'spacing'     as PanelId, label: 'Spacing',     Icon: TbAdjustmentsHorizontal },
+  { id: 'colors'      as PanelId, label: 'Colors',      Icon: TbPalette },
+  { id: 'components'  as PanelId, label: 'Components',  Icon: TbComponents },
 ];
 
 const PANEL_WIDTH = 296;
@@ -41,6 +43,7 @@ export default function DesignSidebar() {
     icons:      'Icons',
     spacing:    'Spacing',
     colors:     'Colors',
+    components: 'Components',
   };
 
   return (
@@ -142,6 +145,8 @@ export default function DesignSidebar() {
               )}
 
               {activePanel === 'colors' && <ColorSystemBuilder />}
+
+              {activePanel === 'components' && <ComponentsPanel />}
             </div>
           </div>
         </div>

@@ -224,113 +224,104 @@ export default function FontSelect({
           </Select.Portal>
         </Select.Root>
 
-        {/* Font Weight Select */}
-        <Select.Root
-          value={value.weight}
-          onValueChange={(weight) => handleWeightChange(weight as FontWeight)}
-        >
-          <Select.Trigger
-            className="w-full flex items-center justify-between px-3 py-2 border rounded-md outline-none transition-colors focus:ring-2 focus:ring-offset-1"
-            style={{
-              backgroundColor: bgColor,
-              borderColor: borderColor,
-              color: textColors.primary,
-              fontSize: '14px',
-            }}
+        {/* Weight + Size side by side */}
+        <div className="grid grid-cols-2 gap-2">
+          {/* Font Weight Select */}
+          <Select.Root
+            value={value.weight}
+            onValueChange={(weight) => handleWeightChange(weight as FontWeight)}
           >
-            <Select.Value>
-              {value.weight.charAt(0).toUpperCase() + value.weight.slice(1)}
-            </Select.Value>
-            <Select.Icon>
-              <ChevronDownIcon className="w-4 h-4" />
-            </Select.Icon>
-          </Select.Trigger>
-
-          <Select.Portal>
-            <Select.Content
-              className="overflow-hidden border rounded-md shadow-lg z-50"
+            <Select.Trigger
+              className="w-full flex items-center justify-between px-3 py-2 border rounded-md outline-none transition-colors focus:ring-2 focus:ring-offset-1"
               style={{
                 backgroundColor: bgColor,
                 borderColor: borderColor,
+                color: textColors.primary,
+                fontSize: '14px',
               }}
             >
-              <Select.Viewport className="p-1">
-                {weights.map((weight) => (
-                  <Select.Item
-                    key={weight}
-                    value={weight}
-                    className="px-4 py-2 text-sm cursor-pointer outline-none hover:bg-opacity-10 data-[highlighted]:bg-opacity-10 transition-colors"
-                    style={{
-                      color: textColors.primary,
-                      backgroundColor: 'transparent',
-                    }}
-                  >
-                    <Select.ItemText>
-                      {weight.charAt(0).toUpperCase() + weight.slice(1)}
-                    </Select.ItemText>
-                    <Select.ItemIndicator className="absolute left-0 w-6 inline-flex items-center justify-center">
-                      <CheckIcon className="w-4 h-4" />
-                    </Select.ItemIndicator>
-                  </Select.Item>
-                ))}
-              </Select.Viewport>
-            </Select.Content>
-          </Select.Portal>
-        </Select.Root>
+              <Select.Value>
+                {value.weight.charAt(0).toUpperCase() + value.weight.slice(1)}
+              </Select.Value>
+              <Select.Icon>
+                <ChevronDownIcon className="w-4 h-4" />
+              </Select.Icon>
+            </Select.Trigger>
 
-        {/* Font Size Select */}
-        <Select.Root
-          value={value.size}
-          onValueChange={(size) => handleSizeChange(size as FontSize)}
-        >
-          <Select.Trigger
-            className="w-full flex items-center justify-between px-3 py-2 border rounded-md outline-none transition-colors focus:ring-2 focus:ring-offset-1"
-            style={{
-              backgroundColor: bgColor,
-              borderColor: borderColor,
-              color: textColors.primary,
-              fontSize: '14px',
-            }}
+            <Select.Portal>
+              <Select.Content
+                className="overflow-hidden border rounded-md shadow-lg z-50"
+                style={{ backgroundColor: bgColor, borderColor: borderColor }}
+              >
+                <Select.Viewport className="p-1">
+                  {weights.map((weight) => (
+                    <Select.Item
+                      key={weight}
+                      value={weight}
+                      className="px-4 py-2 text-sm cursor-pointer outline-none data-[highlighted]:bg-opacity-10 transition-colors"
+                      style={{ color: textColors.primary, backgroundColor: 'transparent' }}
+                    >
+                      <Select.ItemText>
+                        {weight.charAt(0).toUpperCase() + weight.slice(1)}
+                      </Select.ItemText>
+                      <Select.ItemIndicator className="absolute left-0 w-6 inline-flex items-center justify-center">
+                        <CheckIcon className="w-4 h-4" />
+                      </Select.ItemIndicator>
+                    </Select.Item>
+                  ))}
+                </Select.Viewport>
+              </Select.Content>
+            </Select.Portal>
+          </Select.Root>
+
+          {/* Font Size Select */}
+          <Select.Root
+            value={value.size}
+            onValueChange={(size) => handleSizeChange(size as FontSize)}
           >
-            <Select.Value>
-              {value.size.charAt(0).toUpperCase() + value.size.slice(1)}
-            </Select.Value>
-            <Select.Icon>
-              <ChevronDownIcon className="w-4 h-4" />
-            </Select.Icon>
-          </Select.Trigger>
-
-          <Select.Portal>
-            <Select.Content
-              className="overflow-hidden border rounded-md shadow-lg z-50"
+            <Select.Trigger
+              className="w-full flex items-center justify-between px-3 py-2 border rounded-md outline-none transition-colors focus:ring-2 focus:ring-offset-1"
               style={{
                 backgroundColor: bgColor,
                 borderColor: borderColor,
+                color: textColors.primary,
+                fontSize: '14px',
               }}
             >
-              <Select.Viewport className="p-1">
-                {sizes.map((size) => (
-                  <Select.Item
-                    key={size}
-                    value={size}
-                    className="px-4 py-2 text-sm cursor-pointer outline-none hover:bg-opacity-10 data-[highlighted]:bg-opacity-10 transition-colors"
-                    style={{
-                      color: textColors.primary,
-                      backgroundColor: 'transparent',
-                    }}
-                  >
-                    <Select.ItemText>
-                      {size.charAt(0).toUpperCase() + size.slice(1)}
-                    </Select.ItemText>
-                    <Select.ItemIndicator className="absolute left-0 w-6 inline-flex items-center justify-center">
-                      <CheckIcon className="w-4 h-4" />
-                    </Select.ItemIndicator>
-                  </Select.Item>
-                ))}
-              </Select.Viewport>
-            </Select.Content>
-          </Select.Portal>
-        </Select.Root>
+              <Select.Value>
+                {value.size.charAt(0).toUpperCase() + value.size.slice(1)}
+              </Select.Value>
+              <Select.Icon>
+                <ChevronDownIcon className="w-4 h-4" />
+              </Select.Icon>
+            </Select.Trigger>
+
+            <Select.Portal>
+              <Select.Content
+                className="overflow-hidden border rounded-md shadow-lg z-50"
+                style={{ backgroundColor: bgColor, borderColor: borderColor }}
+              >
+                <Select.Viewport className="p-1">
+                  {sizes.map((size) => (
+                    <Select.Item
+                      key={size}
+                      value={size}
+                      className="px-4 py-2 text-sm cursor-pointer outline-none data-[highlighted]:bg-opacity-10 transition-colors"
+                      style={{ color: textColors.primary, backgroundColor: 'transparent' }}
+                    >
+                      <Select.ItemText>
+                        {size.charAt(0).toUpperCase() + size.slice(1)}
+                      </Select.ItemText>
+                      <Select.ItemIndicator className="absolute left-0 w-6 inline-flex items-center justify-center">
+                        <CheckIcon className="w-4 h-4" />
+                      </Select.ItemIndicator>
+                    </Select.Item>
+                  ))}
+                </Select.Viewport>
+              </Select.Content>
+            </Select.Portal>
+          </Select.Root>
+        </div>
       </div>
     </div>
   );

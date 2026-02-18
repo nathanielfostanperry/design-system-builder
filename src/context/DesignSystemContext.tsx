@@ -13,6 +13,13 @@ import {
   BORDER_OPACITY_OPTIONS,
 } from '@/components/Borders';
 
+export type ExtraPalette = {
+  id: string;
+  name: string;
+  baseColor: string;
+  scale: Record<string, string>;
+};
+
 type SpacingOption = {
   name: string;
   label: string;
@@ -104,6 +111,17 @@ interface DesignSystemContextType {
   setBorderWidth: (width: BorderWidthOption) => void;
   borderOpacity: BorderOpacityOption;
   setBorderOpacity: (opacity: BorderOpacityOption) => void;
+
+  // Extra color palettes
+  extraPalettes: ExtraPalette[];
+  addExtraPalette: (name: string, color?: string) => void;
+  removeExtraPalette: (id: string) => void;
+  updateExtraPaletteColor: (id: string, color: string) => void;
+  updateExtraPaletteName: (id: string, name: string) => void;
+
+  // Component → palette assignments
+  componentPaletteMap: Record<string, string>;
+  setComponentPalette: (componentId: string, paletteId: string) => void;
 }
 
 // Create context with default values
@@ -174,6 +192,51 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
   const [borderOpacity, setBorderOpacity] = useState<BorderOpacityOption>(
     BORDER_OPACITY_OPTIONS[0]
   ); // Default to 100%
+
+  // Extra palettes
+  const [extraPalettes, setExtraPalettes] = useState<ExtraPalette[]>([]);
+
+  const addExtraPalette = (name: string, color = '#6366f1') => {
+    const id = Date.now().toString(36);
+    setExtraPalettes((prev) => [
+      ...prev,
+      { id, name, baseColor: color, scale: generateColorScale(color) },
+    ]);
+  };
+
+  const removeExtraPalette = (id: string) => {
+    setExtraPalettes((prev) => prev.filter((p) => p.id !== id));
+  };
+
+  const updateExtraPaletteColor = (id: string, color: string) => {
+    setExtraPalettes((prev) =>
+      prev.map((p) =>
+        p.id === id ? { ...p, baseColor: color, scale: generateColorScale(color) } : p
+      )
+    );
+  };
+
+  const updateExtraPaletteName = (id: string, name: string) => {
+    setExtraPalettes((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, name } : p))
+    );
+  };
+
+  // Component → palette map
+  const [componentPaletteMap, setComponentPaletteMapState] = useState<Record<string, string>>({
+    'button-primary':   'primary',
+    'button-secondary': 'neutral',
+    'card':             'primary',
+    'badge':            'accent',
+    'input':            'neutral',
+    'navigation':       'primary',
+    'alert':            'accent',
+    'link':             'primary',
+  });
+
+  const setComponentPalette = (componentId: string, paletteId: string) => {
+    setComponentPaletteMapState((prev) => ({ ...prev, [componentId]: paletteId }));
+  };
 
   // Method to set a base color and update its scale
   const setBaseColor = (
@@ -272,6 +335,15 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     setBorderWidth,
     borderOpacity,
     setBorderOpacity,
+
+    extraPalettes,
+    addExtraPalette,
+    removeExtraPalette,
+    updateExtraPaletteColor,
+    updateExtraPaletteName,
+
+    componentPaletteMap,
+    setComponentPalette,
   };
 
   return (

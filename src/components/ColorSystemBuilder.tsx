@@ -1,122 +1,266 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import GlobalCurveEditor from './GlobalCurveEditor';
-import ColorScaleDisplay from './ColorScaleDisplay';
 import { HexColorPicker } from 'react-colorful';
 import { useDesignSystem } from '../context/DesignSystemContext';
+import { TbPlus, TbTrash, TbChevronDown } from 'react-icons/tb';
 
-interface ColorSystemBuilderProps {
-  initialPrimaryColor?: string;
-  initialAccentColor?: string;
-}
-
-// Simple color picker component
-const ColorPicker: React.FC<{
+// ── Inline hex input ────────────────────────────────────────────────────────
+const HexInput: React.FC<{
   value: string;
-  onChange: (color: string) => void;
-  label: string;
-}> = ({ value, onChange, label }) => {
-  const [inputValue, setInputValue] = useState(value);
+  onChange: (hex: string) => void;
+  isDarkMode: boolean;
+}> = ({ value, onChange, isDarkMode }) => {
+  const [local, setLocal] = useState(value);
 
-  // Update local state when prop value changes
-  useEffect(() => {
-    setInputValue(value);
-  }, [value]);
+  useEffect(() => { setLocal(value); }, [value]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setInputValue(newValue);
-
-    // Only update the actual color if it's a valid hex code
-    if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(newValue)) {
-      onChange(newValue);
-    }
-  };
-
-  const handleBlur = () => {
-    // If the user leaves with an invalid hex, reset to the current valid value
-    if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(inputValue)) {
-      setInputValue(value);
-    } else if (inputValue !== value) {
-      onChange(inputValue);
-    }
+  const commit = (v: string) => {
+    if (/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(v)) onChange(v);
+    else setLocal(value);
   };
 
   return (
-    <div className="mb-4">
-      <label className="block text-sm font-medium mb-2">{label}</label>
-      <div className="flex flex-col gap-4">
-        <HexColorPicker color={value} onChange={onChange} />
-        <div className="flex items-center gap-2">
-          <div
-            className="w-12 h-12 rounded border border-gray-300 flex-shrink-0"
-            style={{ backgroundColor: value }}
-          />
+    <input
+      className="flex-1 px-2 py-1 text-xs font-mono border rounded outline-none min-w-0"
+      style={{
+        backgroundColor: isDarkMode ? '#1a1a1a' : '#fff',
+        borderColor: isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)',
+        color: isDarkMode ? '#e5e5e5' : '#111',
+      }}
+      value={local}
+      onChange={(e) => setLocal(e.target.value)}
+      onBlur={(e) => commit(e.target.value)}
+      onKeyDown={(e) => { if (e.key === 'Enter') commit((e.target as HTMLInputElement).value); }}
+      maxLength={7}
+      placeholder="#rrggbb"
+    />
+  );
+};
+
+// ── Palette row ─────────────────────────────────────────────────────────────
+interface PaletteRowProps {
+  id: string;
+  name: string;
+  color: string;
+  isBuiltIn: boolean;
+  isExpanded: boolean;
+  onToggle: () => void;
+  onColorChange: (hex: string) => void;
+  onNameChange?: (name: string) => void;
+  onRemove?: () => void;
+  isDarkMode: boolean;
+  borderClr: string;
+  bgColor: string;
+  textPrimary: string;
+  textMuted: string;
+}
+
+const PaletteRow: React.FC<PaletteRowProps> = ({
+  name, color, isBuiltIn, isExpanded, onToggle, onColorChange,
+  onNameChange, onRemove, isDarkMode, borderClr, bgColor, textPrimary, textMuted,
+}) => {
+  const nameRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <div
+      className="rounded-lg overflow-hidden"
+      style={{ border: `1px solid ${borderClr}` }}
+    >
+      {/* Row header */}
+      <button
+        onClick={onToggle}
+        className="w-full flex items-center gap-2 px-3 py-2.5 text-left transition-colors hover:opacity-80"
+        style={{ backgroundColor: bgColor }}
+      >
+        {/* Color swatch */}
+        <span
+          className="w-4 h-4 rounded-full flex-shrink-0 ring-1 ring-black/10"
+          style={{ backgroundColor: color }}
+        />
+
+        {/* Name */}
+        {isBuiltIn ? (
+          <span className="flex-1 text-sm font-medium truncate" style={{ color: textPrimary }}>
+            {name}
+          </span>
+        ) : (
           <input
-            className="flex-1 px-2 py-1 text-sm font-mono border border-gray-300 rounded"
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            onBlur={handleBlur}
-            placeholder="#RRGGBB"
-            maxLength={7}
+            ref={nameRef}
+            className="flex-1 text-sm font-medium bg-transparent outline-none min-w-0"
+            style={{ color: textPrimary }}
+            value={name}
+            onChange={(e) => onNameChange?.(e.target.value)}
+            onClick={(e) => e.stopPropagation()}
+            placeholder="Color name"
           />
+        )}
+
+        {/* Hex preview */}
+        <span className="text-xs font-mono flex-shrink-0" style={{ color: textMuted }}>
+          {color.toUpperCase()}
+        </span>
+
+        {/* Chevron */}
+        <TbChevronDown
+          size={14}
+          strokeWidth={2}
+          style={{
+            color: textMuted,
+            flexShrink: 0,
+            transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+            transition: 'transform 150ms',
+          }}
+        />
+      </button>
+
+      {/* Expanded picker */}
+      {isExpanded && (
+        <div
+          className="px-3 pb-3 pt-2 flex flex-col gap-2"
+          style={{ borderTop: `1px solid ${borderClr}`, backgroundColor: bgColor }}
+        >
+          <HexColorPicker
+            color={color}
+            onChange={onColorChange}
+            style={{ width: '100%', height: '140px' }}
+          />
+          <div className="flex items-center gap-2">
+            <span
+              className="w-7 h-7 rounded flex-shrink-0"
+              style={{ backgroundColor: color, border: `1px solid ${borderClr}` }}
+            />
+            <HexInput value={color} onChange={onColorChange} isDarkMode={isDarkMode} />
+            {!isBuiltIn && (
+              <button
+                onClick={(e) => { e.stopPropagation(); onRemove?.(); }}
+                className="flex-shrink-0 p-1 rounded opacity-40 hover:opacity-80 transition-opacity"
+                style={{ color: isDarkMode ? '#fff' : '#000' }}
+                title="Remove palette"
+              >
+                <TbTrash size={14} strokeWidth={2} />
+              </button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
 
-const ColorSystemBuilder: React.FC<ColorSystemBuilderProps> = ({
-  initialPrimaryColor = '#3b82f6', // Default blue
-  initialAccentColor = '#ec4899', // Default pink
-}) => {
-  // Use the design system context
+// ── Main component ──────────────────────────────────────────────────────────
+const ColorSystemBuilder: React.FC = () => {
   const {
-    primaryColor,
-    setPrimaryColor,
-    primaryColorScale,
+    primaryColor, setBaseColor,
     accentColor,
-    setAccentColor,
-    accentColorScale,
-    neutralColorScale,
-    setBaseColor,
+    extraPalettes, addExtraPalette, removeExtraPalette,
+    updateExtraPaletteColor, updateExtraPaletteName,
+    isDarkMode, neutralColorScale,
   } = useDesignSystem();
 
-  // Handle color picker changes
-  const handlePrimaryColorChange = (color: string) => {
-    setBaseColor('primary', color);
+  const [expandedId, setExpandedId] = useState<string | null>('primary');
+
+  const toggle = (id: string) =>
+    setExpandedId((prev) => (prev === id ? null : id));
+
+  const handleAddPalette = () => {
+    const defaultNames = ['Secondary', 'Accent 2', 'Accent 3', 'Accent 4'];
+    const name = defaultNames[extraPalettes.length] ?? `Color ${extraPalettes.length + 1}`;
+    addExtraPalette(name);
+    // Delay toggle so the new id is available after state update
+    setTimeout(() => {
+      setExpandedId('__new__');
+    }, 0);
   };
 
-  const handleAccentColorChange = (color: string) => {
-    setBaseColor('accent', color);
-  };
+  // Track the last added id to auto-expand it
+  const prevLengthRef = useRef(extraPalettes.length);
+  useEffect(() => {
+    if (extraPalettes.length > prevLengthRef.current) {
+      const newest = extraPalettes[extraPalettes.length - 1];
+      if (newest) setExpandedId(newest.id);
+    }
+    prevLengthRef.current = extraPalettes.length;
+  }, [extraPalettes]);
+
+  const borderClr  = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
+  const bgColor    = isDarkMode ? neutralColorScale['800'] : '#fff';
+  const textPrimary = isDarkMode ? neutralColorScale['100'] : neutralColorScale['900'];
+  const textMuted   = isDarkMode ? neutralColorScale['500'] : neutralColorScale['400'];
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 gap-4">
-        {/* Primary Color Picker */}
-        <div>
-          <ColorPicker
-            value={primaryColor}
-            onChange={handlePrimaryColorChange}
-            label="Primary"
-          />
-        </div>
+    <div className="flex flex-col gap-4">
+      {/* ── Built-in palettes ── */}
+      <div className="flex flex-col gap-2">
+        <PaletteRow
+          id="primary"
+          name="Primary"
+          color={primaryColor}
+          isBuiltIn
+          isExpanded={expandedId === 'primary'}
+          onToggle={() => toggle('primary')}
+          onColorChange={(c) => setBaseColor('primary', c)}
+          isDarkMode={isDarkMode}
+          borderClr={borderClr}
+          bgColor={bgColor}
+          textPrimary={textPrimary}
+          textMuted={textMuted}
+        />
 
-        {/* Accent Color Picker */}
-        <div>
-          <ColorPicker
-            value={accentColor}
-            onChange={handleAccentColorChange}
-            label="Accent"
+        <PaletteRow
+          id="accent"
+          name="Accent"
+          color={accentColor}
+          isBuiltIn
+          isExpanded={expandedId === 'accent'}
+          onToggle={() => toggle('accent')}
+          onColorChange={(c) => setBaseColor('accent', c)}
+          isDarkMode={isDarkMode}
+          borderClr={borderClr}
+          bgColor={bgColor}
+          textPrimary={textPrimary}
+          textMuted={textMuted}
+        />
+
+        {/* ── Extra palettes ── */}
+        {extraPalettes.map((palette) => (
+          <PaletteRow
+            key={palette.id}
+            id={palette.id}
+            name={palette.name}
+            color={palette.baseColor}
+            isBuiltIn={false}
+            isExpanded={expandedId === palette.id}
+            onToggle={() => toggle(palette.id)}
+            onColorChange={(c) => updateExtraPaletteColor(palette.id, c)}
+            onNameChange={(n) => updateExtraPaletteName(palette.id, n)}
+            onRemove={() => removeExtraPalette(palette.id)}
+            isDarkMode={isDarkMode}
+            borderClr={borderClr}
+            bgColor={bgColor}
+            textPrimary={textPrimary}
+            textMuted={textMuted}
           />
-        </div>
+        ))}
       </div>
 
-      {/* Global Curve Editor */}
-      <div>
+      {/* ── Add palette ── */}
+      <button
+        onClick={handleAddPalette}
+        className="flex items-center justify-center gap-1.5 w-full py-2 rounded-lg text-sm transition-colors hover:opacity-80 outline-none"
+        style={{
+          border: `1px dashed ${borderClr}`,
+          color: textMuted,
+          backgroundColor: 'transparent',
+        }}
+      >
+        <TbPlus size={14} strokeWidth={2} />
+        Add color
+      </button>
+
+      {/* ── Global Curve Editor ── */}
+      <div style={{ borderTop: `1px solid ${borderClr}`, paddingTop: '16px' }}>
         <GlobalCurveEditor />
       </div>
     </div>
