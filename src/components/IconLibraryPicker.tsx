@@ -6,52 +6,56 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import type { IconType } from 'react-icons';
 
 // ── Heroicons ──────────────────────────────────────────────────────────────
-import { HiBell, HiChevronRight, HiChevronDown, HiPlus, HiSearch, HiHome, HiCog, HiUser, HiHeart, HiX } from 'react-icons/hi';
+import { HiBell, HiChevronRight, HiChevronDown, HiPlus, HiSearch, HiHome, HiCog, HiUser, HiHeart, HiX, HiStar, HiBookmark, HiMail, HiCalendar, HiPencil, HiTrash, HiDownload, HiExternalLink } from 'react-icons/hi';
 // ── Bootstrap Icons ────────────────────────────────────────────────────────
-import { BiBell, BiChevronRight, BiChevronDown, BiPlus, BiSearch, BiHome, BiCog, BiUser, BiHeart, BiX } from 'react-icons/bi';
+import { BiBell, BiChevronRight, BiChevronDown, BiPlus, BiSearch, BiHome, BiCog, BiUser, BiHeart, BiX, BiStar, BiBookmark, BiEnvelope, BiCalendar, BiPencil, BiTrash, BiDownload, BiLinkExternal } from 'react-icons/bi';
 // ── Font Awesome ───────────────────────────────────────────────────────────
-import { FaBell, FaChevronRight, FaChevronDown, FaPlus, FaSearch, FaHome, FaCog, FaUser, FaHeart, FaTimes } from 'react-icons/fa';
+import { FaBell, FaChevronRight, FaChevronDown, FaPlus, FaSearch, FaHome, FaCog, FaUser, FaHeart, FaTimes, FaStar, FaBookmark, FaEnvelope, FaCalendar, FaEdit, FaTrash, FaDownload, FaExternalLinkAlt } from 'react-icons/fa';
 // ── Feather Icons ──────────────────────────────────────────────────────────
-import { FiBell, FiChevronRight, FiChevronDown, FiPlus, FiSearch, FiHome, FiSettings, FiUser, FiHeart, FiX } from 'react-icons/fi';
+import { FiBell, FiChevronRight, FiChevronDown, FiPlus, FiSearch, FiHome, FiSettings, FiUser, FiHeart, FiX, FiStar, FiBookmark, FiMail, FiCalendar, FiEdit2, FiTrash2, FiDownload, FiExternalLink } from 'react-icons/fi';
 // ── Ionicons 5 ─────────────────────────────────────────────────────────────
-import { IoNotificationsOutline, IoChevronForward, IoChevronDown, IoAdd, IoSearch, IoHome, IoSettings, IoPerson, IoHeart, IoClose } from 'react-icons/io5';
+import { IoNotificationsOutline, IoChevronForward, IoChevronDown, IoAdd, IoSearch, IoHome, IoSettings, IoPerson, IoHeart, IoClose, IoStarOutline, IoBookmarkOutline, IoMailOutline, IoCalendarOutline, IoPencilOutline, IoTrashOutline, IoDownloadOutline, IoOpenOutline } from 'react-icons/io5';
 // ── Lucide ─────────────────────────────────────────────────────────────────
-import { LuBell, LuChevronRight, LuChevronDown, LuPlus, LuSearch, LuHouse, LuSettings, LuUser, LuHeart, LuX } from 'react-icons/lu';
+import { LuBell, LuChevronRight, LuChevronDown, LuPlus, LuSearch, LuHouse, LuSettings, LuUser, LuHeart, LuX, LuStar, LuBookmark, LuMail, LuCalendar, LuPencil, LuTrash, LuDownload, LuExternalLink } from 'react-icons/lu';
 // ── Material Design ────────────────────────────────────────────────────────
-import { MdNotifications, MdChevronRight, MdExpandMore, MdAdd, MdSearch, MdHome, MdSettings, MdPerson, MdFavorite, MdClose } from 'react-icons/md';
+import { MdNotifications, MdChevronRight, MdExpandMore, MdAdd, MdSearch, MdHome, MdSettings, MdPerson, MdFavorite, MdClose, MdStar, MdBookmark, MdEmail, MdCalendarToday, MdEdit, MdDelete, MdDownload, MdOpenInNew } from 'react-icons/md';
 // ── Phosphor ───────────────────────────────────────────────────────────────
-import { PiBell, PiCaretRight, PiCaretDown, PiPlus, PiMagnifyingGlass, PiHouse, PiGear, PiUser, PiHeart, PiX } from 'react-icons/pi';
+import { PiBell, PiCaretRight, PiCaretDown, PiPlus, PiMagnifyingGlass, PiHouse, PiGear, PiUser, PiHeart, PiX, PiStar, PiBookmark, PiEnvelope, PiCalendar, PiPencil, PiTrash, PiDownload, PiArrowSquareOut } from 'react-icons/pi';
 // ── Remix Icons ────────────────────────────────────────────────────────────
-import { RiNotificationLine, RiArrowRightSLine, RiArrowDownSLine, RiAddLine, RiSearchLine, RiHome2Line, RiSettings2Line, RiUserLine, RiHeartLine, RiCloseLine } from 'react-icons/ri';
+import { RiNotificationLine, RiArrowRightSLine, RiArrowDownSLine, RiAddLine, RiSearchLine, RiHome2Line, RiSettings2Line, RiUserLine, RiHeartLine, RiCloseLine, RiStarLine, RiBookmarkLine, RiMailLine, RiCalendarLine, RiPencilLine, RiDeleteBinLine, RiDownloadLine, RiExternalLinkLine } from 'react-icons/ri';
 // ── Tabler Icons ───────────────────────────────────────────────────────────
-import { TbBell, TbChevronRight, TbChevronDown, TbPlus, TbSearch, TbHome, TbSettings, TbUser, TbHeart, TbX } from 'react-icons/tb';
+import { TbBell, TbChevronRight, TbChevronDown, TbPlus, TbSearch, TbHome, TbSettings, TbUser, TbHeart, TbX, TbStar, TbBookmark, TbMail, TbCalendar, TbPencil, TbTrash, TbDownload, TbExternalLink } from 'react-icons/tb';
 
 // ── Library config ──────────────────────────────────────────────────────────
-// icons[]: chevronRight, chevronDown, plus, search, home, settings, user, heart, close
+// icons[]: chevronRight, chevronDown, plus, search, home, settings, user, heart, close,
+//          bell, star, bookmark, mail, calendar, edit, trash, download, externalLink
 const ICON_LIBRARIES = [
-  { id: 'hi', name: 'Heroicons',        BellIcon: HiBell,                icons: [HiChevronRight, HiChevronDown, HiPlus, HiSearch, HiHome, HiCog,       HiUser,  HiHeart,    HiX]           },
-  { id: 'bi', name: 'Bootstrap Icons',  BellIcon: BiBell,                icons: [BiChevronRight, BiChevronDown, BiPlus, BiSearch, BiHome, BiCog,       BiUser,  BiHeart,    BiX]           },
-  { id: 'fa', name: 'Font Awesome',     BellIcon: FaBell,                icons: [FaChevronRight, FaChevronDown, FaPlus, FaSearch, FaHome, FaCog,       FaUser,  FaHeart,    FaTimes]       },
-  { id: 'fi', name: 'Feather Icons',    BellIcon: FiBell,                icons: [FiChevronRight, FiChevronDown, FiPlus, FiSearch, FiHome, FiSettings,  FiUser,  FiHeart,    FiX]           },
-  { id: 'io', name: 'Ionicons',         BellIcon: IoNotificationsOutline, icons: [IoChevronForward, IoChevronDown, IoAdd, IoSearch, IoHome, IoSettings, IoPerson, IoHeart,  IoClose]       },
-  { id: 'lu', name: 'Lucide',           BellIcon: LuBell,                icons: [LuChevronRight, LuChevronDown, LuPlus, LuSearch, LuHouse, LuSettings, LuUser,  LuHeart,    LuX]           },
-  { id: 'md', name: 'Material Design',  BellIcon: MdNotifications,       icons: [MdChevronRight, MdExpandMore, MdAdd,  MdSearch, MdHome, MdSettings,  MdPerson, MdFavorite, MdClose]      },
-  { id: 'pi', name: 'Phosphor Icons',   BellIcon: PiBell,                icons: [PiCaretRight, PiCaretDown, PiPlus, PiMagnifyingGlass, PiHouse, PiGear, PiUser, PiHeart, PiX]            },
-  { id: 'ri', name: 'Remix Icons',      BellIcon: RiNotificationLine,    icons: [RiArrowRightSLine, RiArrowDownSLine, RiAddLine, RiSearchLine, RiHome2Line, RiSettings2Line, RiUserLine, RiHeartLine, RiCloseLine] },
-  { id: 'tb', name: 'Tabler Icons',     BellIcon: TbBell,                icons: [TbChevronRight, TbChevronDown, TbPlus, TbSearch, TbHome, TbSettings,  TbUser,  TbHeart,    TbX]           },
+  { id: 'hi', name: 'Heroicons',       BellIcon: HiBell,                icons: [HiChevronRight, HiChevronDown, HiPlus, HiSearch, HiHome, HiCog, HiUser, HiHeart, HiX, HiBell, HiStar, HiBookmark, HiMail, HiCalendar, HiPencil, HiTrash, HiDownload, HiExternalLink] },
+  { id: 'bi', name: 'Bootstrap Icons', BellIcon: BiBell,                icons: [BiChevronRight, BiChevronDown, BiPlus, BiSearch, BiHome, BiCog, BiUser, BiHeart, BiX, BiBell, BiStar, BiBookmark, BiEnvelope, BiCalendar, BiPencil, BiTrash, BiDownload, BiLinkExternal] },
+  { id: 'fa', name: 'Font Awesome',    BellIcon: FaBell,                icons: [FaChevronRight, FaChevronDown, FaPlus, FaSearch, FaHome, FaCog, FaUser, FaHeart, FaTimes, FaBell, FaStar, FaBookmark, FaEnvelope, FaCalendar, FaEdit, FaTrash, FaDownload, FaExternalLinkAlt] },
+  { id: 'fi', name: 'Feather Icons',   BellIcon: FiBell,                icons: [FiChevronRight, FiChevronDown, FiPlus, FiSearch, FiHome, FiSettings, FiUser, FiHeart, FiX, FiBell, FiStar, FiBookmark, FiMail, FiCalendar, FiEdit2, FiTrash2, FiDownload, FiExternalLink] },
+  { id: 'io', name: 'Ionicons',        BellIcon: IoNotificationsOutline, icons: [IoChevronForward, IoChevronDown, IoAdd, IoSearch, IoHome, IoSettings, IoPerson, IoHeart, IoClose, IoNotificationsOutline, IoStarOutline, IoBookmarkOutline, IoMailOutline, IoCalendarOutline, IoPencilOutline, IoTrashOutline, IoDownloadOutline, IoOpenOutline] },
+  { id: 'lu', name: 'Lucide',          BellIcon: LuBell,                icons: [LuChevronRight, LuChevronDown, LuPlus, LuSearch, LuHouse, LuSettings, LuUser, LuHeart, LuX, LuBell, LuStar, LuBookmark, LuMail, LuCalendar, LuPencil, LuTrash, LuDownload, LuExternalLink] },
+  { id: 'md', name: 'Material Design', BellIcon: MdNotifications,       icons: [MdChevronRight, MdExpandMore, MdAdd, MdSearch, MdHome, MdSettings, MdPerson, MdFavorite, MdClose, MdNotifications, MdStar, MdBookmark, MdEmail, MdCalendarToday, MdEdit, MdDelete, MdDownload, MdOpenInNew] },
+  { id: 'pi', name: 'Phosphor Icons',  BellIcon: PiBell,                icons: [PiCaretRight, PiCaretDown, PiPlus, PiMagnifyingGlass, PiHouse, PiGear, PiUser, PiHeart, PiX, PiBell, PiStar, PiBookmark, PiEnvelope, PiCalendar, PiPencil, PiTrash, PiDownload, PiArrowSquareOut] },
+  { id: 'ri', name: 'Remix Icons',     BellIcon: RiNotificationLine,    icons: [RiArrowRightSLine, RiArrowDownSLine, RiAddLine, RiSearchLine, RiHome2Line, RiSettings2Line, RiUserLine, RiHeartLine, RiCloseLine, RiNotificationLine, RiStarLine, RiBookmarkLine, RiMailLine, RiCalendarLine, RiPencilLine, RiDeleteBinLine, RiDownloadLine, RiExternalLinkLine] },
+  { id: 'tb', name: 'Tabler Icons',    BellIcon: TbBell,                icons: [TbChevronRight, TbChevronDown, TbPlus, TbSearch, TbHome, TbSettings, TbUser, TbHeart, TbX, TbBell, TbStar, TbBookmark, TbMail, TbCalendar, TbPencil, TbTrash, TbDownload, TbExternalLink] },
 ] as const;
 
 type IconLibraryId = (typeof ICON_LIBRARIES)[number]['id'];
 
-const GRID_LABELS = ['Chevron →', 'Chevron ↓', 'Plus', 'Search', 'Home', 'Settings', 'User', 'Heart', 'Close'];
+const GRID_LABELS = [
+  'Chevron →', 'Chevron ↓', 'Plus', 'Search', 'Home', 'Settings', 'User', 'Heart', 'Close',
+  'Bell', 'Star', 'Bookmark', 'Mail', 'Calendar', 'Edit', 'Trash', 'Download', 'External Link',
+];
 
 export default function IconLibraryPicker() {
   const { iconLibrary, setIconLibrary, primaryColorScale, neutralColorScale, isDarkMode } = useDesignSystem();
 
   const selected = ICON_LIBRARIES.find((lib) => lib.id === iconLibrary) ?? ICON_LIBRARIES[0];
 
-  const borderClr  = isDarkMode ? `rgba(255,255,255,0.08)` : `rgba(0,0,0,0.08)`;
-  const bgColor    = isDarkMode ? neutralColorScale['800'] : '#fff';
+  const borderClr   = isDarkMode ? `rgba(255,255,255,0.08)` : `rgba(0,0,0,0.08)`;
+  const bgColor     = isDarkMode ? neutralColorScale['800'] : '#fff';
   const textPrimary = isDarkMode ? neutralColorScale['100'] : neutralColorScale['900'];
   const textMuted   = isDarkMode ? neutralColorScale['500'] : neutralColorScale['400'];
   const gridBg      = isDarkMode ? neutralColorScale['800'] : neutralColorScale['50'];
@@ -107,7 +111,7 @@ export default function IconLibraryPicker() {
         </DropdownMenu.Root>
       </div>
 
-      {/* ── 3×3 icon preview grid ── */}
+      {/* ── 6×3 icon preview grid (18 icons) ── */}
       <div>
         <label className="block text-xs font-medium mb-2" style={{ color: textMuted }}>
           Preview

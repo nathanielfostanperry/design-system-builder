@@ -117,7 +117,7 @@ export default function DemoAccordion() {
             </Accordion.Trigger>
           </Accordion.Header>
           <Accordion.Content
-            className="px-4 py-3 overflow-hidden"
+            className="px-4 py-3 overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up"
             style={{ backgroundColor: getContentBg() }}
           >
             <p style={{ fontFamily: bodyFont.family, color: isDarkMode ? scale['300'] : scale['700'] }}>

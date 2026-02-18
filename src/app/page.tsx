@@ -10,7 +10,7 @@ import DemoDropdown from '@/components/demo/DemoDropdown';
 import DemoPrimaryButton from '@/components/demo/DemoPrimaryButton';
 import DemoSecondaryButton from '@/components/demo/DemoSecondaryButton';
 import DemoIconButtonPrimary from '@/components/demo/DemoIconButtonPrimary';
-import DemoIconButtonSecondary from '@/components/demo/DemoIconButtonSecondary';
+import DemoSelect from '@/components/demo/DemoSelect';
 import DemoTeamCard from '@/components/demo/DemoTeamCard';
 import DemoProductCard from '@/components/demo/DemoProductCard';
 import DemoChips from '@/components/demo/DemoChips';
@@ -69,8 +69,8 @@ export default function Home() {
       className="h-screen flex flex-col overflow-hidden"
       style={{
         backgroundColor: isDarkMode
-          ? neutralColorScale['900']
-          : neutralColorScale['50'],
+          ? neutralColorScale["900"]
+          : neutralColorScale["50"],
         fontFamily: bodyFont.family,
       }}
     >
@@ -80,14 +80,18 @@ export default function Home() {
 
         {/* Main content area - Tabbed interface */}
         <div className="flex-1 flex flex-col min-w-0 min-h-0">
-          <Tabs.Root value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
+          <Tabs.Root
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="flex-1 flex flex-col min-h-0"
+          >
             {/* Tab navigation */}
             <div
               className="sticky top-0 z-40 border-b px-6"
               style={{
                 backgroundColor: getSurfaceColor(1),
                 borderColor: getBorderColor(0.08),
-                backdropFilter: 'blur(8px)',
+                backdropFilter: "blur(8px)",
               }}
             >
               <Tabs.List className="flex gap-1 -mb-px">
@@ -95,8 +99,14 @@ export default function Home() {
                   value="colors"
                   className="px-4 py-3 text-sm font-medium border-b-2 border-transparent outline-none transition-colors data-[state=active]:border-current"
                   style={{
-                    color: activeTab === 'colors' ? textColors.primary : textColors.tertiary,
-                    borderColor: activeTab === 'colors' ? primaryColorScale[500] : 'transparent',
+                    color:
+                      activeTab === "colors"
+                        ? textColors.primary
+                        : textColors.tertiary,
+                    borderColor:
+                      activeTab === "colors"
+                        ? primaryColorScale[500]
+                        : "transparent",
                   }}
                 >
                   Colors
@@ -105,8 +115,14 @@ export default function Home() {
                   value="typography"
                   className="px-4 py-3 text-sm font-medium border-b-2 border-transparent outline-none transition-colors data-[state=active]:border-current"
                   style={{
-                    color: activeTab === 'typography' ? textColors.primary : textColors.tertiary,
-                    borderColor: activeTab === 'typography' ? primaryColorScale[500] : 'transparent',
+                    color:
+                      activeTab === "typography"
+                        ? textColors.primary
+                        : textColors.tertiary,
+                    borderColor:
+                      activeTab === "typography"
+                        ? primaryColorScale[500]
+                        : "transparent",
                   }}
                 >
                   Typography
@@ -115,8 +131,14 @@ export default function Home() {
                   value="components"
                   className="px-4 py-3 text-sm font-medium border-b-2 border-transparent outline-none transition-colors data-[state=active]:border-current"
                   style={{
-                    color: activeTab === 'components' ? textColors.primary : textColors.tertiary,
-                    borderColor: activeTab === 'components' ? primaryColorScale[500] : 'transparent',
+                    color:
+                      activeTab === "components"
+                        ? textColors.primary
+                        : textColors.tertiary,
+                    borderColor:
+                      activeTab === "components"
+                        ? primaryColorScale[500]
+                        : "transparent",
                   }}
                 >
                   Components
@@ -125,8 +147,14 @@ export default function Home() {
                   value="brand"
                   className="px-4 py-3 text-sm font-medium border-b-2 border-transparent outline-none transition-colors data-[state=active]:border-current"
                   style={{
-                    color: activeTab === 'brand' ? textColors.primary : textColors.tertiary,
-                    borderColor: activeTab === 'brand' ? primaryColorScale[500] : 'transparent',
+                    color:
+                      activeTab === "brand"
+                        ? textColors.primary
+                        : textColors.tertiary,
+                    borderColor:
+                      activeTab === "brand"
+                        ? primaryColorScale[500]
+                        : "transparent",
                   }}
                 >
                   Brand
@@ -135,8 +163,14 @@ export default function Home() {
                   value="export"
                   className="px-4 py-3 text-sm font-medium border-b-2 border-transparent outline-none transition-colors data-[state=active]:border-current"
                   style={{
-                    color: activeTab === 'export' ? textColors.primary : textColors.tertiary,
-                    borderColor: activeTab === 'export' ? primaryColorScale[500] : 'transparent',
+                    color:
+                      activeTab === "export"
+                        ? textColors.primary
+                        : textColors.tertiary,
+                    borderColor:
+                      activeTab === "export"
+                        ? primaryColorScale[500]
+                        : "transparent",
                   }}
                 >
                   Export
@@ -221,11 +255,17 @@ export default function Home() {
                       <div className="flex items-center justify-between mb-4">
                         <h2
                           className="text-sm font-medium"
-                          style={{ fontFamily: headingFont.family, color: textColors.primary }}
+                          style={{
+                            fontFamily: headingFont.family,
+                            color: textColors.primary,
+                          }}
                         >
                           {palette.name}
                         </h2>
-                        <span className="text-xs" style={{ color: textColors.tertiary }}>
+                        <span
+                          className="text-xs"
+                          style={{ color: textColors.tertiary }}
+                        >
                           11 shades
                         </span>
                       </div>
@@ -248,18 +288,24 @@ export default function Home() {
                   <div
                     className={`grid md:grid-cols-2 xl:grid-cols-3 gap-4 ${spacing.name}`}
                   >
-                    <DemoPrimaryButton />
-                    <DemoSecondaryButton />
-                    <DemoIconButtonPrimary />
-                    <DemoIconButtonSecondary />
+                    <div className="flex flex-col gap-2">
+                      <DemoPrimaryButton />
+                      <DemoSecondaryButton />
+                      <DemoIconButtonPrimary />
+                    </div>
+                    {/* <DemoToast /> */}
+
                     <DemoTeamCard />
                     <DemoProductCard />
-                    <DemoInput />
+                    <div className='flex flex-col gap-2'>
+                      <DemoInput />
+                      <DemoSelect />
+                      <DemoSlider />
+                    </div>
                     <DemoAccordion />
                     <DemoRadioGroup />
-                    <DemoSlider />
-                    <DemoToast />
-                    <DemoDropdown />
+
+                    {/* <DemoDropdown /> */}
                     <DemoChips />
                   </div>
                 </div>

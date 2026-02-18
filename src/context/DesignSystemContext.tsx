@@ -297,6 +297,7 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
   const [componentPaletteMap, setComponentPaletteMapState] = useState<Record<string, string>>({
     'button-primary':   'primary',
     'button-secondary': 'neutral',
+    'icon-button':      'primary',
     'card':             'primary',
     'navigation':       'primary',
     'input':            'neutral',

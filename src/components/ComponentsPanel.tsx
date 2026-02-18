@@ -7,6 +7,7 @@ import * as Select from '@radix-ui/react-select';
 const COMPONENT_TYPES = [
   { id: 'button-primary',   label: 'Primary Button',   group: 'Buttons' },
   { id: 'button-secondary', label: 'Secondary Button',  group: 'Buttons' },
+  { id: 'icon-button',      label: 'Icon Button',       group: 'Buttons' },
   { id: 'card',             label: 'Card',              group: 'Layout' },
   { id: 'navigation',       label: 'Dropdown',          group: 'Layout' },
   { id: 'input',            label: 'Input',             group: 'Form' },
@@ -23,6 +24,16 @@ type SettingOption = { value: string; label: string };
 type SettingConfig = { key: string; label: string; options: SettingOption[] };
 
 const COMPONENT_SETTINGS: Record<string, SettingConfig[]> = {
+  'icon-button': [
+    {
+      key: 'size', label: 'Size',
+      options: [{ value: 'sm', label: 'Small' }, { value: 'md', label: 'Medium' }, { value: 'lg', label: 'Large' }],
+    },
+    {
+      key: 'shape', label: 'Shape',
+      options: [{ value: 'rounded', label: 'Rounded' }, { value: 'circle', label: 'Circle' }, { value: 'square', label: 'Square' }],
+    },
+  ],
   card: [
     {
       key: 'layout', label: 'Layout',

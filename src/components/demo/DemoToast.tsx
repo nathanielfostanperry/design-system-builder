@@ -23,6 +23,7 @@ export default function DemoToast() {
       <Toast.Root
         open={open}
         onOpenChange={setOpen}
+        duration={3000}
         className={`border-l-4 p-4 shadow-lg ${radius.name} data-[state=open]:animate-slideIn data-[state=closed]:animate-hide`}
         style={{
           backgroundColor: isDarkMode ? scale['800'] : scale['50'],
@@ -30,7 +31,7 @@ export default function DemoToast() {
         }}
       >
         <div className="flex items-start">
-          <div className="ml-3">
+          <div className="ml-3 flex-1">
             <Toast.Title
               className="text-sm font-medium"
               style={{ color: isDarkMode ? scale['200'] : scale['800'] }}
@@ -45,13 +46,15 @@ export default function DemoToast() {
             </Toast.Description>
           </div>
           <Toast.Close
-            className="ml-auto text-sm font-medium opacity-70 hover:opacity-100"
+            className="ml-2 text-lg leading-none opacity-50 hover:opacity-100 transition-opacity"
             style={{ color: isDarkMode ? scale['200'] : scale['800'] }}
           >
             ×
           </Toast.Close>
         </div>
       </Toast.Root>
+
+      <Toast.Viewport className="fixed bottom-4 right-4 flex flex-col gap-2 w-80 max-w-full z-50 outline-none list-none" />
     </Toast.Provider>
   );
 }
