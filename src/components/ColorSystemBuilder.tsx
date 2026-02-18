@@ -94,11 +94,10 @@ const ColorSystemBuilder: React.FC<ColorSystemBuilderProps> = ({
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Primary Color Picker */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border">
-          <h2 className="text-xl font-bold mb-4">Primary Color</h2>
+        <div>
           <ColorPicker
             value={primaryColor}
             onChange={handlePrimaryColorChange}
@@ -107,8 +106,7 @@ const ColorSystemBuilder: React.FC<ColorSystemBuilderProps> = ({
         </div>
 
         {/* Accent Color Picker */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border">
-          <h2 className="text-xl font-bold mb-4">Accent Color</h2>
+        <div>
           <ColorPicker
             value={accentColor}
             onChange={handleAccentColorChange}
@@ -118,7 +116,7 @@ const ColorSystemBuilder: React.FC<ColorSystemBuilderProps> = ({
       </div>
 
       {/* Global Curve Editor */}
-      <div className="mb-12">
+      <div>
         <GlobalCurveEditor />
       </div>
     </div>

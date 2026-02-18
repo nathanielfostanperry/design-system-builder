@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
+import * as Accordion from '@radix-ui/react-accordion';
 
 export default function DemoAccordion() {
   const {
@@ -11,7 +12,6 @@ export default function DemoAccordion() {
     primaryColorScale,
     accentColorScale,
   } = useDesignSystem();
-  const [activeAccordion, setActiveAccordion] = useState<number | null>(0);
 
   const accordionItems = [
     {
@@ -32,10 +32,16 @@ export default function DemoAccordion() {
   ];
 
   return (
-    <div className={`${spacing.name}`}>
+    <Accordion.Root
+      type="single"
+      defaultValue="item-0"
+      collapsible
+      className={`${spacing.name}`}
+    >
       {accordionItems.map((item, index) => (
-        <div
+        <Accordion.Item
           key={index}
+          value={`item-${index}`}
           className={`border ${radius.name} overflow-hidden`}
           style={{
             borderColor: isDarkMode
@@ -44,51 +50,39 @@ export default function DemoAccordion() {
             backgroundColor: isDarkMode ? 'rgb(31, 41, 55)' : 'white',
           }}
         >
-          <button
-            onClick={() =>
-              setActiveAccordion(activeAccordion === index ? null : index)
-            }
-            className={`w-full px-4 py-3 flex justify-between items-center transition-colors`}
-            style={{
-              fontFamily: headingFont.family,
-              backgroundColor: isDarkMode
-                ? activeAccordion === index
-                  ? primaryColorScale[800]
-                  : 'rgb(31, 41, 55)'
-                : activeAccordion === index
-                ? primaryColorScale[50]
-                : 'white',
-              color: isDarkMode
-                ? primaryColorScale[100]
-                : primaryColorScale[900],
-            }}
-          >
-            <span className="font-medium">{item.title}</span>
-            <svg
-              className={`w-5 h-5 transform transition-transform ${
-                activeAccordion === index ? 'rotate-180' : ''
-              }`}
+          <Accordion.Header>
+            <Accordion.Trigger
+              className={`w-full px-4 py-3 flex justify-between items-center transition-colors group`}
               style={{
+                fontFamily: headingFont.family,
                 color: isDarkMode
-                  ? primaryColorScale[400]
-                  : primaryColorScale[500],
+                  ? primaryColorScale[100]
+                  : primaryColorScale[900],
               }}
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
-          <div
-            className={`px-4 py-3 transition-[max-height] duration-200 ease-in-out ${
-              activeAccordion === index ? 'max-h-40' : 'max-h-0 overflow-hidden'
-            }`}
+              <span className="font-medium">{item.title}</span>
+              <svg
+                className={`w-5 h-5 transform transition-transform group-data-[state=open]:rotate-180`}
+                style={{
+                  color: isDarkMode
+                    ? primaryColorScale[400]
+                    : primaryColorScale[500],
+                }}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </Accordion.Trigger>
+          </Accordion.Header>
+          <Accordion.Content
+            className="px-4 py-3 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden"
             style={{
               backgroundColor: isDarkMode
                 ? primaryColorScale[900]
@@ -105,9 +99,9 @@ export default function DemoAccordion() {
             >
               {item.content}
             </p>
-          </div>
-        </div>
+          </Accordion.Content>
+        </Accordion.Item>
       ))}
-    </div>
+    </Accordion.Root>
   );
 }

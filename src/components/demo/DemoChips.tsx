@@ -2,50 +2,52 @@
 
 import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
+import * as Switch from '@radix-ui/react-switch';
 
 export default function DemoChips() {
-  const { radius, isDarkMode, setIsDarkMode } = useDesignSystem();
+  const { radius, isDarkMode, setIsDarkMode, primaryColorScale, neutralColorScale } = useDesignSystem();
 
   return (
     <div className="space-y-6">
       {/* Theme Toggle */}
       <div className="flex items-center justify-between">
         <span
-          className={`text-sm font-medium ${
-            isDarkMode ? 'text-gray-300' : 'text-gray-700'
-          }`}
+          className="text-sm font-medium"
+          style={{
+            color: isDarkMode ? neutralColorScale[300] : neutralColorScale[700],
+          }}
         >
           Theme
         </span>
-        <button
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          className={`${
-            isDarkMode ? 'bg-primary-600' : 'bg-gray-200'
-          } relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${
-            radius.name
-          }`}
+        <Switch.Root
+          checked={isDarkMode}
+          onCheckedChange={setIsDarkMode}
+          className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 ${radius.name}`}
+          style={{
+            backgroundColor: isDarkMode ? primaryColorScale[600] : neutralColorScale[200],
+          }}
         >
-          <span
-            className={`${
+          <Switch.Thumb
+            className={`pointer-events-none relative inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
               isDarkMode ? 'translate-x-5' : 'translate-x-0'
-            } pointer-events-none relative inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out`}
+            }`}
           >
             <span
-              className={`${
+              className={`absolute inset-0 flex h-full w-full items-center justify-center transition-opacity ${
                 isDarkMode ? 'opacity-0' : 'opacity-100'
-              } absolute inset-0 flex h-full w-full items-center justify-center transition-opacity`}
+              }`}
             >
               🌞
             </span>
             <span
-              className={`${
+              className={`absolute inset-0 flex h-full w-full items-center justify-center transition-opacity ${
                 isDarkMode ? 'opacity-100' : 'opacity-0'
-              } absolute inset-0 flex h-full w-full items-center justify-center transition-opacity`}
+              }`}
             >
               🌙
             </span>
-          </span>
-        </button>
+          </Switch.Thumb>
+        </Switch.Root>
       </div>
 
       {/* Normal Chips */}

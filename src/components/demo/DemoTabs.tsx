@@ -1,32 +1,62 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
+import * as Tabs from '@radix-ui/react-tabs';
+import { useDesignSystem } from '@/context/DesignSystemContext';
 
 export default function DemoTabs() {
-  const [activeTab, setActiveTab] = useState(0);
-
-  const tabs = ['Tab 1', 'Tab 2', 'Tab 3'];
+  const { primaryColorScale, isDarkMode } = useDesignSystem();
 
   return (
-    <div className="border-b border-gray-200">
-      <nav className="-mb-px flex space-x-8" aria-label="Tabs">
-        {tabs.map((tab, index) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(index)}
-            className={`
-              whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm
-              ${
-                activeTab === index
-                  ? 'border-primary-500 text-primary-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }
-            `}
+    <div
+      style={{
+        '--tabs-active-border': primaryColorScale[500],
+        '--tabs-active-text': primaryColorScale[600],
+        '--tabs-inactive-text': isDarkMode ? primaryColorScale[300] : primaryColorScale[500],
+      } as React.CSSProperties}
+    >
+      <Tabs.Root defaultValue="tab1" className="w-full">
+        <Tabs.List
+          className="flex border-b"
+          style={{
+            borderColor: isDarkMode ? primaryColorScale[700] : primaryColorScale[200],
+          }}
+        >
+          <Tabs.Trigger
+            value="tab1"
+            className="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm outline-none transition-colors tab-trigger"
           >
-            {tab}
-          </button>
-        ))}
-      </nav>
+            Tab 1
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            value="tab2"
+            className="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm outline-none transition-colors tab-trigger"
+          >
+            Tab 2
+          </Tabs.Trigger>
+          <Tabs.Trigger
+            value="tab3"
+            className="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm outline-none transition-colors tab-trigger"
+          >
+            Tab 3
+          </Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="tab1" className="mt-4">
+          <p style={{ color: isDarkMode ? primaryColorScale[200] : primaryColorScale[700] }}>
+            Content for Tab 1
+          </p>
+        </Tabs.Content>
+        <Tabs.Content value="tab2" className="mt-4">
+          <p style={{ color: isDarkMode ? primaryColorScale[200] : primaryColorScale[700] }}>
+            Content for Tab 2
+          </p>
+        </Tabs.Content>
+        <Tabs.Content value="tab3" className="mt-4">
+          <p style={{ color: isDarkMode ? primaryColorScale[200] : primaryColorScale[700] }}>
+            Content for Tab 3
+          </p>
+        </Tabs.Content>
+      </Tabs.Root>
     </div>
   );
 }

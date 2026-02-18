@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
+import * as RadioGroup from '@radix-ui/react-radio-group';
 
 export default function DemoRadioGroup() {
-  const { radius, spacing } = useDesignSystem();
-  const [selectedRadio, setSelectedRadio] = useState('option1');
+  const { radius, spacing, primaryColorScale, isDarkMode } = useDesignSystem();
 
   const radioOptions = [
     { id: 'option1', label: 'Default Option' },
@@ -12,26 +12,41 @@ export default function DemoRadioGroup() {
   ];
 
   return (
-    <div className={`bg-white p-4 ${radius.name} border border-gray-200`}>
-      <div className={`${spacing.name}`}>
+    <div
+      className={`p-4 ${radius.name} border`}
+      style={{
+        backgroundColor: isDarkMode ? primaryColorScale[800] : 'white',
+        borderColor: isDarkMode ? primaryColorScale[700] : primaryColorScale[200],
+      }}
+    >
+      <RadioGroup.Root
+        defaultValue="option1"
+        className={`${spacing.name}`}
+      >
         {radioOptions.map((option) => (
-          <label
-            key={option.id}
-            className="flex items-center space-x-3 cursor-pointer"
-          >
-            <div className="relative flex items-center">
-              <input
-                type="radio"
-                value={option.id}
-                checked={selectedRadio === option.id}
-                onChange={(e) => setSelectedRadio(e.target.value)}
-                className="h-4 w-4 text-primary-600 border-gray-300 focus:ring-primary-500"
-              />
-            </div>
-            <span className="text-gray-900">{option.label}</span>
-          </label>
+          <div key={option.id} className="flex items-center space-x-3">
+            <RadioGroup.Item
+              value={option.id}
+              id={option.id}
+              className="w-4 h-4 rounded-full border-2 outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+              style={{
+                borderColor: isDarkMode ? primaryColorScale[600] : primaryColorScale[300],
+              }}
+            >
+              <RadioGroup.Indicator className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-2 after:h-2 after:rounded-full" style={{ backgroundColor: primaryColorScale[600] }} />
+            </RadioGroup.Item>
+            <label
+              htmlFor={option.id}
+              className="cursor-pointer"
+              style={{
+                color: isDarkMode ? primaryColorScale[100] : primaryColorScale[900],
+              }}
+            >
+              {option.label}
+            </label>
+          </div>
         ))}
-      </div>
+      </RadioGroup.Root>
     </div>
   );
 }

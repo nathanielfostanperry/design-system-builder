@@ -9,9 +9,8 @@ export default function Fonts() {
     useDesignSystem();
 
   return (
-    <div className="mb-8">
-      <h3 className="text-xl font-semibold mb-4">Typography</h3>
-      <div className="flex gap-4">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <FontSelect
           label="Heading Font"
           value={headingFont}

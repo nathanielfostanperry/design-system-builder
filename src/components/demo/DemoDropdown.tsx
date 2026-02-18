@@ -1,90 +1,90 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 export default function DemoDropdown() {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const { radius } = useDesignSystem();
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const { radius, primaryColorScale, accentColorScale, isDarkMode } = useDesignSystem();
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      <button
-        onClick={toggleDropdown}
-        className={`inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 ${radius.name}`}
-      >
-        Options
-        <svg
-          className={`ml-2 h-5 w-5 text-gray-400 transform transition-transform ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild>
+        <button
+          className={`inline-flex items-center px-4 py-2 border text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 ${radius.name}`}
+          style={{
+            borderColor: isDarkMode ? primaryColorScale[600] : primaryColorScale[200],
+            backgroundColor: isDarkMode ? primaryColorScale[800] : 'white',
+            color: isDarkMode ? primaryColorScale[100] : primaryColorScale[700],
+          }}
         >
-          <path
-            fillRule="evenodd"
-            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-            clipRule="evenodd"
-          />
-        </svg>
-      </button>
+          Options
+          <svg
+            className="ml-2 h-5 w-5"
+            style={{ color: isDarkMode ? primaryColorScale[400] : primaryColorScale[400] }}
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+      </DropdownMenu.Trigger>
 
-      {isOpen && (
-        <div
-          className={`absolute right-0 mt-2 w-56 shadow-lg bg-white ring-1 ring-black ring-opacity-5 ${radius.name}`}
+      <DropdownMenu.Portal>
+        <DropdownMenu.Content
+          className={`w-56 shadow-lg ring-1 ring-black ring-opacity-5 ${radius.name}`}
+          style={{
+            backgroundColor: isDarkMode ? primaryColorScale[800] : 'white',
+            border: `1px solid ${isDarkMode ? primaryColorScale[700] : primaryColorScale[200]}`,
+          }}
         >
-          <div className="py-1" role="menu">
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-900"
-              role="menuitem"
+          <div className="py-1">
+            <DropdownMenu.Item
+              className="block px-4 py-2 text-sm outline-none cursor-pointer focus:bg-primary-50 focus:text-primary-900"
+              style={{
+                color: isDarkMode ? primaryColorScale[100] : primaryColorScale[700],
+              }}
             >
               Account settings
-            </a>
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-900"
-              role="menuitem"
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              className="block px-4 py-2 text-sm outline-none cursor-pointer focus:bg-primary-50 focus:text-primary-900"
+              style={{
+                color: isDarkMode ? primaryColorScale[100] : primaryColorScale[700],
+              }}
             >
               Support
-            </a>
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-900"
-              role="menuitem"
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              className="block px-4 py-2 text-sm outline-none cursor-pointer focus:bg-primary-50 focus:text-primary-900"
+              style={{
+                color: isDarkMode ? primaryColorScale[100] : primaryColorScale[700],
+              }}
             >
               License
-            </a>
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm text-accent-700 hover:bg-accent-50 hover:text-accent-900"
-              role="menuitem"
+            </DropdownMenu.Item>
+            <DropdownMenu.Separator
+              className="h-px my-1"
+              style={{
+                backgroundColor: isDarkMode ? primaryColorScale[700] : primaryColorScale[200],
+              }}
+            />
+            <DropdownMenu.Item
+              className="block px-4 py-2 text-sm outline-none cursor-pointer focus:bg-accent-50 focus:text-accent-900"
+              style={{
+                color: isDarkMode ? accentColorScale[300] : accentColorScale[700],
+              }}
             >
               Sign out
-            </a>
+            </DropdownMenu.Item>
           </div>
-        </div>
-      )}
-    </div>
+        </DropdownMenu.Content>
+      </DropdownMenu.Portal>
+    </DropdownMenu.Root>
   );
 }
