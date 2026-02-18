@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import * as Tabs from '@radix-ui/react-tabs';
-import ColorSystemBuilder from '@/components/ColorSystemBuilder';
 import ColorScaleDisplay from '@/components/ColorScaleDisplay';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 import DemoInput from '@/components/demo/DemoInput';
@@ -18,14 +17,9 @@ import DemoChips from '@/components/demo/DemoChips';
 import DemoAccordion from '@/components/demo/DemoAccordion';
 import DemoRadioGroup from '@/components/demo/DemoRadioGroup';
 import DemoSlider from '@/components/demo/DemoSlider';
-import Corners from '@/components/Corners';
-import Spacing from '@/components/Spacing';
-import Shadows from '@/components/Shadows';
-import Borders from '@/components/Borders';
-import Fonts from '@/components/Fonts';
 import FontPreview from '@/components/FontPreview';
 import CodeExport from '@/components/CodeExport';
-import IconLibraryPicker from '@/components/IconLibraryPicker';
+import DesignSidebar from '@/components/DesignSidebar';
 
 export default function Home() {
   const {
@@ -38,18 +32,6 @@ export default function Home() {
     headingFont,
     bodyFont,
   } = useDesignSystem();
-
-  // Professional spacing scale: 4px base
-  const space = {
-    xs: '4px',
-    sm: '8px',
-    md: '12px',
-    lg: '16px',
-    xl: '24px',
-    '2xl': '32px',
-    '3xl': '48px',
-  };
-
   // Whisper-quiet borders: rgba with low opacity
   const getBorderColor = (opacity: number = 0.08) => {
     if (isDarkMode) {
@@ -90,69 +72,7 @@ export default function Home() {
     >
       {/* Main workspace */}
       <div className="flex-1 flex mx-auto w-full min-h-0">
-        {/* Controls sidebar - Fixed width, compact */}
-        <aside
-          className="w-80 border-r flex-shrink-0 overflow-y-auto"
-          style={{
-            backgroundColor: getSurfaceColor(0),
-            borderColor: getBorderColor(0.08),
-          }}
-        >
-          <div className="p-4 space-y-6">
-            {/* Typography Controls */}
-            <div>
-              <label
-                className="text-xs font-medium uppercase tracking-wider block mb-3"
-                style={{
-                  fontFamily: headingFont.family,
-                  color: textColors.tertiary,
-                  letterSpacing: '0.05em',
-                }}
-              >
-                Typography
-              </label>
-              <Fonts />
-            </div>
-
-            {/* Design Tokens - Compact grid */}
-            <div>
-              <label
-                className="text-xs font-medium uppercase tracking-wider block mb-3"
-                style={{
-                  fontFamily: headingFont.family,
-                  color: textColors.tertiary,
-                  letterSpacing: '0.05em',
-                }}
-              >
-                Tokens
-              </label>
-              <div className="space-y-3">
-                <IconLibraryPicker />
-                <div className="grid grid-cols-2 gap-2">
-                  <Corners />
-                  <Spacing />
-                  <Shadows />
-                  <Borders />
-                </div>
-              </div>
-            </div>
-
-            {/* Color Controls */}
-            <div>
-              <label
-                className="text-xs font-medium uppercase tracking-wider block mb-3"
-                style={{
-                  fontFamily: headingFont.family,
-                  color: textColors.tertiary,
-                  letterSpacing: '0.05em',
-                }}
-              >
-                Colors
-              </label>
-              <ColorSystemBuilder />
-            </div>
-          </div>
-        </aside>
+        <DesignSidebar />
 
         {/* Main content area - Tabbed interface */}
         <div className="flex-1 flex flex-col min-w-0 min-h-0">
