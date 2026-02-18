@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 import Fonts from './Fonts';
 import Corners from './Corners';
@@ -24,11 +24,73 @@ const NAV_ITEMS = [
   { id: 'brand'       as PanelId, label: 'Brand',       Icon: TbBriefcase },
 ];
 
-const PANEL_WIDTH = 296;
+function ResizeHandle({ onMouseDown, borderClr }: { onMouseDown: (e: React.MouseEvent) => void; borderClr: string }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseDown={onMouseDown}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        width: 6,
+        height: '100%',
+        cursor: 'col-resize',
+        zIndex: 20,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div style={{
+        width: 3,
+        height: 40,
+        borderRadius: 2,
+        backgroundColor: borderClr,
+        opacity: hovered ? 1 : 0,
+        transition: 'opacity 0.15s',
+      }} />
+    </div>
+  );
+}
+
+const DEFAULT_PANEL_WIDTH = 320;
+const MIN_PANEL_WIDTH = 220;
+const MAX_PANEL_WIDTH = 560;
 
 export default function DesignSidebar() {
   const { isDarkMode, setIsDarkMode, neutralColorScale } = useDesignSystem();
   const [activePanel, setActivePanel] = useState<PanelId | null>('colors');
+  const [panelWidth, setPanelWidth] = useState(DEFAULT_PANEL_WIDTH);
+  const isDragging = useRef(false);
+
+  const startResize = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    isDragging.current = true;
+    const startX = e.clientX;
+    const startWidth = panelWidth;
+
+    const onMouseMove = (ev: MouseEvent) => {
+      if (!isDragging.current) return;
+      const next = Math.max(MIN_PANEL_WIDTH, Math.min(MAX_PANEL_WIDTH, startWidth + (ev.clientX - startX)));
+      setPanelWidth(next);
+    };
+
+    const onMouseUp = () => {
+      isDragging.current = false;
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }, [panelWidth]);
 
   const toggle = (id: PanelId) =>
     setActivePanel((prev) => (prev === id ? null : id));
@@ -98,15 +160,17 @@ export default function DesignSidebar() {
 
       {/* ── Secondary panel ── */}
       <div
-        className="overflow-hidden transition-[width] duration-200 ease-in-out flex-shrink-0"
+        className="overflow-hidden flex-shrink-0"
         style={{
-          width: activePanel ? PANEL_WIDTH : 0,
+          width: activePanel ? panelWidth : 0,
+          transition: isDragging.current ? 'none' : 'width 0.2s ease-in-out',
           borderRight: activePanel ? `1px solid ${borderClr}` : 'none',
+          position: 'relative',
         }}
       >
         <div
           className="h-full flex flex-col overflow-hidden"
-          style={{ width: PANEL_WIDTH, backgroundColor: panelBg }}
+          style={{ width: panelWidth, backgroundColor: panelBg }}
         >
           {/* Panel header */}
           <div
@@ -155,6 +219,11 @@ export default function DesignSidebar() {
             </div>
           </div>
         </div>
+
+        {/* Resize handle */}
+        {activePanel && (
+          <ResizeHandle onMouseDown={startResize} borderClr={borderClr} />
+        )}
       </div>
     </div>
   );

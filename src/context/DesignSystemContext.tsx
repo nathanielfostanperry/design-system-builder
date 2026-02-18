@@ -20,13 +20,61 @@ export type ExtraPalette = {
   scale: Record<string, string>;
 };
 
+export type BrandValueEntry = {
+  id: string;
+  name: string;
+  sentence: string;
+  inPractice: string;
+  notMeans: string;
+  passesIf: string;
+};
+
+export type BrandVoicePrinciple = {
+  id: string;
+  name: string;
+  whatMeans: string;
+  why: string;
+  inPractice: string;
+  never: string;
+};
+
+export type IsIsNotRow = { is: string; isNot: string };
+
 export type BrandSettings = {
+  // Identity
   name: string;
   industry: string;
-  mission: string;
-  values: string[];
-  positioning: string;
-  voice: string[];
+  owner: string;
+
+  // Values doc
+  valueEntries: BrandValueEntry[];
+  valueHierarchy: string;
+  hardLimits: string;
+
+  // Positioning doc
+  purpose: string;
+  primaryAudience: string;
+  secondaryAudience: string;
+  notFor: string;
+  marketTension: string;
+  audienceTried: string;
+  uniqueOffer: string;
+  category: string;
+  competitors: string;
+  positioningStatement: string;
+  successIn3Years: string;
+  knownFor: string;
+  positioningIsIsNot: IsIsNotRow[];
+
+  // Voice doc
+  voicePrinciples: BrandVoicePrinciple[];
+  voiceIsIsNot: IsIsNotRow[];
+  wordsUse: string;
+  wordsAvoid: string;
+  whenInforming: string;
+  whenPersuading: string;
+  whenResponding: string;
+  whenCelebrating: string;
 };
 
 type SpacingOption = {
@@ -138,7 +186,13 @@ interface DesignSystemContextType {
 
   // Brand identity
   brandSettings: BrandSettings;
-  setBrandSetting: <K extends keyof BrandSettings>(key: K, value: BrandSettings[K]) => void;
+  setBrandField: (key: keyof BrandSettings, value: unknown) => void;
+  addBrandValue: () => void;
+  updateBrandValue: (id: string, field: keyof BrandValueEntry, value: string) => void;
+  removeBrandValue: (id: string) => void;
+  addVoicePrinciple: () => void;
+  updateVoicePrinciple: (id: string, field: keyof BrandVoicePrinciple, value: string) => void;
+  removeVoicePrinciple: (id: string) => void;
 }
 
 // Create context with default values
@@ -272,16 +326,65 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 
   // Brand settings
   const [brandSettings, setBrandSettingsState] = useState<BrandSettings>({
-    name: '',
-    industry: '',
-    mission: '',
-    values: [],
-    positioning: '',
-    voice: [],
+    name: '', industry: '', owner: '',
+    valueEntries: [], valueHierarchy: '', hardLimits: '',
+    purpose: '', primaryAudience: '', secondaryAudience: '', notFor: '',
+    marketTension: '', audienceTried: '', uniqueOffer: '',
+    category: '', competitors: '', positioningStatement: '',
+    successIn3Years: '', knownFor: '',
+    positioningIsIsNot: [{ is: '', isNot: '' }, { is: '', isNot: '' }, { is: '', isNot: '' }],
+    voicePrinciples: [],
+    voiceIsIsNot: [{ is: '', isNot: '' }, { is: '', isNot: '' }, { is: '', isNot: '' }],
+    wordsUse: '', wordsAvoid: '',
+    whenInforming: '', whenPersuading: '', whenResponding: '', whenCelebrating: '',
   });
 
-  const setBrandSetting = <K extends keyof BrandSettings>(key: K, value: BrandSettings[K]) => {
+  const setBrandField = (key: keyof BrandSettings, value: unknown) => {
     setBrandSettingsState((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const addBrandValue = () => {
+    const id = Date.now().toString(36);
+    setBrandSettingsState((prev) => ({
+      ...prev,
+      valueEntries: [...prev.valueEntries, { id, name: '', sentence: '', inPractice: '', notMeans: '', passesIf: '' }],
+    }));
+  };
+
+  const updateBrandValue = (id: string, field: keyof BrandValueEntry, value: string) => {
+    setBrandSettingsState((prev) => ({
+      ...prev,
+      valueEntries: prev.valueEntries.map((v) => v.id === id ? { ...v, [field]: value } : v),
+    }));
+  };
+
+  const removeBrandValue = (id: string) => {
+    setBrandSettingsState((prev) => ({
+      ...prev,
+      valueEntries: prev.valueEntries.filter((v) => v.id !== id),
+    }));
+  };
+
+  const addVoicePrinciple = () => {
+    const id = Date.now().toString(36);
+    setBrandSettingsState((prev) => ({
+      ...prev,
+      voicePrinciples: [...prev.voicePrinciples, { id, name: '', whatMeans: '', why: '', inPractice: '', never: '' }],
+    }));
+  };
+
+  const updateVoicePrinciple = (id: string, field: keyof BrandVoicePrinciple, value: string) => {
+    setBrandSettingsState((prev) => ({
+      ...prev,
+      voicePrinciples: prev.voicePrinciples.map((p) => p.id === id ? { ...p, [field]: value } : p),
+    }));
+  };
+
+  const removeVoicePrinciple = (id: string) => {
+    setBrandSettingsState((prev) => ({
+      ...prev,
+      voicePrinciples: prev.voicePrinciples.filter((p) => p.id !== id),
+    }));
   };
 
   // Method to set a base color and update its scale
@@ -395,7 +498,13 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     setComponentSetting,
 
     brandSettings,
-    setBrandSetting,
+    setBrandField,
+    addBrandValue,
+    updateBrandValue,
+    removeBrandValue,
+    addVoicePrinciple,
+    updateVoicePrinciple,
+    removeVoicePrinciple,
   };
 
   return (
