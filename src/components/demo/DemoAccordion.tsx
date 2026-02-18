@@ -60,14 +60,14 @@ export default function DemoAccordion() {
   const tintedContentBg = isDarkMode ? scale['800'] : scale['100'];
 
   const getHeaderBg = () => {
-    if (background === 'tinted')      return tintedHeaderBg;
-    if (background === 'transparent') return transparentBg;
+    if (background === 'tinted') return tintedHeaderBg;
+    if (background === 'none')   return transparentBg;
     return solidBg;
   };
 
   const getContentBg = () => {
-    if (background === 'solid')       return isDarkMode ? scale['900'] : scale['50'];
-    if (background === 'tinted')      return tintedContentBg;
+    if (background === 'solid')  return isDarkMode ? scale['900'] : scale['50'];
+    if (background === 'tinted') return tintedContentBg;
     return transparentBg;
   };
 

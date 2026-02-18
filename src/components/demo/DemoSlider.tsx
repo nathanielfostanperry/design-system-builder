@@ -3,12 +3,16 @@
 import React, { useState } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
 import { useComponentPalette } from '@/hooks/useComponentPalette';
+import { useComponentSettings } from '@/hooks/useComponentSettings';
 import * as Slider from '@radix-ui/react-slider';
 
 export default function DemoSlider() {
-  const { radius, spacing, isDarkMode } = useDesignSystem();
-  const scale = useComponentPalette('slider');
+  const { radius, isDarkMode } = useDesignSystem();
+  const scale    = useComponentPalette('slider');
+  const settings = useComponentSettings('slider');
   const [sliderValue, setSliderValue] = useState([50]);
+
+  const showLabels = (settings.labels ?? 'show') === 'show';
 
   return (
     <div
@@ -18,15 +22,22 @@ export default function DemoSlider() {
         borderColor: isDarkMode ? scale['700'] : scale['200'],
       }}
     >
-      <div className={`${spacing.name}`}>
-        <div className="flex justify-between">
+      <div className="flex flex-col gap-3">
+        <div className="flex justify-between items-center">
           <label
             className="text-sm font-medium"
             style={{ color: isDarkMode ? scale['200'] : scale['700'] }}
           >
-            Slider Value: {sliderValue[0]}
+            Slider
           </label>
+          <span
+            className="text-sm font-mono tabular-nums"
+            style={{ color: isDarkMode ? scale['300'] : scale['600'] }}
+          >
+            {sliderValue[0]}
+          </span>
         </div>
+
         <Slider.Root
           value={sliderValue}
           onValueChange={setSliderValue}
@@ -49,14 +60,17 @@ export default function DemoSlider() {
             style={{ backgroundColor: scale['600'] }}
           />
         </Slider.Root>
-        <div
-          className="flex justify-between text-xs"
-          style={{ color: isDarkMode ? scale['400'] : scale['500'] }}
-        >
-          <span>0</span>
-          <span>50</span>
-          <span>100</span>
-        </div>
+
+        {showLabels && (
+          <div
+            className="flex justify-between text-xs"
+            style={{ color: isDarkMode ? scale['400'] : scale['500'] }}
+          >
+            <span>0</span>
+            <span>50</span>
+            <span>100</span>
+          </div>
+        )}
       </div>
     </div>
   );

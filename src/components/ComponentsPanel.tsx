@@ -24,6 +24,34 @@ type SettingOption = { value: string; label: string };
 type SettingConfig = { key: string; label: string; options: SettingOption[] };
 
 const COMPONENT_SETTINGS: Record<string, SettingConfig[]> = {
+  'button-primary': [
+    {
+      key: 'background', label: 'Background',
+      options: [{ value: 'solid', label: 'Solid' }, { value: 'tinted', label: 'Tinted' }, { value: 'none', label: 'None' }],
+    },
+    {
+      key: 'border', label: 'Border',
+      options: [{ value: 'none', label: 'None' }, { value: 'sm', label: 'Light' }, { value: 'lg', label: 'Heavy' }],
+    },
+    {
+      key: 'padding', label: 'Padding',
+      options: [{ value: 'compact', label: 'Compact' }, { value: 'default', label: 'Default' }, { value: 'relaxed', label: 'Relaxed' }],
+    },
+  ],
+  'button-secondary': [
+    {
+      key: 'background', label: 'Background',
+      options: [{ value: 'solid', label: 'Solid' }, { value: 'tinted', label: 'Tinted' }, { value: 'none', label: 'None' }],
+    },
+    {
+      key: 'border', label: 'Border',
+      options: [{ value: 'sm', label: 'Light' }, { value: 'lg', label: 'Heavy' }, { value: 'none', label: 'None' }],
+    },
+    {
+      key: 'padding', label: 'Padding',
+      options: [{ value: 'compact', label: 'Compact' }, { value: 'default', label: 'Default' }, { value: 'relaxed', label: 'Relaxed' }],
+    },
+  ],
   'icon-button': [
     {
       key: 'size', label: 'Size',
@@ -36,15 +64,43 @@ const COMPONENT_SETTINGS: Record<string, SettingConfig[]> = {
   ],
   card: [
     {
+      key: 'background', label: 'Background',
+      options: [{ value: 'solid', label: 'Solid' }, { value: 'tinted', label: 'Tinted' }, { value: 'none', label: 'None' }],
+    },
+    {
+      key: 'border', label: 'Border',
+      options: [{ value: 'show', label: 'Show' }, { value: 'hide', label: 'Hide' }],
+    },
+    {
+      key: 'imageShape', label: 'Image',
+      options: [{ value: 'rounded', label: 'Rounded' }, { value: 'circle', label: 'Circle' }, { value: 'square', label: 'Square' }],
+    },
+    {
       key: 'layout', label: 'Layout',
       options: [{ value: 'horizontal', label: 'Horizontal' }, { value: 'vertical', label: 'Vertical' }],
     },
     {
-      key: 'avatarShape', label: 'Avatar',
-      options: [{ value: 'rounded', label: 'Rounded' }, { value: 'circle', label: 'Circle' }, { value: 'square', label: 'Square' }],
+      key: 'showActions', label: 'Actions',
+      options: [{ value: 'show', label: 'Show' }, { value: 'hide', label: 'Hide' }],
+    },
+  ],
+  input: [
+    {
+      key: 'background', label: 'Background',
+      options: [{ value: 'solid', label: 'Solid' }, { value: 'tinted', label: 'Tinted' }, { value: 'none', label: 'None' }],
     },
     {
-      key: 'showActions', label: 'Actions',
+      key: 'border', label: 'Border',
+      options: [{ value: 'sm', label: 'Light' }, { value: 'lg', label: 'Heavy' }, { value: 'none', label: 'None' }],
+    },
+    {
+      key: 'size', label: 'Size',
+      options: [{ value: 'compact', label: 'Compact' }, { value: 'default', label: 'Default' }, { value: 'comfortable', label: 'Relaxed' }],
+    },
+  ],
+  slider: [
+    {
+      key: 'labels', label: 'Labels',
       options: [{ value: 'show', label: 'Show' }, { value: 'hide', label: 'Hide' }],
     },
   ],
@@ -59,7 +115,7 @@ const COMPONENT_SETTINGS: Record<string, SettingConfig[]> = {
     },
     {
       key: 'background', label: 'Background',
-      options: [{ value: 'solid', label: 'Solid' }, { value: 'tinted', label: 'Tinted' }, { value: 'transparent', label: 'None' }],
+      options: [{ value: 'solid', label: 'Solid' }, { value: 'tinted', label: 'Tinted' }, { value: 'none', label: 'None' }],
     },
   ],
 };
