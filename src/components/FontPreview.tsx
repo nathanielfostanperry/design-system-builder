@@ -2,59 +2,27 @@
 
 import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-
-const getFontWeight = (weight: string) => {
-  switch (weight) {
-    case 'thin': return '300';
-    case 'regular': return '400';
-    case 'bold': return '700';
-    case 'extrabold': return '800';
-    default: return '400';
-  }
-};
-
-const getFontSize = (size: string): string => {
-  switch (size) {
-    case 'xxs': return '0.625rem';
-    case 'xs':  return '0.75rem';
-    case 'sm':  return '0.875rem';
-    case 'regular': return '1rem';
-    case 'lg':  return '1.25rem';
-    case 'xl':  return '1.5rem';
-    case 'xxl': return '2rem';
-    default: return '1rem';
-  }
-};
-
-const getHeadingSize = (level: number, baseSize: string): string => {
-  const baseSizeRem = parseFloat(getFontSize(baseSize));
-  const multipliers: Record<number, number> = { 1: 3, 2: 2.25, 3: 1.75, 4: 1.5, 5: 1.25, 6: 1.1 };
-  return `${baseSizeRem * multipliers[level]}rem`;
-};
+import { useTypographyToken } from '@/hooks/useTypographyToken';
 
 export default function FontPreview() {
-  const { headingFont, bodyFont, isDarkMode, neutralColorScale, primaryColorScale } = useDesignSystem();
+  const { isDarkMode, neutralColorScale, primaryColorScale } = useDesignSystem();
+
+  const display = useTypographyToken('display');
+  const overline = useTypographyToken('overline');
+  const heading1 = useTypographyToken('heading-1');
+  const heading2 = useTypographyToken('heading-2');
+  const heading3 = useTypographyToken('heading-3');
+  const heading4 = useTypographyToken('heading-4');
+  const bodyLarge = useTypographyToken('body-large');
+  const body = useTypographyToken('body');
+  const label = useTypographyToken('label');
+  const caption = useTypographyToken('caption');
 
   const textPrimary   = isDarkMode ? neutralColorScale['100'] : neutralColorScale['900'];
   const textSecondary = isDarkMode ? neutralColorScale['300'] : neutralColorScale['600'];
   const textMuted     = isDarkMode ? neutralColorScale['500'] : neutralColorScale['400'];
   const borderColor   = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
   const blockquoteBg  = isDarkMode ? neutralColorScale['800'] : neutralColorScale['50'];
-
-  const h = (level: number) => ({
-    fontFamily: headingFont.family,
-    fontWeight: getFontWeight(headingFont.weight),
-    fontSize: getHeadingSize(level, headingFont.size),
-    color: textPrimary,
-  });
-
-  const body = {
-    fontFamily: bodyFont.family,
-    fontWeight: getFontWeight(bodyFont.weight),
-    fontSize: getFontSize(bodyFont.size),
-    lineHeight: 1.75,
-    color: textSecondary,
-  };
 
   return (
     <article className="max-w-2xl mx-auto pb-12">
@@ -93,9 +61,9 @@ export default function FontPreview() {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <span style={{
-            fontFamily: headingFont.family,
-            fontWeight: getFontWeight(headingFont.weight),
-            fontSize: getHeadingSize(2, headingFont.size),
+            fontFamily: display.fontFamily,
+            fontWeight: display.fontWeight,
+            fontSize: display.fontSize,
             color: 'rgba(255,255,255,0.9)',
             letterSpacing: '-0.01em',
           }}>
@@ -106,9 +74,9 @@ export default function FontPreview() {
 
       {/* Kicker */}
       <p style={{
-        fontFamily: bodyFont.family,
-        fontSize: getFontSize('xs'),
-        fontWeight: '600',
+        fontFamily: overline.fontFamily,
+        fontSize: overline.fontSize,
+        fontWeight: overline.fontWeight,
         color: primaryColorScale['500'],
         letterSpacing: '0.12em',
         textTransform: 'uppercase',
@@ -118,14 +86,21 @@ export default function FontPreview() {
       </p>
 
       {/* H1 */}
-      <h1 style={{ ...h(1), lineHeight: 1.1, marginBottom: '16px' }}>
+      <h1 style={{
+        fontFamily: heading1.fontFamily,
+        fontWeight: heading1.fontWeight,
+        fontSize: heading1.fontSize,
+        color: textPrimary,
+        lineHeight: 1.1,
+        marginBottom: '16px',
+      }}>
         The Art of Typography in Modern Interfaces
       </h1>
 
       {/* Subtitle / deck */}
       <p style={{
-        fontFamily: bodyFont.family,
-        fontSize: getFontSize('lg'),
+        fontFamily: bodyLarge.fontFamily,
+        fontSize: bodyLarge.fontSize,
         color: textSecondary,
         lineHeight: 1.6,
         marginBottom: '28px',
@@ -144,30 +119,59 @@ export default function FontPreview() {
           background: `linear-gradient(135deg, ${primaryColorScale['600']}, ${primaryColorScale['400']})`,
         }} />
         <div>
-          <p style={{ fontFamily: bodyFont.family, fontSize: getFontSize('sm'), fontWeight: '600', color: textPrimary, lineHeight: 1.2 }}>
+          <p style={{ fontFamily: label.fontFamily, fontSize: label.fontSize, fontWeight: label.fontWeight, color: textPrimary, lineHeight: 1.2 }}>
             Sarah Chen
           </p>
-          <p style={{ fontFamily: bodyFont.family, fontSize: getFontSize('xs'), color: textMuted, lineHeight: 1.2 }}>
+          <p style={{ fontFamily: caption.fontFamily, fontSize: caption.fontSize, color: textMuted, lineHeight: 1.2 }}>
             March 15, 2024
           </p>
         </div>
       </div>
 
       {/* Lead paragraph */}
-      <p style={{ ...body, fontSize: getFontSize('lg'), marginBottom: '20px' }}>
+      <p style={{
+        fontFamily: bodyLarge.fontFamily,
+        fontWeight: bodyLarge.fontWeight,
+        fontSize: bodyLarge.fontSize,
+        lineHeight: 1.75,
+        color: textSecondary,
+        marginBottom: '20px',
+      }}>
         Typography is the invisible architecture of communication. Before a reader processes a single word, they've already formed an impression — warm or cold, authoritative or playful, urgent or contemplative. The font does this work silently, before meaning arrives.
       </p>
 
       {/* H2 */}
-      <h2 style={{ ...h(2), lineHeight: 1.2, marginTop: '40px', marginBottom: '16px' }}>
+      <h2 style={{
+        fontFamily: heading2.fontFamily,
+        fontWeight: heading2.fontWeight,
+        fontSize: heading2.fontSize,
+        color: textPrimary,
+        lineHeight: 1.2,
+        marginTop: '40px',
+        marginBottom: '16px',
+      }}>
         Building a Type Hierarchy
       </h2>
 
-      <p style={{ ...body, marginBottom: '20px' }}>
+      <p style={{
+        fontFamily: body.fontFamily,
+        fontWeight: body.fontWeight,
+        fontSize: body.fontSize,
+        lineHeight: 1.75,
+        color: textSecondary,
+        marginBottom: '20px',
+      }}>
         A well-considered hierarchy doesn't just organize content — it creates rhythm, guides the eye, and signals importance before a word is read. The relationship between your heading font and body font is where the personality of a design lives.
       </p>
 
-      <p style={{ ...body, marginBottom: '32px' }}>
+      <p style={{
+        fontFamily: body.fontFamily,
+        fontWeight: body.fontWeight,
+        fontSize: body.fontSize,
+        lineHeight: 1.75,
+        color: textSecondary,
+        marginBottom: '32px',
+      }}>
         Contrast is the engine. A geometric sans-serif headline paired with a humanist serif body creates productive tension: precision and warmth, structure and warmth, each making the other more distinct.
       </p>
 
@@ -180,9 +184,9 @@ export default function FontPreview() {
         margin: '0 0 32px 0',
       }}>
         <p style={{
-          fontFamily: headingFont.family,
-          fontWeight: getFontWeight(headingFont.weight),
-          fontSize: getHeadingSize(4, headingFont.size),
+          fontFamily: heading4.fontFamily,
+          fontWeight: heading4.fontWeight,
+          fontSize: heading4.fontSize,
           color: textPrimary,
           lineHeight: 1.4,
           fontStyle: 'italic',
@@ -193,15 +197,37 @@ export default function FontPreview() {
       </blockquote>
 
       {/* H3 */}
-      <h3 style={{ ...h(3), lineHeight: 1.3, marginTop: '40px', marginBottom: '12px' }}>
+      <h3 style={{
+        fontFamily: heading3.fontFamily,
+        fontWeight: heading3.fontWeight,
+        fontSize: heading3.fontSize,
+        color: textPrimary,
+        lineHeight: 1.3,
+        marginTop: '40px',
+        marginBottom: '12px',
+      }}>
         Pairing Fonts Effectively
       </h3>
 
-      <p style={{ ...body, marginBottom: '20px' }}>
+      <p style={{
+        fontFamily: body.fontFamily,
+        fontWeight: body.fontWeight,
+        fontSize: body.fontSize,
+        lineHeight: 1.75,
+        color: textSecondary,
+        marginBottom: '20px',
+      }}>
         The safest pairings live at the extremes: either closely related (two cuts of the same superfamily) or dramatically different (a display serif with a neutral mono). The danger zone is the middle — two fonts that are similar enough to look accidental but different enough to compete.
       </p>
 
-      <p style={{ ...body, marginBottom: '32px' }}>
+      <p style={{
+        fontFamily: body.fontFamily,
+        fontWeight: body.fontWeight,
+        fontSize: body.fontSize,
+        lineHeight: 1.75,
+        color: textSecondary,
+        marginBottom: '32px',
+      }}>
         Size and weight do more heavy lifting than most designers realize. You can pair two fonts that seem identical at a glance and create a clear hierarchy purely through scale, weight, and letter-spacing.
       </p>
 
@@ -212,8 +238,8 @@ export default function FontPreview() {
         marginTop: '8px',
       }}>
         <p style={{
-          fontFamily: bodyFont.family,
-          fontSize: getFontSize('xs'),
+          fontFamily: caption.fontFamily,
+          fontSize: caption.fontSize,
           color: textMuted,
           lineHeight: 1.6,
         }}>

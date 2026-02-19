@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useCallback } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-import Fonts from './Fonts';
+import SemanticTypographyPanel from './SemanticTypographyPanel';
 import Corners from './Corners';
 import Spacing from './Spacing';
 import Shadows from './Shadows';
@@ -10,16 +10,18 @@ import Borders from './Borders';
 import ColorSystemBuilder from './ColorSystemBuilder';
 import IconLibraryPicker from './IconLibraryPicker';
 import ComponentsPanel from './ComponentsPanel';
+import SemanticTokensPanel from './SemanticTokensPanel';
 import BrandPanel from './BrandPanel';
-import { TbTypography, TbAdjustmentsHorizontal, TbPalette, TbMoon, TbSun, TbX, TbIcons, TbComponents, TbBriefcase } from 'react-icons/tb';
+import { TbTypography, TbAdjustmentsHorizontal, TbPalette, TbMoon, TbSun, TbX, TbIcons, TbComponents, TbBriefcase, TbPaletteOff } from 'react-icons/tb';
 
-type PanelId = 'typography' | 'icons' | 'spacing' | 'colors' | 'components' | 'brand';
+type PanelId = 'typography' | 'icons' | 'spacing' | 'colors' | 'semantic' | 'components' | 'brand';
 
 const NAV_ITEMS = [
   { id: 'typography'  as PanelId, label: 'Typography',  Icon: TbTypography },
   { id: 'icons'       as PanelId, label: 'Icons',       Icon: TbIcons },
   { id: 'spacing'     as PanelId, label: 'Spacing',     Icon: TbAdjustmentsHorizontal },
   { id: 'colors'      as PanelId, label: 'Colors',      Icon: TbPalette },
+  { id: 'semantic'    as PanelId, label: 'Semantic Tokens', Icon: TbPaletteOff },
   { id: 'components'  as PanelId, label: 'Components',  Icon: TbComponents },
   { id: 'brand'       as PanelId, label: 'Brand',       Icon: TbBriefcase },
 ];
@@ -107,6 +109,7 @@ export default function DesignSidebar() {
     icons:      'Icons',
     spacing:    'Spacing',
     colors:     'Colors',
+    semantic:   'Semantic Tokens',
     components: 'Components',
     brand:      'Brand',
   };
@@ -198,7 +201,7 @@ export default function DesignSidebar() {
           {/* Panel content */}
           <div className="flex-1 overflow-y-auto">
             <div className="p-4 space-y-5">
-              {activePanel === 'typography' && <Fonts />}
+              {activePanel === 'typography' && <SemanticTypographyPanel />}
 
               {activePanel === 'icons' && <IconLibraryPicker />}
 
@@ -212,6 +215,8 @@ export default function DesignSidebar() {
               )}
 
               {activePanel === 'colors' && <ColorSystemBuilder />}
+
+              {activePanel === 'semantic' && <SemanticTokensPanel />}
 
               {activePanel === 'components' && <ComponentsPanel />}
 

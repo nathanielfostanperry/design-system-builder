@@ -144,11 +144,18 @@ interface DesignSystemContextType {
   shadow: ShadowOption;
   setShadow: (shadow: ShadowOption) => void;
 
-  // Font control
+  // Font control (primitives)
   headingFont: FontOption;
   setHeadingFont: (font: FontOption) => void;
   bodyFont: FontOption;
   setBodyFont: (font: FontOption) => void;
+  codeFont: FontOption;
+  setCodeFont: (font: FontOption) => void;
+
+  // Semantic typography token overrides
+  typographyTokenOverrides: Record<string, { fontRef?: 'heading' | 'body' | 'code'; size?: string; weight?: string }>;
+  setTypographyTokenOverride: (tokenId: string, override: { fontRef?: 'heading' | 'body' | 'code'; size?: string; weight?: string }) => void;
+  resetTypographyTokenOverride: (tokenId: string) => void;
 
   // Dark mode control
   isDarkMode: boolean;
@@ -170,6 +177,11 @@ interface DesignSystemContextType {
   // Usage rules per palette (when to use this color)
   usageRulesMap: Record<string, string>;
   setUsageRules: (paletteId: string, rules: string) => void;
+
+  // Semantic token overrides (tokenId -> primitive ref e.g. "neutral-900")
+  semanticTokenOverrides: Record<string, string>;
+  setSemanticTokenOverride: (tokenId: string, primitiveRef: string) => void;
+  resetSemanticTokenOverride: (tokenId: string) => void;
 
   // Component → palette assignments
   componentPaletteMap: Record<string, string>;
@@ -236,9 +248,30 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
   // Shadow control
   const [shadow, setShadow] = useState<ShadowOption>(SHADOW_OPTIONS[0]);
 
-  // Font control
+  // Font control (primitives)
   const [headingFont, setHeadingFont] = useState<FontOption>(FONT_OPTIONS[0]);
   const [bodyFont, setBodyFont] = useState<FontOption>(FONT_OPTIONS[0]);
+  const [codeFont, setCodeFont] = useState<FontOption>(
+    FONT_OPTIONS.find((f) => f.family === 'Fira Code') ?? FONT_OPTIONS[0]
+  );
+
+  // Semantic typography token overrides
+  const [typographyTokenOverrides, setTypographyTokenOverrides] = useState<
+    Record<string, { fontRef?: 'heading' | 'body' | 'code'; size?: string; weight?: string }>
+  >({});
+  const setTypographyTokenOverride = (
+    tokenId: string,
+    override: { fontRef?: 'heading' | 'body' | 'code'; size?: string; weight?: string }
+  ) => {
+    setTypographyTokenOverrides((prev) => ({ ...prev, [tokenId]: { ...prev[tokenId], ...override } }));
+  };
+  const resetTypographyTokenOverride = (tokenId: string) => {
+    setTypographyTokenOverrides((prev) => {
+      const next = { ...prev };
+      delete next[tokenId];
+      return next;
+    });
+  };
 
   // Dark mode control
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -284,6 +317,19 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
   const [usageRulesMap, setUsageRulesMap] = useState<Record<string, string>>({});
   const setUsageRules = (paletteId: string, rules: string) => {
     setUsageRulesMap((prev) => ({ ...prev, [paletteId]: rules }));
+  };
+
+  // Semantic token overrides (tokenId -> primitive ref)
+  const [semanticTokenOverrides, setSemanticTokenOverrides] = useState<Record<string, string>>({});
+  const setSemanticTokenOverride = (tokenId: string, primitiveRef: string) => {
+    setSemanticTokenOverrides((prev) => ({ ...prev, [tokenId]: primitiveRef }));
+  };
+  const resetSemanticTokenOverride = (tokenId: string) => {
+    setSemanticTokenOverrides((prev) => {
+      const next = { ...prev };
+      delete next[tokenId];
+      return next;
+    });
   };
 
   // Component → palette map
@@ -440,6 +486,12 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     setHeadingFont,
     bodyFont,
     setBodyFont,
+    codeFont,
+    setCodeFont,
+
+    typographyTokenOverrides,
+    setTypographyTokenOverride,
+    resetTypographyTokenOverride,
 
     isDarkMode,
     setIsDarkMode,
@@ -457,6 +509,10 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
 
     usageRulesMap,
     setUsageRules,
+
+    semanticTokenOverrides,
+    setSemanticTokenOverride,
+    resetSemanticTokenOverride,
 
     componentPaletteMap,
     setComponentPalette,

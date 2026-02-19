@@ -28,11 +28,14 @@ export default function Home() {
     accentColorScale,
     neutralColorScale,
     extraPalettes,
+    semanticTokenOverrides,
+    headingFont,
+    bodyFont,
+    codeFont,
+    typographyTokenOverrides,
     spacing,
     radius,
     isDarkMode,
-    headingFont,
-    bodyFont,
     componentPaletteMap,
     componentSettingsMap,
   } = useDesignSystem();
@@ -324,6 +327,11 @@ export default function Home() {
                     accentColorScale={accentColorScale}
                     neutralColorScale={neutralColorScale}
                     extraPalettes={extraPalettes}
+                    semanticTokenOverrides={semanticTokenOverrides}
+                    headingFont={headingFont}
+                    bodyFont={bodyFont}
+                    codeFont={codeFont}
+                    typographyTokenOverrides={typographyTokenOverrides}
                     componentPaletteMap={componentPaletteMap}
                     componentSettingsMap={componentSettingsMap}
                     radius={radius}

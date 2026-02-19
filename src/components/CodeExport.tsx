@@ -2,12 +2,31 @@
 
 import React, { useState } from 'react';
 import type { ExtraPalette } from '@/context/DesignSystemContext';
+import type { FontOption } from '@/types/designSystem';
+import {
+  SEMANTIC_TOKEN_DEFINITIONS,
+  getEffectiveMapping,
+  resolvePrimitiveRef,
+} from '@/utils/semanticTokens';
+import {
+  SEMANTIC_TYPOGRAPHY_DEFINITIONS,
+  getEffectiveTypographyMapping,
+} from '@/utils/semanticTypography';
+
+const getFontWeightValue = (w: string) => ({ thin: '300', regular: '400', bold: '700', extrabold: '800' }[w] ?? '400');
+const getFontSizeValue = (s: string) =>
+  ({ xxs: '0.625rem', xs: '0.75rem', sm: '0.875rem', regular: '1rem', lg: '1.25rem', xl: '1.5rem', xxl: '2rem' }[s] ?? '1rem');
 
 interface CodeExportProps {
   primaryColorScale: Record<string, string>;
   accentColorScale: Record<string, string>;
   neutralColorScale: Record<string, string>;
   extraPalettes?: ExtraPalette[];
+  semanticTokenOverrides?: Record<string, string>;
+  headingFont?: FontOption;
+  bodyFont?: FontOption;
+  codeFont?: FontOption;
+  typographyTokenOverrides?: Record<string, { fontRef?: string; size?: string; weight?: string }>;
   componentPaletteMap?: Record<string, string>;
   componentSettingsMap?: Record<string, Record<string, string>>;
   radius: { name: string; label: string };
@@ -27,6 +46,11 @@ const CodeExport: React.FC<CodeExportProps> = ({
   accentColorScale,
   neutralColorScale,
   extraPalettes = [],
+  semanticTokenOverrides = {},
+  headingFont,
+  bodyFont,
+  codeFont,
+  typographyTokenOverrides = {},
   componentPaletteMap = {},
   componentSettingsMap = {},
   radius,
@@ -69,9 +93,63 @@ const CodeExport: React.FC<CodeExportProps> = ({
     css += `  --radius: ${radius.name};\n`;
     css += `  --spacing: ${spacing.name};\n`;
 
-    // ── Component palette assignments ─────────────────────
+    // ── Font primitives ───────────────────────────────────
+    if (headingFont && bodyFont && codeFont) {
+      css += `\n  /* Font primitives */\n`;
+      css += `  --font-heading: ${headingFont.family}, sans-serif;\n`;
+      css += `  --font-body: ${bodyFont.family}, sans-serif;\n`;
+      css += `  --font-code: ${codeFont.family}, monospace;\n`;
+
+      // ── Semantic typography tokens ─────────────────────
+      css += `\n  /* Semantic typography tokens */\n`;
+      const fontMap = { heading: headingFont, body: bodyFont, code: codeFont };
+      SEMANTIC_TYPOGRAPHY_DEFINITIONS.forEach((token) => {
+        const { fontRef, size, weight } = getEffectiveTypographyMapping(token.id, typographyTokenOverrides);
+        const font = fontMap[fontRef];
+        const sizeVal = getFontSizeValue(size ?? token.defaultSize ?? font.size);
+        const weightVal = getFontWeightValue(weight ?? token.defaultWeight ?? font.weight);
+        css += `  /* ${token.description} */\n`;
+        css += `  --font-semantic-${token.id}: var(--font-${fontRef});\n`;
+        css += `  --font-size-semantic-${token.id}: ${sizeVal};\n`;
+        css += `  --font-weight-semantic-${token.id}: ${weightVal};\n`;
+      });
+    }
+
+    // ── Semantic tokens (purpose-driven, map to primitives) ─
+    css += `\n  /* Semantic tokens */\n`;
+    SEMANTIC_TOKEN_DEFINITIONS.forEach((token) => {
+      const ref = getEffectiveMapping(token.id, semanticTokenOverrides);
+      if (!ref) return;
+      let value: string;
+      if (token.id === 'interactive-focus-ring') {
+        // Focus ring with 50% opacity for accessibility
+        const [palette, shade] = ref.split('-');
+        const varRef = palette && shade ? `var(--color-${palette}-${shade})` : ref;
+        value = `color-mix(in srgb, ${varRef} 50%, transparent)`;
+      } else {
+        value = resolvePrimitiveRef(ref);
+      }
+      css += `  /* ${token.description} */\n`;
+      css += `  --semantic-${token.id}: ${value};\n`;
+    });
+
+    // ── Component assignments (semantic tokens where possible) ─────────
+    css += `\n  /* Component assignments (reference semantic tokens) */\n`;
+    // Primary button uses interactive semantic tokens
+    css += `  --component-button-primary-bg: var(--semantic-interactive-default);\n`;
+    css += `  --component-button-primary-bg-hover: var(--semantic-interactive-hover);\n`;
+    css += `  --component-button-primary-bg-active: var(--semantic-interactive-active);\n`;
+    css += `  --component-button-primary-text: var(--semantic-text-on-brand);\n`;
+    css += `  --component-button-primary-border: var(--semantic-border-default);\n`;
+    css += `  --component-button-primary-focus-ring: var(--semantic-interactive-focus-ring);\n`;
+    // Secondary button, input, etc. use border/surface semantics
+    css += `  --component-button-secondary-border: var(--semantic-border-default);\n`;
+    css += `  --component-input-border: var(--semantic-border-default);\n`;
+    css += `  --component-input-border-focus: var(--semantic-border-focus);\n`;
+    css += `  --component-card-surface: var(--semantic-background-surface);\n`;
+    // Legacy palette assignments (for components using useComponentPalette)
     if (Object.keys(componentPaletteMap).length > 0) {
-      css += `\n  /* Component palette assignments */\n`;
+      css += `\n  /* Component palette assignments (legacy) */\n`;
       Object.entries(componentPaletteMap).forEach(([componentId, paletteId]) => {
         css += `  --component-${componentId}-palette: ${paletteId};\n`;
       });
@@ -121,8 +199,58 @@ const CodeExport: React.FC<CodeExportProps> = ({
     scss += `$radius: ${radius.name};\n`;
     scss += `$spacing: ${spacing.name};\n`;
 
+    if (headingFont && bodyFont && codeFont) {
+      scss += `\n// ── Font primitives ─────────────────────────────────\n`;
+      scss += `$font-heading: ${headingFont.family}, sans-serif;\n`;
+      scss += `$font-body: ${bodyFont.family}, sans-serif;\n`;
+      scss += `$font-code: ${codeFont.family}, monospace;\n`;
+
+      scss += `\n// ── Semantic typography tokens ─────────────────────\n`;
+      const fontMap = { heading: headingFont, body: bodyFont, code: codeFont };
+      SEMANTIC_TYPOGRAPHY_DEFINITIONS.forEach((token) => {
+        const { fontRef, size, weight } = getEffectiveTypographyMapping(token.id, typographyTokenOverrides);
+        const font = fontMap[fontRef];
+        const sizeVal = getFontSizeValue(size ?? token.defaultSize ?? font.size);
+        const weightVal = getFontWeightValue(weight ?? token.defaultWeight ?? font.weight);
+        scss += `// ${token.description}\n`;
+        scss += `$font-semantic-${token.id}: $font-${fontRef};\n`;
+        scss += `$font-size-semantic-${token.id}: ${sizeVal};\n`;
+        scss += `$font-weight-semantic-${token.id}: ${weightVal};\n`;
+      });
+    }
+
+    // Semantic tokens
+    scss += `\n// ── Semantic tokens ──────────────────────────────────\n`;
+    SEMANTIC_TOKEN_DEFINITIONS.forEach((token) => {
+      const ref = getEffectiveMapping(token.id, semanticTokenOverrides);
+      if (!ref) return;
+      let value: string;
+      if (token.id === 'interactive-focus-ring') {
+        const [palette, shade] = ref.split('-');
+        const varRef = palette && shade ? `var(--color-${palette}-${shade})` : ref;
+        value = `color-mix(in srgb, ${varRef} 50%, transparent)`;
+      } else {
+        value = resolvePrimitiveRef(ref);
+      }
+      scss += `// ${token.description}\n`;
+      scss += `$semantic-${token.id}: ${value};\n`;
+    });
+
+    // Component assignments (semantic tokens)
+    scss += `\n// ── Component assignments (reference semantic tokens) ───\n`;
+    scss += `$component-button-primary-bg: var(--semantic-interactive-default);\n`;
+    scss += `$component-button-primary-bg-hover: var(--semantic-interactive-hover);\n`;
+    scss += `$component-button-primary-bg-active: var(--semantic-interactive-active);\n`;
+    scss += `$component-button-primary-text: var(--semantic-text-on-brand);\n`;
+    scss += `$component-button-primary-border: var(--semantic-border-default);\n`;
+    scss += `$component-button-primary-focus-ring: var(--semantic-interactive-focus-ring);\n`;
+    scss += `$component-button-secondary-border: var(--semantic-border-default);\n`;
+    scss += `$component-input-border: var(--semantic-border-default);\n`;
+    scss += `$component-input-border-focus: var(--semantic-border-focus);\n`;
+    scss += `$component-card-surface: var(--semantic-background-surface);\n`;
+
     if (Object.keys(componentPaletteMap).length > 0) {
-      scss += `\n// ── Component Palette Assignments ────────────────────\n`;
+      scss += `\n// ── Component Palette Assignments (legacy) ─────────────\n`;
       Object.entries(componentPaletteMap).forEach(([componentId, paletteId]) => {
         scss += `$component-${componentId}-palette: ${paletteId};\n`;
       });
