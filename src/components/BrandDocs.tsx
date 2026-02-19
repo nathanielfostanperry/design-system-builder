@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
+import { useSemanticColor } from '@/hooks/useSemanticColor';
+import { useTypographyToken } from '@/hooks/useTypographyToken';
 import type { BrandSettings, IsIsNotRow } from '@/context/DesignSystemContext';
 
 type DocTab = 'values' | 'positioning' | 'voice';
@@ -9,16 +11,27 @@ type DocTab = 'values' | 'positioning' | 'voice';
 // ── Shared doc renderers ──────────────────────────────────────────────────────
 
 function useDocStyles() {
-  const { isDarkMode, neutralColorScale, primaryColorScale, headingFont, bodyFont } = useDesignSystem();
+  const { neutralColorScale } = useDesignSystem();
+  const textPrimary = useSemanticColor('text-primary');
+  const textSecondary = useSemanticColor('text-secondary');
+  const borderColor = useSemanticColor('border-default');
+  const textBrand = useSemanticColor('text-brand');
+  const bgSubtle = useSemanticColor('background-subtle');
+  const heading4 = useTypographyToken('heading-4');
+  const body = useTypographyToken('body');
+  const overline = useTypographyToken('overline');
+  const caption = useTypographyToken('caption');
+
   return {
-    isDarkMode,
-    textPrimary:   isDarkMode ? neutralColorScale['100'] : neutralColorScale['900'],
-    textSecondary: isDarkMode ? neutralColorScale['400'] : neutralColorScale['500'],
-    border:        isDarkMode ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)',
-    accent:        isDarkMode ? primaryColorScale['400']  : primaryColorScale['600'],
-    tagBg:         isDarkMode ? neutralColorScale['800']  : neutralColorScale['100'],
-    headingFont: headingFont.family,
-    bodyFont: bodyFont.family,
+    textPrimary,
+    textSecondary,
+    border: borderColor,
+    accent: textBrand,
+    tagBg: bgSubtle,
+    headingFont: heading4.fontFamily,
+    bodyFont: body.fontFamily,
+    overlineFont: overline.fontFamily,
+    captionFont: caption.fontFamily,
     neutralColorScale,
   };
 }
@@ -31,7 +44,7 @@ function Placeholder({ text }: { text: string }) {
 function DocHeading({ children }: { children: React.ReactNode }) {
   const s = useDocStyles();
   return (
-    <h2 style={{ fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: s.accent, fontFamily: s.bodyFont, marginBottom: 12 }}>
+    <h2 style={{ fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: s.accent, fontFamily: s.overlineFont, marginBottom: 12 }}>
       {children}
     </h2>
   );

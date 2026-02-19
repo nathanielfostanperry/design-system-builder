@@ -2,7 +2,8 @@
 
 import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-import { useComponentPalette } from '@/hooks/useComponentPalette';
+import { useSemanticColor } from '@/hooks/useSemanticColor';
+import { useTypographyToken } from '@/hooks/useTypographyToken';
 import * as Switch from '@radix-ui/react-switch';
 
 const XIcon = () => (
@@ -12,8 +13,19 @@ const XIcon = () => (
 );
 
 export default function DemoChips() {
-  const { radius, isDarkMode, setIsDarkMode, accentColorScale, neutralColorScale } = useDesignSystem();
-  const badgeScale = useComponentPalette('badge');
+  const { radius, setIsDarkMode, isDarkMode } = useDesignSystem();
+  const bgSubtle = useSemanticColor('background-subtle');
+  const textPrimary = useSemanticColor('text-primary');
+  const brandPrimary = useSemanticColor('brand-primary');
+  const statusInfoBg = useSemanticColor('status-info-bg');
+  const statusInfoText = useSemanticColor('status-info-text');
+  const statusSuccessBg = useSemanticColor('status-success-bg');
+  const statusSuccessText = useSemanticColor('status-success-text');
+  const statusWarningBg = useSemanticColor('status-warning-bg');
+  const statusWarningText = useSemanticColor('status-warning-text');
+  const statusErrorBg = useSemanticColor('status-error-bg');
+  const statusErrorText = useSemanticColor('status-error-text');
+  const label = useTypographyToken('label');
 
   return (
     <div className="space-y-6">
@@ -21,7 +33,7 @@ export default function DemoChips() {
       <div className="flex items-center justify-between">
         <span
           className="text-sm font-medium"
-          style={{ color: isDarkMode ? neutralColorScale['300'] : neutralColorScale['700'] }}
+          style={{ fontFamily: label.fontFamily, fontSize: label.fontSize, color: textPrimary }}
         >
           Theme
         </span>
@@ -29,7 +41,7 @@ export default function DemoChips() {
           checked={isDarkMode}
           onCheckedChange={setIsDarkMode}
           className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 ${radius.name}`}
-          style={{ backgroundColor: isDarkMode ? badgeScale['600'] : neutralColorScale['200'] }}
+          style={{ backgroundColor: isDarkMode ? brandPrimary : bgSubtle }}
         >
           <Switch.Thumb
             className={`pointer-events-none relative inline-block h-6 w-6 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${isDarkMode ? 'translate-x-5' : 'translate-x-0'}`}
@@ -45,8 +57,9 @@ export default function DemoChips() {
         <span
           className={`inline-flex items-center px-3 py-1 text-sm font-medium ${radius.name}`}
           style={{
-            backgroundColor: isDarkMode ? neutralColorScale['700'] : neutralColorScale['100'],
-            color: isDarkMode ? neutralColorScale['200'] : neutralColorScale['800'],
+            fontFamily: label.fontFamily,
+            backgroundColor: bgSubtle,
+            color: textPrimary,
           }}
         >
           Default
@@ -54,8 +67,9 @@ export default function DemoChips() {
         <span
           className={`inline-flex items-center px-3 py-1 text-sm font-medium ${radius.name}`}
           style={{
-            backgroundColor: isDarkMode ? badgeScale['900'] : badgeScale['100'],
-            color: isDarkMode ? badgeScale['100'] : badgeScale['800'],
+            fontFamily: label.fontFamily,
+            backgroundColor: statusInfoBg,
+            color: statusInfoText,
           }}
         >
           Primary
@@ -63,8 +77,9 @@ export default function DemoChips() {
         <span
           className={`inline-flex items-center px-3 py-1 text-sm font-medium ${radius.name}`}
           style={{
-            backgroundColor: isDarkMode ? accentColorScale['900'] : accentColorScale['100'],
-            color: isDarkMode ? accentColorScale['100'] : accentColorScale['800'],
+            fontFamily: label.fontFamily,
+            backgroundColor: statusWarningBg,
+            color: statusWarningText,
           }}
         >
           Accent
@@ -73,9 +88,24 @@ export default function DemoChips() {
 
       {/* Status chips */}
       <div className="flex flex-wrap gap-2">
-        <span className={`inline-flex items-center px-3 py-1 bg-green-100 text-green-800 text-sm font-medium ${radius.name}`}>Success</span>
-        <span className={`inline-flex items-center px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium ${radius.name}`}>Warning</span>
-        <span className={`inline-flex items-center px-3 py-1 bg-red-100 text-red-800 text-sm font-medium ${radius.name}`}>Error</span>
+        <span
+          className={`inline-flex items-center px-3 py-1 text-sm font-medium ${radius.name}`}
+          style={{ fontFamily: label.fontFamily, backgroundColor: statusSuccessBg, color: statusSuccessText }}
+        >
+          Success
+        </span>
+        <span
+          className={`inline-flex items-center px-3 py-1 text-sm font-medium ${radius.name}`}
+          style={{ fontFamily: label.fontFamily, backgroundColor: statusWarningBg, color: statusWarningText }}
+        >
+          Warning
+        </span>
+        <span
+          className={`inline-flex items-center px-3 py-1 text-sm font-medium ${radius.name}`}
+          style={{ fontFamily: label.fontFamily, backgroundColor: statusErrorBg, color: statusErrorText }}
+        >
+          Error
+        </span>
       </div>
 
       {/* Interactive chips */}
@@ -83,8 +113,9 @@ export default function DemoChips() {
         <button
           className={`inline-flex items-center px-3 py-1 text-sm font-medium hover:opacity-80 transition-opacity ${radius.name}`}
           style={{
-            backgroundColor: isDarkMode ? badgeScale['900'] : badgeScale['100'],
-            color: isDarkMode ? badgeScale['100'] : badgeScale['800'],
+            fontFamily: label.fontFamily,
+            backgroundColor: statusSuccessBg,
+            color: statusSuccessText,
           }}
         >
           Interactive <XIcon />
@@ -92,8 +123,9 @@ export default function DemoChips() {
         <button
           className={`inline-flex items-center px-3 py-1 text-sm font-medium hover:opacity-80 transition-opacity ${radius.name}`}
           style={{
-            backgroundColor: isDarkMode ? accentColorScale['900'] : accentColorScale['100'],
-            color: isDarkMode ? accentColorScale['100'] : accentColorScale['800'],
+            fontFamily: label.fontFamily,
+            backgroundColor: statusWarningBg,
+            color: statusWarningText,
           }}
         >
           Removable <XIcon />

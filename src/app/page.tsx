@@ -4,6 +4,8 @@ import { useState } from 'react';
 import * as Tabs from '@radix-ui/react-tabs';
 import ColorScaleDisplay from '@/components/ColorScaleDisplay';
 import { useDesignSystem } from '@/context/DesignSystemContext';
+import { useSemanticColor } from '@/hooks/useSemanticColor';
+import { useTypographyToken } from '@/hooks/useTypographyToken';
 import DemoInput from '@/components/demo/DemoInput';
 import DemoToast from '@/components/demo/DemoToast';
 import DemoDropdown from '@/components/demo/DemoDropdown';
@@ -36,33 +38,18 @@ export default function Home() {
     spacing,
     radius,
     isDarkMode,
-    componentPaletteMap,
-    componentSettingsMap,
   } = useDesignSystem();
-  // Whisper-quiet borders: rgba with low opacity
-  const getBorderColor = (opacity: number = 0.08) => {
-    if (isDarkMode) {
-      return `rgba(255, 255, 255, ${opacity})`;
-    }
-    return `rgba(0, 0, 0, ${opacity})`;
-  };
 
-  // Surface elevation: subtle lightness shifts
-  const getSurfaceColor = (elevation: number = 0) => {
-    if (isDarkMode) {
-      const base = 15; // neutralColorScale['900'] ≈ rgb(15, 15, 15)
-      const lighten = elevation * 1.5;
-      return `rgb(${base + lighten}, ${base + lighten}, ${base + lighten})`;
-    }
-    return elevation === 0 ? 'white' : `rgb(255, 255, 255)`;
-  };
+  const bgBase = useSemanticColor('background-base');
+  const bgSurface = useSemanticColor('background-surface');
+  const borderColor = useSemanticColor('border-default');
+  const textPrimary = useSemanticColor('text-primary');
+  const textTertiary = useSemanticColor('text-tertiary');
+  const bodyToken = useTypographyToken('body');
 
-  // Text hierarchy
   const textColors = {
-    primary: isDarkMode ? neutralColorScale['100'] : neutralColorScale['900'],
-    secondary: isDarkMode ? neutralColorScale['300'] : neutralColorScale['600'],
-    tertiary: isDarkMode ? neutralColorScale['400'] : neutralColorScale['500'],
-    muted: isDarkMode ? neutralColorScale['500'] : neutralColorScale['400'],
+    primary: textPrimary,
+    tertiary: textTertiary,
   };
 
   const [activeTab, setActiveTab] = useState('colors');
@@ -71,10 +58,8 @@ export default function Home() {
     <main
       className="h-screen flex flex-col overflow-hidden"
       style={{
-        backgroundColor: isDarkMode
-          ? neutralColorScale["900"]
-          : neutralColorScale["50"],
-        fontFamily: bodyFont.family,
+        backgroundColor: bgBase,
+        fontFamily: bodyToken.fontFamily,
       }}
     >
       {/* Main workspace */}
@@ -92,8 +77,8 @@ export default function Home() {
             <div
               className="sticky top-0 z-40 border-b px-6"
               style={{
-                backgroundColor: getSurfaceColor(1),
-                borderColor: getBorderColor(0.08),
+                backgroundColor: bgSurface,
+                borderColor,
                 backdropFilter: "blur(8px)",
               }}
             >
@@ -332,8 +317,6 @@ export default function Home() {
                     bodyFont={bodyFont}
                     codeFont={codeFont}
                     typographyTokenOverrides={typographyTokenOverrides}
-                    componentPaletteMap={componentPaletteMap}
-                    componentSettingsMap={componentSettingsMap}
                     radius={radius}
                     spacing={spacing}
                   />

@@ -27,8 +27,6 @@ interface CodeExportProps {
   bodyFont?: FontOption;
   codeFont?: FontOption;
   typographyTokenOverrides?: Record<string, { fontRef?: string; size?: string; weight?: string }>;
-  componentPaletteMap?: Record<string, string>;
-  componentSettingsMap?: Record<string, Record<string, string>>;
   radius: { name: string; label: string };
   spacing: { name: string; label: string };
 }
@@ -36,10 +34,6 @@ interface CodeExportProps {
 // Convert a human name like "Accent 1" or "My Brand Color" to a CSS-safe slug
 const toSlug = (name: string) =>
   name.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-
-// Convert camelCase key like "arrowType" to "arrow-type"
-const camelToKebab = (key: string) =>
-  key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 
 const CodeExport: React.FC<CodeExportProps> = ({
   primaryColorScale,
@@ -51,8 +45,6 @@ const CodeExport: React.FC<CodeExportProps> = ({
   bodyFont,
   codeFont,
   typographyTokenOverrides = {},
-  componentPaletteMap = {},
-  componentSettingsMap = {},
   radius,
   spacing,
 }) => {
@@ -147,23 +139,6 @@ const CodeExport: React.FC<CodeExportProps> = ({
     css += `  --component-input-border: var(--semantic-border-default);\n`;
     css += `  --component-input-border-focus: var(--semantic-border-focus);\n`;
     css += `  --component-card-surface: var(--semantic-background-surface);\n`;
-    // Legacy palette assignments (for components using useComponentPalette)
-    if (Object.keys(componentPaletteMap).length > 0) {
-      css += `\n  /* Component palette assignments (legacy) */\n`;
-      Object.entries(componentPaletteMap).forEach(([componentId, paletteId]) => {
-        css += `  --component-${componentId}-palette: ${paletteId};\n`;
-      });
-    }
-
-    // ── Component style settings ──────────────────────────
-    if (Object.keys(componentSettingsMap).length > 0) {
-      css += `\n  /* Component style settings */\n`;
-      Object.entries(componentSettingsMap).forEach(([componentId, settings]) => {
-        Object.entries(settings).forEach(([key, value]) => {
-          css += `  --component-${componentId}-${camelToKebab(key)}: ${value};\n`;
-        });
-      });
-    }
 
     css += `}`;
     return css;
@@ -248,22 +223,6 @@ const CodeExport: React.FC<CodeExportProps> = ({
     scss += `$component-input-border: var(--semantic-border-default);\n`;
     scss += `$component-input-border-focus: var(--semantic-border-focus);\n`;
     scss += `$component-card-surface: var(--semantic-background-surface);\n`;
-
-    if (Object.keys(componentPaletteMap).length > 0) {
-      scss += `\n// ── Component Palette Assignments (legacy) ─────────────\n`;
-      Object.entries(componentPaletteMap).forEach(([componentId, paletteId]) => {
-        scss += `$component-${componentId}-palette: ${paletteId};\n`;
-      });
-    }
-
-    if (Object.keys(componentSettingsMap).length > 0) {
-      scss += `\n// ── Component Style Settings ─────────────────────────\n`;
-      Object.entries(componentSettingsMap).forEach(([componentId, settings]) => {
-        Object.entries(settings).forEach(([key, value]) => {
-          scss += `$component-${componentId}-${camelToKebab(key)}: ${value};\n`;
-        });
-      });
-    }
 
     return scss;
   };

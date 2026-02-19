@@ -2,37 +2,38 @@
 
 import React, { useState } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-import { useComponentPalette } from '@/hooks/useComponentPalette';
-import { useComponentSettings } from '@/hooks/useComponentSettings';
+import { useSemanticColor } from '@/hooks/useSemanticColor';
+import { useTypographyToken } from '@/hooks/useTypographyToken';
 import * as Slider from '@radix-ui/react-slider';
 
 export default function DemoSlider() {
-  const { radius, isDarkMode } = useDesignSystem();
-  const scale    = useComponentPalette('slider');
-  const settings = useComponentSettings('slider');
-  const [sliderValue, setSliderValue] = useState([50]);
+  const { radius } = useDesignSystem();
+  const bgSurface = useSemanticColor('background-surface');
+  const borderColor = useSemanticColor('border-default');
+  const textPrimary = useSemanticColor('text-primary');
+  const textSecondary = useSemanticColor('text-secondary');
+  const interactiveDefault = useSemanticColor('interactive-default');
+  const label = useTypographyToken('label');
+  const body = useTypographyToken('body');
 
-  const showLabels = (settings.labels ?? 'show') === 'show';
+  const [sliderValue, setSliderValue] = useState([50]);
 
   return (
     <div
       className={`p-4 ${radius.name} border`}
-      style={{
-        backgroundColor: isDarkMode ? scale['800'] : 'white',
-        borderColor: isDarkMode ? scale['700'] : scale['200'],
-      }}
+      style={{ backgroundColor: bgSurface, borderColor }}
     >
       <div className="flex flex-col gap-3">
         <div className="flex justify-between items-center">
           <label
             className="text-sm font-medium"
-            style={{ color: isDarkMode ? scale['200'] : scale['700'] }}
+            style={{ fontFamily: label.fontFamily, fontSize: label.fontSize, color: textPrimary }}
           >
             Slider
           </label>
           <span
-            className="text-sm font-mono tabular-nums"
-            style={{ color: isDarkMode ? scale['300'] : scale['600'] }}
+            className="text-sm tabular-nums"
+            style={{ fontFamily: body.fontFamily, color: textSecondary }}
           >
             {sliderValue[0]}
           </span>
@@ -48,29 +49,27 @@ export default function DemoSlider() {
         >
           <Slider.Track
             className="relative flex-1 h-2 rounded-full"
-            style={{ backgroundColor: isDarkMode ? scale['700'] : scale['200'] }}
+            style={{ backgroundColor: borderColor }}
           >
             <Slider.Range
               className="absolute h-full rounded-full"
-              style={{ backgroundColor: scale['600'] }}
+              style={{ backgroundColor: interactiveDefault }}
             />
           </Slider.Track>
           <Slider.Thumb
             className="block w-5 h-5 rounded-full outline-none focus:ring-2 focus:ring-offset-2"
-            style={{ backgroundColor: scale['600'] }}
+            style={{ backgroundColor: interactiveDefault }}
           />
         </Slider.Root>
 
-        {showLabels && (
-          <div
-            className="flex justify-between text-xs"
-            style={{ color: isDarkMode ? scale['400'] : scale['500'] }}
-          >
-            <span>0</span>
-            <span>50</span>
-            <span>100</span>
-          </div>
-        )}
+        <div
+          className="flex justify-between text-xs"
+          style={{ fontFamily: body.fontFamily, color: textSecondary }}
+        >
+          <span>0</span>
+          <span>50</span>
+          <span>100</span>
+        </div>
       </div>
     </div>
   );

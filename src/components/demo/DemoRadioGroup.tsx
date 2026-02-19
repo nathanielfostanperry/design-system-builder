@@ -2,7 +2,8 @@
 
 import React, { useState } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-import { useComponentPalette } from '@/hooks/useComponentPalette';
+import { useSemanticColor } from '@/hooks/useSemanticColor';
+import { useTypographyToken } from '@/hooks/useTypographyToken';
 import * as RadioGroup from '@radix-ui/react-radio-group';
 
 const radioOptions = [
@@ -26,8 +27,14 @@ function CheckIcon() {
 }
 
 export default function DemoRadioGroup() {
-  const { radius, spacing, isDarkMode } = useDesignSystem();
-  const scale = useComponentPalette('radio-group');
+  const { radius, spacing } = useDesignSystem();
+  const bgSurface = useSemanticColor('background-surface');
+  const borderColor = useSemanticColor('border-default');
+  const textPrimary = useSemanticColor('text-primary');
+  const textSecondary = useSemanticColor('text-secondary');
+  const interactiveDefault = useSemanticColor('interactive-default');
+  const overline = useTypographyToken('overline');
+  const body = useTypographyToken('body');
 
   const [checked, setChecked] = useState<Set<string>>(new Set(['check1', 'check3']));
 
@@ -40,39 +47,32 @@ export default function DemoRadioGroup() {
     });
   };
 
-  const textColor = isDarkMode ? scale['100'] : scale['900'];
-  const borderClr = isDarkMode ? scale['600'] : scale['300'];
-
   return (
     <div
       className={`p-4 ${radius.name} border`}
-      style={{
-        backgroundColor: isDarkMode ? scale['800'] : 'white',
-        borderColor: isDarkMode ? scale['700'] : scale['200'],
-      }}
+      style={{ backgroundColor: bgSurface, borderColor }}
     >
-      {/* Radio group */}
-      <p className="text-xs font-semibold uppercase tracking-wider mb-2.5" style={{ color: isDarkMode ? scale['400'] : scale['500'] }}>
+      <p className="text-xs font-semibold uppercase tracking-wider mb-2.5" style={{ fontFamily: overline.fontFamily, fontSize: overline.fontSize, color: textSecondary }}>
         Single Select
       </p>
-      <RadioGroup.Root defaultValue="option1" className={`${spacing.name}`}>
+      <RadioGroup.Root defaultValue="option1" className={spacing.name}>
         {radioOptions.map((option) => (
           <div key={option.id} className="flex items-center space-x-3">
             <RadioGroup.Item
               value={option.id}
               id={option.id}
               className="w-4 h-4 rounded-full border-2 outline-none focus:ring-2 focus:ring-offset-2 flex-shrink-0"
-              style={{ borderColor: borderClr }}
+              style={{ borderColor }}
             >
               <RadioGroup.Indicator
                 className="flex items-center justify-center w-full h-full relative after:content-[''] after:block after:w-2 after:h-2 after:rounded-full"
-                style={{ backgroundColor: scale['600'] }}
+                style={{ backgroundColor: interactiveDefault }}
               />
             </RadioGroup.Item>
             <label
               htmlFor={option.id}
               className="cursor-pointer text-sm"
-              style={{ color: textColor }}
+              style={{ fontFamily: body.fontFamily, color: textPrimary }}
             >
               {option.label}
             </label>
@@ -80,17 +80,12 @@ export default function DemoRadioGroup() {
         ))}
       </RadioGroup.Root>
 
-      {/* Divider */}
-      <div
-        className="my-3"
-        style={{ borderTop: `1px solid ${isDarkMode ? scale['700'] : scale['100']}` }}
-      />
+      <div className="my-3" style={{ borderTop: `1px solid ${borderColor}` }} />
 
-      {/* Checkbox group */}
-      <p className="text-xs font-semibold uppercase tracking-wider mb-2.5" style={{ color: isDarkMode ? scale['400'] : scale['500'] }}>
+      <p className="text-xs font-semibold uppercase tracking-wider mb-2.5" style={{ fontFamily: overline.fontFamily, fontSize: overline.fontSize, color: textSecondary }}>
         Multi Select
       </p>
-      <div className={`${spacing.name}`}>
+      <div className={spacing.name}>
         {checkboxOptions.map((option) => {
           const isChecked = checked.has(option.id);
           return (
@@ -99,17 +94,16 @@ export default function DemoRadioGroup() {
               className="flex items-center space-x-3 cursor-pointer"
               onClick={() => toggleCheck(option.id)}
             >
-              {/* Custom checkbox */}
               <div
-                className={`w-4 h-4 flex-shrink-0 flex items-center justify-center border-2 transition-colors ${radius.name === 'rounded-full' ? 'rounded-sm' : 'rounded-sm'}`}
+                className={`w-4 h-4 flex-shrink-0 flex items-center justify-center border-2 rounded-sm transition-colors`}
                 style={{
-                  borderColor: isChecked ? scale['600'] : borderClr,
-                  backgroundColor: isChecked ? scale['600'] : 'transparent',
+                  borderColor: isChecked ? interactiveDefault : borderColor,
+                  backgroundColor: isChecked ? interactiveDefault : 'transparent',
                 }}
               >
                 {isChecked && <CheckIcon />}
               </div>
-              <span className="text-sm select-none" style={{ color: textColor }}>
+              <span className="text-sm select-none" style={{ fontFamily: body.fontFamily, color: textPrimary }}>
                 {option.label}
               </span>
             </div>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-import { useComponentPalette } from '@/hooks/useComponentPalette';
+import { useSemanticColor } from '@/hooks/useSemanticColor';
 import { HiHeart } from 'react-icons/hi';
 import { BiHeart } from 'react-icons/bi';
 import { FaHeart } from 'react-icons/fa';
@@ -21,7 +21,8 @@ const ICON_MAP = {
 
 export default function DemoIconButtonSecondary() {
   const { radius, iconLibrary } = useDesignSystem();
-  const scale = useComponentPalette('button-secondary');
+  const textBrand = useSemanticColor('text-brand');
+  const borderColor = useSemanticColor('border-default');
   const Icon = ICON_MAP[iconLibrary as keyof typeof ICON_MAP] ?? ICON_MAP.hi;
 
   return (
@@ -29,8 +30,8 @@ export default function DemoIconButtonSecondary() {
       className={`p-2 ${radius.name} transition-colors hover:opacity-80`}
       style={{
         backgroundColor: 'transparent',
-        color: scale['500'],
-        border: `1px solid ${scale['200']}`,
+        color: textBrand,
+        border: `1px solid ${borderColor}`,
       }}
     >
       <Icon size={20} />

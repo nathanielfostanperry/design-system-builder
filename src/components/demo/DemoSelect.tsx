@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-import { useComponentPalette } from '@/hooks/useComponentPalette';
-import { useComponentSettings } from '@/hooks/useComponentSettings';
+import { useSemanticColor } from '@/hooks/useSemanticColor';
+import { useTypographyToken } from '@/hooks/useTypographyToken';
 import * as Select from '@radix-ui/react-select';
 import * as Label from '@radix-ui/react-label';
 
@@ -14,56 +14,40 @@ const OPTIONS = [
   { value: 'guidelines', label: 'Guidelines' },
 ];
 
-const SIZE_PADDING = {
-  compact:     'px-3 py-1.5',
-  default:     'px-3 py-2',
-  comfortable: 'px-3 py-3',
-};
-
 export default function DemoSelect() {
-  const { radius, isDarkMode, headingFont, bodyFont } = useDesignSystem();
-  const scale    = useComponentPalette('input');
-  const settings = useComponentSettings('input');
+  const { radius } = useDesignSystem();
+  const bgSurface = useSemanticColor('background-surface');
+  const bgSubtle = useSemanticColor('background-subtle');
+  const borderColor = useSemanticColor('border-default');
+  const textPrimary = useSemanticColor('text-primary');
+  const textTertiary = useSemanticColor('text-tertiary');
+  const labelToken = useTypographyToken('label');
+  const body = useTypographyToken('body');
+
   const [value, setValue] = useState('');
-
-  const bg     = settings.background ?? 'solid';
-  const border = settings.border     ?? 'sm';
-  const size   = settings.size       ?? 'default';
-
-  const padding = SIZE_PADDING[(size as keyof typeof SIZE_PADDING)] ?? SIZE_PADDING.default;
-
-  const getBg = () => {
-    if (bg === 'tinted') return isDarkMode ? scale['800'] : scale['50'];
-    if (bg === 'none')   return 'transparent';
-    return isDarkMode ? 'rgb(55, 65, 81)' : 'white';
-  };
-
-  const borderWidth = border === 'none' ? '0' : border === 'lg' ? '2px' : '1px';
-  const textColor   = isDarkMode ? scale['100'] : scale['900'];
-  const mutedClr    = isDarkMode ? scale['500'] : scale['400'];
-
-  const inputStyle = {
-    fontFamily: bodyFont.family,
-    backgroundColor: getBg(),
-    borderWidth,
-    borderStyle: 'solid' as const,
-    borderColor: isDarkMode ? scale['600'] : scale['200'],
-    color: value ? textColor : mutedClr,
-  };
+  const textColor = value ? textPrimary : textTertiary;
 
   return (
     <div>
       <Label.Root
-        className="block text-sm font-medium mb-1"
-        style={{ fontFamily: headingFont.family, color: isDarkMode ? scale['300'] : scale['700'] }}
+        className="block mb-1"
+        style={{ fontFamily: labelToken.fontFamily, fontSize: labelToken.fontSize, fontWeight: labelToken.fontWeight, color: textPrimary }}
       >
         Select Option
       </Label.Root>
 
       <Select.Root value={value} onValueChange={setValue}>
         <Select.Trigger
-          className={`w-full flex items-center justify-between text-sm outline-none transition-colors ${padding} ${radius.name}`}
-          style={inputStyle}
+          className={`w-full flex items-center justify-between text-sm outline-none transition-colors px-3 py-2 ${radius.name}`}
+          style={{
+            fontFamily: body.fontFamily,
+            fontSize: body.fontSize,
+            backgroundColor: bgSurface,
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor,
+            color: textColor,
+          }}
         >
           <Select.Value placeholder="Choose an option…" />
           <Select.Icon>
@@ -78,10 +62,10 @@ export default function DemoSelect() {
             className={`shadow-lg z-50 overflow-hidden ${radius.name}`}
             sideOffset={4}
             style={{
-              backgroundColor: getBg() === 'transparent' ? (isDarkMode ? 'rgb(55,65,81)' : 'white') : getBg(),
-              borderWidth,
+              backgroundColor: bgSurface,
+              borderWidth: '1px',
               borderStyle: 'solid',
-              borderColor: isDarkMode ? scale['600'] : scale['200'],
+              borderColor,
               minWidth: 'var(--radix-select-trigger-width)',
             }}
           >
@@ -90,10 +74,10 @@ export default function DemoSelect() {
                 <Select.Item
                   key={opt.value}
                   value={opt.value}
-                  className={`text-sm outline-none cursor-pointer transition-colors ${padding} ${radius.name}`}
-                  style={{ fontFamily: bodyFont.family, color: textColor }}
-                  onFocus={(e)  => (e.currentTarget.style.backgroundColor = isDarkMode ? scale['700'] : scale['50'])}
-                  onBlur={(e)   => (e.currentTarget.style.backgroundColor = 'transparent')}
+                  className={`text-sm outline-none cursor-pointer transition-colors px-3 py-2 ${radius.name}`}
+                  style={{ fontFamily: body.fontFamily, color: textPrimary }}
+                  onFocus={(e) => (e.currentTarget.style.backgroundColor = bgSubtle)}
+                  onBlur={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
                 >
                   <Select.ItemText>{opt.label}</Select.ItemText>
                 </Select.Item>

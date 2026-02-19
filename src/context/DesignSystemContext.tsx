@@ -183,14 +183,6 @@ interface DesignSystemContextType {
   setSemanticTokenOverride: (tokenId: string, primitiveRef: string) => void;
   resetSemanticTokenOverride: (tokenId: string) => void;
 
-  // Component → palette assignments
-  componentPaletteMap: Record<string, string>;
-  setComponentPalette: (componentId: string, paletteId: string) => void;
-
-  // Component → style settings (e.g. layout, border type, arrow style)
-  componentSettingsMap: Record<string, Record<string, string>>;
-  setComponentSetting: (componentId: string, key: string, value: string) => void;
-
   // Brand identity
   brandSettings: BrandSettings;
   setBrandField: (key: keyof BrandSettings, value: unknown) => void;
@@ -330,38 +322,6 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
       delete next[tokenId];
       return next;
     });
-  };
-
-  // Component → palette map
-  const [componentPaletteMap, setComponentPaletteMapState] = useState<Record<string, string>>({
-    'button-primary':   'primary',
-    'button-secondary': 'neutral',
-    'icon-button':      'primary',
-    'card':             'primary',
-    'navigation':       'primary',
-    'input':            'neutral',
-    'radio-group':      'primary',
-    'slider':           'primary',
-    'badge':            'accent',
-    'accordion':        'primary',
-    'toast':            'accent',
-  });
-
-  const setComponentPalette = (componentId: string, paletteId: string) => {
-    setComponentPaletteMapState((prev) => ({ ...prev, [componentId]: paletteId }));
-  };
-
-  // Component style settings
-  const [componentSettingsMap, setComponentSettingsMapState] = useState<Record<string, Record<string, string>>>({
-    card:      { layout: 'horizontal', avatarShape: 'rounded', showActions: 'show' },
-    accordion: { arrowType: 'chevron', borderType: 'full', background: 'solid' },
-  });
-
-  const setComponentSetting = (componentId: string, key: string, value: string) => {
-    setComponentSettingsMapState((prev) => ({
-      ...prev,
-      [componentId]: { ...(prev[componentId] ?? {}), [key]: value },
-    }));
   };
 
   // Brand settings
@@ -513,12 +473,6 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     semanticTokenOverrides,
     setSemanticTokenOverride,
     resetSemanticTokenOverride,
-
-    componentPaletteMap,
-    setComponentPalette,
-
-    componentSettingsMap,
-    setComponentSetting,
 
     brandSettings,
     setBrandField,
