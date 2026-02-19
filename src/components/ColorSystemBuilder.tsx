@@ -43,6 +43,8 @@ interface PaletteRowProps {
   id: string;
   name: string;
   color: string;
+  usageRules: string;
+  onUsageRulesChange: (rules: string) => void;
   isBuiltIn: boolean;
   isExpanded: boolean;
   onToggle: () => void;
@@ -57,7 +59,7 @@ interface PaletteRowProps {
 }
 
 const PaletteRow: React.FC<PaletteRowProps> = ({
-  name, color, isBuiltIn, isExpanded, onToggle, onColorChange,
+  name, color, usageRules, onUsageRulesChange, isBuiltIn, isExpanded, onToggle, onColorChange,
   onNameChange, onRemove, isDarkMode, borderClr, bgColor, textPrimary, textMuted,
 }) => {
   const nameRef = useRef<HTMLInputElement>(null);
@@ -142,6 +144,24 @@ const PaletteRow: React.FC<PaletteRowProps> = ({
               </button>
             )}
           </div>
+          <div>
+            <label className="block text-xs font-medium mb-1" style={{ color: textMuted }}>
+              When to use this color
+            </label>
+            <textarea
+              value={usageRules}
+              onChange={(e) => onUsageRulesChange(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+              placeholder="e.g. Primary actions, links, key CTAs"
+              rows={2}
+              className="w-full px-2 py-1.5 text-xs rounded border outline-none resize-y min-h-[4rem]"
+              style={{
+                backgroundColor: isDarkMode ? '#1a1a1a' : '#fff',
+                borderColor: isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)',
+                color: isDarkMode ? '#e5e5e5' : '#111',
+              }}
+            />
+          </div>
         </div>
       )}
     </div>
@@ -155,6 +175,7 @@ const ColorSystemBuilder: React.FC = () => {
     accentColor,
     extraPalettes, addExtraPalette, removeExtraPalette,
     updateExtraPaletteColor, updateExtraPaletteName,
+    usageRulesMap, setUsageRules,
     isDarkMode, neutralColorScale,
   } = useDesignSystem();
 
@@ -196,6 +217,8 @@ const ColorSystemBuilder: React.FC = () => {
           id="primary"
           name="Primary"
           color={primaryColor}
+          usageRules={usageRulesMap['primary'] ?? ''}
+          onUsageRulesChange={(r) => setUsageRules('primary', r)}
           isBuiltIn
           isExpanded={expandedId === 'primary'}
           onToggle={() => toggle('primary')}
@@ -211,6 +234,8 @@ const ColorSystemBuilder: React.FC = () => {
           id="accent"
           name="Secondary"
           color={accentColor}
+          usageRules={usageRulesMap['accent'] ?? ''}
+          onUsageRulesChange={(r) => setUsageRules('accent', r)}
           isBuiltIn
           isExpanded={expandedId === 'accent'}
           onToggle={() => toggle('accent')}
@@ -229,6 +254,8 @@ const ColorSystemBuilder: React.FC = () => {
             id={palette.id}
             name={palette.name}
             color={palette.baseColor}
+            usageRules={usageRulesMap[palette.id] ?? ''}
+            onUsageRulesChange={(r) => setUsageRules(palette.id, r)}
             isBuiltIn={false}
             isExpanded={expandedId === palette.id}
             onToggle={() => toggle(palette.id)}

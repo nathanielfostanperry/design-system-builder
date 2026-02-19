@@ -167,6 +167,10 @@ interface DesignSystemContextType {
   updateExtraPaletteColor: (id: string, color: string) => void;
   updateExtraPaletteName: (id: string, name: string) => void;
 
+  // Usage rules per palette (when to use this color)
+  usageRulesMap: Record<string, string>;
+  setUsageRules: (paletteId: string, rules: string) => void;
+
   // Component → palette assignments
   componentPaletteMap: Record<string, string>;
   setComponentPalette: (componentId: string, paletteId: string) => void;
@@ -274,6 +278,12 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     setExtraPalettes((prev) =>
       prev.map((p) => (p.id === id ? { ...p, name } : p))
     );
+  };
+
+  // Usage rules per palette (when to use this color)
+  const [usageRulesMap, setUsageRulesMap] = useState<Record<string, string>>({});
+  const setUsageRules = (paletteId: string, rules: string) => {
+    setUsageRulesMap((prev) => ({ ...prev, [paletteId]: rules }));
   };
 
   // Component → palette map
@@ -444,6 +454,9 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     removeExtraPalette,
     updateExtraPaletteColor,
     updateExtraPaletteName,
+
+    usageRulesMap,
+    setUsageRules,
 
     componentPaletteMap,
     setComponentPalette,
