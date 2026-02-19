@@ -809,3 +809,60 @@ export function hslToHex(hsl: { h: number; s: number; l: number }): string {
   const rgb = hslToRgb(h, s, l);
   return rgbToHex(rgb.r, rgb.g, rgb.b);
 }
+
+/**
+ * Generates an 11-step color scale using the OKLCH perceptual color space.
+ *
+ * The hue and chroma are taken from the input color. Lightness follows a
+ * fixed perceptually-uniform ramp; chroma peaks at step 600 and tapers at
+ * the extremes so light tints and dark shades stay legible.
+ */
+export function generateColorScaleOKLCH(hex: string): Record<string, string> {
+  const { C: baseC, h } = hexToOKLCH(hex);
+
+  // Perceptual lightness targets (OKLCH L is 0–1)
+  const L_STOPS: Array<[string, number]> = [
+    ['50',  0.971], ['100', 0.940], ['200', 0.882],
+    ['300', 0.820], ['400', 0.742], ['500', 0.650],
+    ['600', 0.558], ['700', 0.460], ['800', 0.360],
+    ['900', 0.268], ['950', 0.200],
+  ];
+
+  // Chroma multipliers relative to the input color's chroma (peaks at 600)
+  const C_MULT: Record<string, number> = {
+    '50': 0.08, '100': 0.16, '200': 0.32, '300': 0.52,
+    '400': 0.72, '500': 0.90, '600': 1.00, '700': 0.95,
+    '800': 0.80, '900': 0.60, '950': 0.42,
+  };
+
+  const scale: Record<string, string> = {};
+  for (const [shade, targetL] of L_STOPS) {
+    const targetC = Math.max(0, baseC * (C_MULT[shade] ?? 1));
+    scale[shade] = OKLCHToHex(targetL, targetC, h);
+  }
+  return scale;
+}
+
+/**
+ * Generates an 11-step neutral (near-gray) scale using OKLCH.
+ *
+ * Neutrals share the hue of the given color but use a very low chroma
+ * (0.012) so they read as warm or cool grays rather than pure gray.
+ */
+export function generateNeutralsOKLCH(hex: string): Record<string, string> {
+  const { h } = hexToOKLCH(hex);
+
+  const L_STOPS: Array<[string, number]> = [
+    ['50',  0.980], ['100', 0.955], ['200', 0.910],
+    ['300', 0.840], ['400', 0.735], ['500', 0.618],
+    ['600', 0.500], ['700', 0.395], ['800', 0.298],
+    ['900', 0.215], ['950', 0.158],
+  ];
+
+  const scale: Record<string, string> = {};
+  for (const [shade, targetL] of L_STOPS) {
+    // Subtle chroma gives a warm/cool tint without reading as a hue
+    scale[shade] = OKLCHToHex(targetL, 0.012, h);
+  }
+  return scale;
+}

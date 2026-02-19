@@ -60,10 +60,10 @@ function DocRule() {
   return <div style={{ borderTop: `1px solid ${s.border}`, margin: '20px 0' }} />;
 }
 
-function DocLabel({ children }: { children: React.ReactNode }) {
+function DocLabel({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   const s = useDocStyles();
   return (
-    <p style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em', color: s.textSecondary, marginBottom: 4, fontFamily: s.bodyFont }}>
+    <p style={{ fontSize: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em', color: s.textSecondary, marginBottom: 4, fontFamily: s.bodyFont, ...style }}>
       {children}
     </p>
   );

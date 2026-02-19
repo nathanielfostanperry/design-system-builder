@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import GlobalCurveEditor from './GlobalCurveEditor';
 import { HexColorPicker } from 'react-colorful';
 import { useDesignSystem } from '../context/DesignSystemContext';
 import { TbPlus, TbTrash, TbChevronDown } from 'react-icons/tb';
@@ -259,10 +258,6 @@ const ColorSystemBuilder: React.FC = () => {
         Add color
       </button>
 
-      {/* ── Global Curve Editor ── */}
-      <div style={{ borderTop: `1px solid ${borderClr}`, paddingTop: '16px' }}>
-        <GlobalCurveEditor />
-      </div>
     </div>
   );
 };

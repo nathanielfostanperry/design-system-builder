@@ -2,10 +2,8 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import {
-  generateColorScale,
-  applyColorCurves,
-  CurveControlPoint,
-  generateNeutrals,
+  generateColorScaleOKLCH,
+  generateNeutralsOKLCH,
 } from '../utils/colorUtils';
 import type { FontOption } from '@/types/designSystem';
 import {
@@ -134,13 +132,6 @@ interface DesignSystemContextType {
   // Method to set a base color that handles updating scales
   setBaseColor: (type: 'primary' | 'accent' | 'neutral', color: string) => void;
 
-  // Curve control points
-  lightnessControlPoints: CurveControlPoint[];
-  setLightnessControlPoints: (points: CurveControlPoint[]) => void;
-
-  chromaControlPoints: CurveControlPoint[];
-  setChromaControlPoints: (points: CurveControlPoint[]) => void;
-
   // Spacing control
   spacing: SpacingOption;
   setSpacing: (spacing: SpacingOption) => void;
@@ -216,12 +207,12 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
   const [primaryColor, setPrimaryColor] = useState<string>(initialPrimaryColor);
   const [primaryColorScale, setPrimaryColorScale] = useState<
     Record<string, string>
-  >(generateColorScale(initialPrimaryColor));
+  >(generateColorScaleOKLCH(initialPrimaryColor));
 
   const [accentColor, setAccentColor] = useState<string>(initialAccentColor);
   const [accentColorScale, setAccentColorScale] = useState<
     Record<string, string>
-  >(generateColorScale(initialAccentColor));
+  >(generateColorScaleOKLCH(initialAccentColor));
 
   // Icon library state
   const [iconLibrary, setIconLibrary] = useState<string>('hi'); // Default to Heroicons
@@ -230,15 +221,7 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
   const [neutralColor, setNeutralColor] = useState<string>(initialPrimaryColor);
   const [neutralColorScale, setNeutralColorScale] = useState<
     Record<string, string>
-  >(generateNeutrals(initialPrimaryColor));
-
-  // Curve control points
-  const [lightnessControlPoints, setLightnessControlPoints] = useState<
-    CurveControlPoint[]
-  >([]);
-  const [chromaControlPoints, setChromaControlPoints] = useState<
-    CurveControlPoint[]
-  >([]);
+  >(generateNeutralsOKLCH(initialPrimaryColor));
 
   // Spacing control
   const [spacing, setSpacing] = useState<SpacingOption>(SPACING_OPTIONS[0]);
@@ -271,7 +254,7 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     const id = Date.now().toString(36);
     setExtraPalettes((prev) => [
       ...prev,
-      { id, name, baseColor: color, scale: generateColorScale(color) },
+      { id, name, baseColor: color, scale: generateColorScaleOKLCH(color) },
     ]);
   };
 
@@ -282,7 +265,7 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
   const updateExtraPaletteColor = (id: string, color: string) => {
     setExtraPalettes((prev) =>
       prev.map((p) =>
-        p.id === id ? { ...p, baseColor: color, scale: generateColorScale(color) } : p
+        p.id === id ? { ...p, baseColor: color, scale: generateColorScaleOKLCH(color) } : p
       )
     );
   };
@@ -396,43 +379,19 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     switch (type) {
       case 'primary':
         setPrimaryColor(color);
-
-        // Update primary color scale
-        const primaryScale =
-          lightnessControlPoints.length > 0 || chromaControlPoints.length > 0
-            ? applyColorCurves(
-                color,
-                lightnessControlPoints,
-                chromaControlPoints
-              )
-            : generateColorScale(color);
-        setPrimaryColorScale(primaryScale);
-
-        // Also update neutral by default when primary changes
+        setPrimaryColorScale(generateColorScaleOKLCH(color));
         setNeutralColor(color);
-        // Generate neutrals based on the primary color
-        const neutralScale = generateNeutrals(color);
-        setNeutralColorScale(neutralScale);
+        setNeutralColorScale(generateNeutralsOKLCH(color));
         break;
 
       case 'accent':
         setAccentColor(color);
-        const accentScale =
-          lightnessControlPoints.length > 0 || chromaControlPoints.length > 0
-            ? applyColorCurves(
-                color,
-                lightnessControlPoints,
-                chromaControlPoints
-              )
-            : generateColorScale(color);
-        setAccentColorScale(accentScale);
+        setAccentColorScale(generateColorScaleOKLCH(color));
         break;
 
       case 'neutral':
         setNeutralColor(color);
-        // Generate neutrals based on the selected color
-        const newNeutralScale = generateNeutrals(color);
-        setNeutralColorScale(newNeutralScale);
+        setNeutralColorScale(generateNeutralsOKLCH(color));
         break;
     }
   };
@@ -457,12 +416,6 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     setIconLibrary,
 
     setBaseColor,
-
-    lightnessControlPoints,
-    setLightnessControlPoints,
-
-    chromaControlPoints,
-    setChromaControlPoints,
 
     spacing,
     setSpacing,
