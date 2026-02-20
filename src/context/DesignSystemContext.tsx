@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
 import {
   generateColorScaleOKLCH,
   generateNeutralsOKLCH,
@@ -10,6 +10,10 @@ import {
   BORDER_WIDTH_OPTIONS,
   BORDER_OPACITY_OPTIONS,
 } from '@/components/Borders';
+import {
+  loadDesignSystemState,
+  saveDesignSystemState,
+} from '../utils/designSystemStorage';
 
 export type ExtraPalette = {
   id: string;
@@ -406,6 +410,136 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
       voicePrinciples: prev.voicePrinciples.filter((p) => p.id !== id),
     }));
   };
+
+  // Restore persisted state on mount (client-only to avoid hydration mismatch)
+  useEffect(() => {
+    const saved = loadDesignSystemState();
+    if (!saved) return;
+
+    if (saved.primaryColor) {
+      setPrimaryColor(saved.primaryColor);
+      setPrimaryColorScale(generateColorScaleOKLCH(saved.primaryColor));
+    }
+    if (saved.accentColor) {
+      setAccentColor(saved.accentColor);
+      setAccentColorScale(generateColorScaleOKLCH(saved.accentColor));
+    }
+    if (saved.neutralColor) {
+      setNeutralColor(saved.neutralColor);
+      setNeutralColorScale(generateNeutralsOKLCH(saved.neutralColor));
+    }
+    if (saved.iconLibrary) setIconLibrary(saved.iconLibrary);
+    if (saved.spacing) {
+      const opt = SPACING_OPTIONS.find((o) => o.name === saved.spacing);
+      if (opt) setSpacing(opt);
+    }
+    if (saved.radius) {
+      const opt = RADIUS_OPTIONS.find((o) => o.name === saved.radius);
+      if (opt) setRadius(opt);
+    }
+    if (saved.shadow) {
+      const opt = SHADOW_OPTIONS.find((o) => o.name === saved.shadow);
+      if (opt) setShadow(opt);
+    }
+    if (saved.headingFontFamily) {
+      const opt = FONT_OPTIONS.find((f) => f.family === saved.headingFontFamily);
+      if (opt) setHeadingFont(opt);
+    }
+    if (saved.bodyFontFamily) {
+      const opt = FONT_OPTIONS.find((f) => f.family === saved.bodyFontFamily);
+      if (opt) setBodyFont(opt);
+    }
+    if (saved.codeFontFamily) {
+      const opt = FONT_OPTIONS.find((f) => f.family === saved.codeFontFamily);
+      if (opt) setCodeFont(opt);
+    }
+    if (saved.typographyTokenOverrides && Object.keys(saved.typographyTokenOverrides).length > 0) {
+      setTypographyTokenOverrides(saved.typographyTokenOverrides as Record<string, { fontRef?: 'heading' | 'body' | 'code'; size?: string; weight?: string }>);
+    }
+    if (saved.isDarkMode !== undefined) setIsDarkMode(saved.isDarkMode);
+    if (saved.borderWidth) {
+      const opt = BORDER_WIDTH_OPTIONS.find((o) => o.name === saved.borderWidth);
+      if (opt) setBorderWidth(opt);
+    }
+    if (saved.borderOpacity) {
+      const opt = BORDER_OPACITY_OPTIONS.find((o) => o.name === saved.borderOpacity);
+      if (opt) setBorderOpacity(opt);
+    }
+    if (saved.extraPalettes && saved.extraPalettes.length > 0) {
+      setExtraPalettes(
+        saved.extraPalettes.map((p) => ({
+          id: p.id,
+          name: p.name,
+          baseColor: p.baseColor,
+          scale: generateColorScaleOKLCH(p.baseColor),
+        }))
+      );
+    }
+    if (saved.usageRulesMap && Object.keys(saved.usageRulesMap).length > 0) {
+      setUsageRulesMap(saved.usageRulesMap);
+    }
+    if (saved.semanticTokenOverrides && Object.keys(saved.semanticTokenOverrides).length > 0) {
+      setSemanticTokenOverrides(saved.semanticTokenOverrides);
+    }
+    if (saved.componentTokenOverrides && Object.keys(saved.componentTokenOverrides).length > 0) {
+      setComponentTokenOverrides(saved.componentTokenOverrides);
+    }
+    if (saved.brandSettings && Object.keys(saved.brandSettings).length > 0) {
+      setBrandSettingsState((prev) => ({ ...prev, ...saved.brandSettings }));
+    }
+  }, []);
+
+  // Persist state to localStorage when it changes (debounced)
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      saveDesignSystemState({
+        primaryColor,
+        accentColor,
+        neutralColor,
+        iconLibrary,
+        spacing: spacing?.name,
+        radius: radius?.name,
+        shadow: shadow?.name,
+        headingFontFamily: headingFont?.family,
+        bodyFontFamily: bodyFont?.family,
+        codeFontFamily: codeFont?.family,
+        typographyTokenOverrides: Object.keys(typographyTokenOverrides).length > 0 ? typographyTokenOverrides : undefined,
+        isDarkMode,
+        borderWidth: borderWidth?.name,
+        borderOpacity: borderOpacity?.name,
+        extraPalettes: extraPalettes.length > 0 ? extraPalettes.map((p) => ({ id: p.id, name: p.name, baseColor: p.baseColor })) : undefined,
+        usageRulesMap: Object.keys(usageRulesMap).length > 0 ? usageRulesMap : undefined,
+        semanticTokenOverrides: Object.keys(semanticTokenOverrides).length > 0 ? semanticTokenOverrides : undefined,
+        componentTokenOverrides: Object.keys(componentTokenOverrides).length > 0 ? componentTokenOverrides : undefined,
+        brandSettings: Object.keys(brandSettings).length > 0 ? (brandSettings as Record<string, unknown>) : undefined,
+      });
+    }, 300);
+    saveTimeoutRef.current = timeout;
+    return () => {
+      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+    };
+  }, [
+    primaryColor,
+    accentColor,
+    neutralColor,
+    iconLibrary,
+    spacing,
+    radius,
+    shadow,
+    headingFont,
+    bodyFont,
+    codeFont,
+    typographyTokenOverrides,
+    isDarkMode,
+    borderWidth,
+    borderOpacity,
+    extraPalettes,
+    usageRulesMap,
+    semanticTokenOverrides,
+    componentTokenOverrides,
+    brandSettings,
+  ]);
 
   // Method to set a base color and update its scale
   const setBaseColor = (
