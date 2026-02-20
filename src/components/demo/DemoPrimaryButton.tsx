@@ -2,16 +2,16 @@
 
 import React, { useState } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-import { useSemanticColor } from '@/hooks/useSemanticColor';
+import { useComponentToken } from '@/hooks/useComponentToken';
 import { useTypographyToken } from '@/hooks/useTypographyToken';
 
 export default function DemoPrimaryButton() {
   const { radius } = useDesignSystem();
-  const bgDefault = useSemanticColor('interactive-default');
-  const bgHover = useSemanticColor('interactive-hover');
-  const bgActive = useSemanticColor('interactive-active');
-  const textColor = useSemanticColor('text-on-brand');
-  const borderColor = useSemanticColor('border-default');
+  const bgDefault = useComponentToken('button-primary', 'bg');
+  const bgHover = useComponentToken('button-primary', 'bg-hover');
+  const bgActive = useComponentToken('button-primary', 'bg-active');
+  const textColor = useComponentToken('button-primary', 'text');
+  const borderColor = useComponentToken('button-primary', 'border');
   const label = useTypographyToken('label');
 
   const [hovered, setHovered] = useState(false);

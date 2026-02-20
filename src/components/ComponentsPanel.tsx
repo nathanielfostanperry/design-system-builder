@@ -31,7 +31,7 @@ export default function ComponentsPanel() {
   return (
     <div className="flex flex-col gap-5">
       <p className="text-xs leading-relaxed" style={{ color: textMuted, fontFamily: caption.fontFamily, fontSize: caption.fontSize }}>
-        Components consume semantic color and typography tokens. Customize tokens in the Colors → Semantic Tokens and Typography panels.
+        Components consume semantic and component-level tokens. Override component-specific colors in the Component Tokens panel; customize semantic tokens in the Semantic Tokens panel.
       </p>
 
       {GROUPS.map((group) => {

@@ -183,6 +183,11 @@ interface DesignSystemContextType {
   setSemanticTokenOverride: (tokenId: string, primitiveRef: string) => void;
   resetSemanticTokenOverride: (tokenId: string) => void;
 
+  // Component token overrides (componentId-tokenKey -> ref e.g. "primary-500" or "semantic:background-subtle")
+  componentTokenOverrides: Record<string, string>;
+  setComponentTokenOverride: (componentId: string, tokenKey: string, ref: string) => void;
+  resetComponentTokenOverride: (componentId: string, tokenKey: string) => void;
+
   // Brand identity
   brandSettings: BrandSettings;
   setBrandField: (key: keyof BrandSettings, value: unknown) => void;
@@ -318,6 +323,21 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
   };
   const resetSemanticTokenOverride = (tokenId: string) => {
     setSemanticTokenOverrides((prev) => {
+      const next = { ...prev };
+      delete next[tokenId];
+      return next;
+    });
+  };
+
+  // Component token overrides
+  const [componentTokenOverrides, setComponentTokenOverrides] = useState<Record<string, string>>({});
+  const setComponentTokenOverride = (componentId: string, tokenKey: string, ref: string) => {
+    const tokenId = `${componentId}-${tokenKey}`;
+    setComponentTokenOverrides((prev) => ({ ...prev, [tokenId]: ref }));
+  };
+  const resetComponentTokenOverride = (componentId: string, tokenKey: string) => {
+    const tokenId = `${componentId}-${tokenKey}`;
+    setComponentTokenOverrides((prev) => {
       const next = { ...prev };
       delete next[tokenId];
       return next;
@@ -473,6 +493,10 @@ export const DesignSystemProvider: React.FC<DesignSystemProviderProps> = ({
     semanticTokenOverrides,
     setSemanticTokenOverride,
     resetSemanticTokenOverride,
+
+    componentTokenOverrides,
+    setComponentTokenOverride,
+    resetComponentTokenOverride,
 
     brandSettings,
     setBrandField,

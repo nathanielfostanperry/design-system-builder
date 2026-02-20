@@ -3,18 +3,18 @@
 import React from 'react';
 import Image from 'next/image';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-import { useSemanticColor } from '@/hooks/useSemanticColor';
+import { useComponentToken } from '@/hooks/useComponentToken';
 import { useTypographyToken } from '@/hooks/useTypographyToken';
 
 export default function DemoProductCard() {
   const { radius, shadow } = useDesignSystem();
-  const bgSurface = useSemanticColor('background-surface');
-  const borderColor = useSemanticColor('border-default');
-  const textPrimary = useSemanticColor('text-primary');
-  const textSecondary = useSemanticColor('text-secondary');
-  const brandPrimary = useSemanticColor('brand-primary');
-  const statusInfoBg = useSemanticColor('status-info-bg');
-  const statusInfoText = useSemanticColor('status-info-text');
+  const bgSurface = useComponentToken('card', 'bg');
+  const borderColor = useComponentToken('card', 'border');
+  const textPrimary = useComponentToken('card', 'title');
+  const textSecondary = useComponentToken('card', 'body');
+  const ctaBg = useComponentToken('card', 'cta-bg');
+  const badgeBg = useComponentToken('badge', 'bg');
+  const badgeText = useComponentToken('badge', 'text');
   const heading4 = useTypographyToken('heading-4');
   const body = useTypographyToken('body');
   const label = useTypographyToken('label');
@@ -38,11 +38,11 @@ export default function DemoProductCard() {
           <div className="absolute top-2 right-2">
             <span
               className={`inline-flex items-center px-2 py-0.5 text-xs font-medium ${radius.name}`}
-              style={{
-                fontFamily: label.fontFamily,
-                backgroundColor: statusInfoBg,
-                color: statusInfoText,
-              }}
+                style={{
+                  fontFamily: label.fontFamily,
+                  backgroundColor: badgeBg,
+                  color: badgeText,
+                }}
             >
               New
             </span>
@@ -73,7 +73,7 @@ export default function DemoProductCard() {
           <button
             className={`text-sm text-white hover:opacity-90 transition-opacity ${radius.name} px-3 py-1`}
             style={{
-              backgroundColor: brandPrimary,
+              backgroundColor: ctaBg,
               fontFamily: label.fontFamily,
               fontSize: label.fontSize,
             }}

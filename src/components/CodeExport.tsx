@@ -12,6 +12,11 @@ import {
   SEMANTIC_TYPOGRAPHY_DEFINITIONS,
   getEffectiveTypographyMapping,
 } from '@/utils/semanticTypography';
+import {
+  COMPONENT_TOKEN_DEFINITIONS,
+  getEffectiveComponentTokenRef,
+  resolveComponentTokenRef,
+} from '@/utils/componentTokens';
 
 const getFontWeightValue = (w: string) => ({ thin: '300', regular: '400', bold: '700', extrabold: '800' }[w] ?? '400');
 const getFontSizeValue = (s: string) =>
@@ -23,6 +28,7 @@ interface CodeExportProps {
   neutralColorScale: Record<string, string>;
   extraPalettes?: ExtraPalette[];
   semanticTokenOverrides?: Record<string, string>;
+  componentTokenOverrides?: Record<string, string>;
   headingFont?: FontOption;
   bodyFont?: FontOption;
   codeFont?: FontOption;
@@ -41,6 +47,7 @@ const CodeExport: React.FC<CodeExportProps> = ({
   neutralColorScale,
   extraPalettes = [],
   semanticTokenOverrides = {},
+  componentTokenOverrides = {},
   headingFont,
   bodyFont,
   codeFont,
@@ -127,20 +134,14 @@ const CodeExport: React.FC<CodeExportProps> = ({
       css += `  --semantic-${token.id}: ${value};\n`;
     });
 
-    // ── Component assignments (semantic tokens where possible) ─────────
-    css += `\n  /* Component assignments (reference semantic tokens) */\n`;
-    // Primary button uses interactive semantic tokens
-    css += `  --component-button-primary-bg: var(--semantic-interactive-default);\n`;
-    css += `  --component-button-primary-bg-hover: var(--semantic-interactive-hover);\n`;
-    css += `  --component-button-primary-bg-active: var(--semantic-interactive-active);\n`;
-    css += `  --component-button-primary-text: var(--semantic-text-on-brand);\n`;
-    css += `  --component-button-primary-border: var(--semantic-border-default);\n`;
-    css += `  --component-button-primary-focus-ring: var(--semantic-interactive-focus-ring);\n`;
-    // Secondary button, input, etc. use border/surface semantics
-    css += `  --component-button-secondary-border: var(--semantic-border-default);\n`;
-    css += `  --component-input-border: var(--semantic-border-default);\n`;
-    css += `  --component-input-border-focus: var(--semantic-border-focus);\n`;
-    css += `  --component-card-surface: var(--semantic-background-surface);\n`;
+    // ── Component tokens (component-specific, map to semantic or primitive) ─
+    css += `\n  /* Component tokens */\n`;
+    COMPONENT_TOKEN_DEFINITIONS.forEach((token) => {
+      const ref = getEffectiveComponentTokenRef(token.componentId, token.tokenKey, componentTokenOverrides);
+      const value = resolveComponentTokenRef(ref);
+      css += `  /* ${token.description} */\n`;
+      css += `  --component-${token.componentId}-${token.tokenKey}: ${value};\n`;
+    });
 
     css += `}`;
     return css;
@@ -215,18 +216,14 @@ const CodeExport: React.FC<CodeExportProps> = ({
       scss += `$semantic-${token.id}: ${value};\n`;
     });
 
-    // Component assignments (semantic tokens)
-    scss += `\n// ── Component assignments (reference semantic tokens) ───\n`;
-    scss += `$component-button-primary-bg: var(--semantic-interactive-default);\n`;
-    scss += `$component-button-primary-bg-hover: var(--semantic-interactive-hover);\n`;
-    scss += `$component-button-primary-bg-active: var(--semantic-interactive-active);\n`;
-    scss += `$component-button-primary-text: var(--semantic-text-on-brand);\n`;
-    scss += `$component-button-primary-border: var(--semantic-border-default);\n`;
-    scss += `$component-button-primary-focus-ring: var(--semantic-interactive-focus-ring);\n`;
-    scss += `$component-button-secondary-border: var(--semantic-border-default);\n`;
-    scss += `$component-input-border: var(--semantic-border-default);\n`;
-    scss += `$component-input-border-focus: var(--semantic-border-focus);\n`;
-    scss += `$component-card-surface: var(--semantic-background-surface);\n`;
+    // Component tokens
+    scss += `\n// ── Component tokens ─────────────────────────────────────\n`;
+    COMPONENT_TOKEN_DEFINITIONS.forEach((token) => {
+      const ref = getEffectiveComponentTokenRef(token.componentId, token.tokenKey, componentTokenOverrides);
+      const value = resolveComponentTokenRef(ref);
+      scss += `// ${token.description}\n`;
+      scss += `$component-${token.componentId}-${token.tokenKey}: ${value};\n`;
+    });
 
     return scss;
   };

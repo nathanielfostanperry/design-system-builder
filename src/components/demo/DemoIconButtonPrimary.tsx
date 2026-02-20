@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-import { useSemanticColor } from '@/hooks/useSemanticColor';
+import { useComponentToken } from '@/hooks/useComponentToken';
 import { HiPlus } from 'react-icons/hi';
 import { BiPlus } from 'react-icons/bi';
 import { FaPlus } from 'react-icons/fa';
@@ -21,8 +21,8 @@ const ICON_MAP = {
 
 export default function DemoIconButtonPrimary() {
   const { radius, iconLibrary } = useDesignSystem();
-  const bg = useSemanticColor('interactive-default');
-  const textColor = useSemanticColor('text-on-brand');
+  const bg = useComponentToken('icon-button', 'bg');
+  const textColor = useComponentToken('icon-button', 'text');
   const Icon = ICON_MAP[iconLibrary as keyof typeof ICON_MAP] ?? ICON_MAP.hi;
 
   return (

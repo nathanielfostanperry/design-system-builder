@@ -3,16 +3,16 @@
 import React from 'react';
 import Image from 'next/image';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-import { useSemanticColor } from '@/hooks/useSemanticColor';
+import { useComponentToken } from '@/hooks/useComponentToken';
 import { useTypographyToken } from '@/hooks/useTypographyToken';
 
 export default function DemoTeamCard() {
   const { radius, shadow } = useDesignSystem();
-  const bgSurface = useSemanticColor('background-surface');
-  const bgSubtle = useSemanticColor('background-subtle');
-  const borderColor = useSemanticColor('border-default');
-  const textPrimary = useSemanticColor('text-primary');
-  const textSecondary = useSemanticColor('text-secondary');
+  const bgSurface = useComponentToken('card', 'bg');
+  const bgSubtle = useComponentToken('card', 'secondary-bg');
+  const borderColor = useComponentToken('card', 'border');
+  const textPrimary = useComponentToken('card', 'title');
+  const textSecondary = useComponentToken('card', 'body');
   const heading4 = useTypographyToken('heading-4');
   const body = useTypographyToken('body');
 

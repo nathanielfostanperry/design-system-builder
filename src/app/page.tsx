@@ -31,6 +31,7 @@ export default function Home() {
     neutralColorScale,
     extraPalettes,
     semanticTokenOverrides,
+    componentTokenOverrides,
     headingFont,
     bodyFont,
     codeFont,
@@ -313,6 +314,7 @@ export default function Home() {
                     neutralColorScale={neutralColorScale}
                     extraPalettes={extraPalettes}
                     semanticTokenOverrides={semanticTokenOverrides}
+                    componentTokenOverrides={componentTokenOverrides}
                     headingFont={headingFont}
                     bodyFont={bodyFont}
                     codeFont={codeFont}

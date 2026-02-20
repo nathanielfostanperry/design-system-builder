@@ -2,16 +2,15 @@
 
 import React from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-import { useSemanticColor } from '@/hooks/useSemanticColor';
+import { useComponentToken } from '@/hooks/useComponentToken';
 import { useTypographyToken } from '@/hooks/useTypographyToken';
 import * as Label from '@radix-ui/react-label';
 
 export default function DemoInput() {
   const { radius } = useDesignSystem();
-  const bgSurface = useSemanticColor('background-surface');
-  const borderColor = useSemanticColor('border-default');
-  const textPrimary = useSemanticColor('text-primary');
-  const textTertiary = useSemanticColor('text-tertiary');
+  const bgSurface = useComponentToken('input', 'bg');
+  const borderColor = useComponentToken('input', 'border');
+  const textPrimary = useComponentToken('input', 'text');
   const labelToken = useTypographyToken('label');
   const body = useTypographyToken('body');
 

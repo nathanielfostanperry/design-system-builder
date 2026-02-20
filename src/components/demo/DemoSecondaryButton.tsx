@@ -2,14 +2,15 @@
 
 import React, { useState } from 'react';
 import { useDesignSystem } from '@/context/DesignSystemContext';
-import { useSemanticColor } from '@/hooks/useSemanticColor';
+import { useComponentToken } from '@/hooks/useComponentToken';
 import { useTypographyToken } from '@/hooks/useTypographyToken';
 
 export default function DemoSecondaryButton() {
   const { radius } = useDesignSystem();
-  const bgSubtle = useSemanticColor('background-subtle');
-  const textColor = useSemanticColor('text-primary');
-  const borderColor = useSemanticColor('border-default');
+  const bgDefault = useComponentToken('button-secondary', 'bg');
+  const bgHover = useComponentToken('button-secondary', 'bg-hover');
+  const textColor = useComponentToken('button-secondary', 'text');
+  const borderColor = useComponentToken('button-secondary', 'border');
   const label = useTypographyToken('label');
 
   const [hovered, setHovered] = useState(false);
@@ -18,7 +19,7 @@ export default function DemoSecondaryButton() {
     <button
       className={`w-full px-4 py-2 text-sm font-medium transition-colors outline-none ${radius.name}`}
       style={{
-        backgroundColor: hovered ? bgSubtle : 'transparent',
+        backgroundColor: hovered ? bgHover : bgDefault,
         color: textColor,
         borderWidth: '1px',
         borderStyle: 'solid',

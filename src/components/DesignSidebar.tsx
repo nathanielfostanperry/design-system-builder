@@ -11,19 +11,21 @@ import ColorSystemBuilder from './ColorSystemBuilder';
 import IconLibraryPicker from './IconLibraryPicker';
 import ComponentsPanel from './ComponentsPanel';
 import SemanticTokensPanel from './SemanticTokensPanel';
+import ComponentTokensPanel from './ComponentTokensPanel';
 import BrandPanel from './BrandPanel';
-import { TbTypography, TbAdjustmentsHorizontal, TbPalette, TbMoon, TbSun, TbX, TbIcons, TbComponents, TbBriefcase, TbPaletteOff } from 'react-icons/tb';
+import { TbTypography, TbAdjustmentsHorizontal, TbPalette, TbMoon, TbSun, TbX, TbIcons, TbComponents, TbBriefcase, TbPaletteOff, TbLayout2 } from 'react-icons/tb';
 
-type PanelId = 'typography' | 'icons' | 'spacing' | 'colors' | 'semantic' | 'components' | 'brand';
+type PanelId = 'typography' | 'icons' | 'spacing' | 'colors' | 'semantic' | 'component-tokens' | 'components' | 'brand';
 
 const NAV_ITEMS = [
-  { id: 'typography'  as PanelId, label: 'Typography',  Icon: TbTypography },
-  { id: 'icons'       as PanelId, label: 'Icons',       Icon: TbIcons },
-  { id: 'spacing'     as PanelId, label: 'Spacing',     Icon: TbAdjustmentsHorizontal },
-  { id: 'colors'      as PanelId, label: 'Colors',      Icon: TbPalette },
-  { id: 'semantic'    as PanelId, label: 'Semantic Tokens', Icon: TbPaletteOff },
-  { id: 'components'  as PanelId, label: 'Components',  Icon: TbComponents },
-  { id: 'brand'       as PanelId, label: 'Brand',       Icon: TbBriefcase },
+  { id: 'typography'       as PanelId, label: 'Typography',       Icon: TbTypography },
+  { id: 'icons'            as PanelId, label: 'Icons',            Icon: TbIcons },
+  { id: 'spacing'          as PanelId, label: 'Spacing',          Icon: TbAdjustmentsHorizontal },
+  { id: 'colors'           as PanelId, label: 'Colors',           Icon: TbPalette },
+  { id: 'semantic'         as PanelId, label: 'Semantic Tokens',  Icon: TbPaletteOff },
+  { id: 'component-tokens' as PanelId, label: 'Component Tokens', Icon: TbLayout2 },
+  { id: 'components'       as PanelId, label: 'Components',       Icon: TbComponents },
+  { id: 'brand'            as PanelId, label: 'Brand',             Icon: TbBriefcase },
 ];
 
 function ResizeHandle({ onMouseDown, borderClr }: { onMouseDown: (e: React.MouseEvent) => void; borderClr: string }) {
@@ -105,13 +107,14 @@ export default function DesignSidebar() {
   const activeBg   = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)';
 
   const panelLabel: Record<PanelId, string> = {
-    typography: 'Typography',
-    icons:      'Icons',
-    spacing:    'Spacing',
-    colors:     'Colors',
-    semantic:   'Semantic Tokens',
-    components: 'Components',
-    brand:      'Brand',
+    typography:       'Typography',
+    icons:            'Icons',
+    spacing:          'Spacing',
+    colors:           'Colors',
+    semantic:         'Semantic Tokens',
+    'component-tokens': 'Component Tokens',
+    components:       'Components',
+    brand:            'Brand',
   };
 
   return (
@@ -217,6 +220,8 @@ export default function DesignSidebar() {
               {activePanel === 'colors' && <ColorSystemBuilder />}
 
               {activePanel === 'semantic' && <SemanticTokensPanel />}
+
+              {activePanel === 'component-tokens' && <ComponentTokensPanel />}
 
               {activePanel === 'components' && <ComponentsPanel />}
 
