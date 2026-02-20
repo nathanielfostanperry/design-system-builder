@@ -19,8 +19,10 @@ export function useSemanticColor(tokenId: string): string {
 
   if (ref === 'white') return '#ffffff';
 
-  const [palette, shade] = ref.split('-');
-  if (!palette || !shade) return '#999999';
+  const parts = ref.split('-');
+  if (parts.length < 2) return '#999999';
+  const shade = parts[parts.length - 1];
+  const palette = parts.slice(0, -1).join('-');
 
   switch (palette) {
     case 'primary':
@@ -30,9 +32,8 @@ export function useSemanticColor(tokenId: string): string {
     case 'neutral':
       return neutralColorScale[shade] ?? '#999999';
     default: {
-      const extra = extraPalettes.find((p) =>
-        p.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') === palette
-      );
+      const toSlug = (n: string) => n.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+      const extra = extraPalettes.find((p) => toSlug(p.name) === palette);
       return extra?.scale[shade] ?? '#999999';
     }
   }

@@ -16,9 +16,12 @@ export interface SemanticTokenDef {
   description: string;
 }
 
-/** Format: "palette-shade" e.g. "neutral-900", "primary-600" */
+/** Format: "palette-shade" e.g. "neutral-900", "accent-1-500" */
 export function primitiveToVar(ref: string): string {
-  const [palette, shade] = ref.split('-');
+  const parts = ref.split('-');
+  if (parts.length < 2) return ref;
+  const shade = parts[parts.length - 1];
+  const palette = parts.slice(0, -1).join('-');
   return `var(--color-${palette}-${shade})`;
 }
 
@@ -283,8 +286,11 @@ export const SEMANTIC_TOKEN_DEFINITIONS: SemanticTokenDef[] = [
 /** Resolve a primitive ref to a CSS var() string. Handles special cases like "white". */
 export function resolvePrimitiveRef(ref: string): string {
   if (ref === 'white') return '#ffffff';
-  const [palette, shade] = ref.split('-');
-  if (!palette || !shade) return ref;
+  const parts = ref.split('-');
+  if (parts.length < 2) return ref;
+  // Ref format: "primary-500" or "accent-1-500" — shade is always last (50,100,...,950)
+  const shade = parts[parts.length - 1];
+  const palette = parts.slice(0, -1).join('-');
   return `var(--color-${palette}-${shade})`;
 }
 
@@ -300,12 +306,12 @@ export function getEffectiveMapping(
 export const SHADE_SCALE = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'] as const;
 
 /** Build list of primitive ref options for override UI */
-export function getPrimitiveRefOptions(extraPaletteSlugs: string[] = []): { value: string; label: string }[] {
+export function getPrimitiveRefOptions(extraPalettes: { slug: string; label: string }[] = []): { value: string; label: string }[] {
   const palettes = [
     { slug: 'primary', label: 'Primary' },
     { slug: 'secondary', label: 'Secondary' },
     { slug: 'neutral', label: 'Neutral' },
-    ...extraPaletteSlugs.map((slug) => ({ slug, label: slug })),
+    ...extraPalettes,
   ];
   const options: { value: string; label: string }[] = [{ value: 'white', label: 'White' }];
   palettes.forEach(({ slug, label }) => {

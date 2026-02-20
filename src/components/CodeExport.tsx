@@ -115,7 +115,9 @@ const CodeExport: React.FC<CodeExportProps> = ({
       let value: string;
       if (token.id === 'interactive-focus-ring') {
         // Focus ring with 50% opacity for accessibility
-        const [palette, shade] = ref.split('-');
+        const parts = ref.split('-');
+        const shade = parts[parts.length - 1];
+        const palette = parts.slice(0, -1).join('-');
         const varRef = palette && shade ? `var(--color-${palette}-${shade})` : ref;
         value = `color-mix(in srgb, ${varRef} 50%, transparent)`;
       } else {
@@ -201,7 +203,9 @@ const CodeExport: React.FC<CodeExportProps> = ({
       if (!ref) return;
       let value: string;
       if (token.id === 'interactive-focus-ring') {
-        const [palette, shade] = ref.split('-');
+        const parts = ref.split('-');
+        const shade = parts[parts.length - 1];
+        const palette = parts.slice(0, -1).join('-');
         const varRef = palette && shade ? `var(--color-${palette}-${shade})` : ref;
         value = `color-mix(in srgb, ${varRef} 50%, transparent)`;
       } else {

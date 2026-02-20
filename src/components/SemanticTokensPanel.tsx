@@ -44,7 +44,7 @@ export default function SemanticTokensPanel() {
   };
 
   const primitiveOptions = getPrimitiveRefOptions(
-    extraPalettes.map((p) => toSlug(p.name))
+    extraPalettes.map((p) => ({ slug: toSlug(p.name), label: p.name }))
   );
 
   const borderClr = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
@@ -56,8 +56,11 @@ export default function SemanticTokensPanel() {
 
   const getColorForRef = (ref: string): string => {
     if (ref === 'white') return '#ffffff';
-    const [palette, shade] = ref.split('-');
-    if (!palette || !shade) return '#999';
+    const parts = ref.split('-');
+    if (parts.length < 2) return '#999';
+    // Ref format: "palette-shade" or "accent-1-500" — shade is always last (50,100,...,950)
+    const shade = parts[parts.length - 1];
+    const palette = parts.slice(0, -1).join('-');
     if (palette === 'primary') return primaryColorScale[shade] ?? '#999';
     if (palette === 'secondary') return accentColorScale[shade] ?? '#999';
     if (palette === 'neutral') return neutralColorScale[shade] ?? '#999';

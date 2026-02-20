@@ -185,8 +185,7 @@ const ColorSystemBuilder: React.FC = () => {
     setExpandedId((prev) => (prev === id ? null : id));
 
   const handleAddPalette = () => {
-    const defaultNames = ['Accent 1', 'Accent 2', 'Accent 3', 'Accent 4'];
-    const name = defaultNames[extraPalettes.length] ?? `Color ${extraPalettes.length + 1}`;
+    const name = `Accent ${extraPalettes.length + 1}`;
     addExtraPalette(name);
     // Delay toggle so the new id is available after state update
     setTimeout(() => {
